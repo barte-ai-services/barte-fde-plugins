@@ -1,0 +1,22 @@
+{
+  "id": "nfe-0002",
+  "tipo": "nfe",
+  "assunto": "NF-e 3.318 - Nexo Tecnologia",
+  "recebidoEm": "2026-09-15T09:07:00-03:00",
+  "remetente": "financeiro@nexoti.com.br",
+  "conteudo": {
+    "chave": "35260912884006000102550010000033181044556677",
+    "numero": "3318",
+    "serie": "1",
+    "emitente": { "nome": "Nexo Tecnologia da Informação Ltda", "cnpj": "12.884.006/0001-02" },
+    "emissao": "2026-09-11",
+    "vencimento": "2026-09-26",
+    "valorTotal": 14318.90,
+    "cfop": "5933",
+    "ncm": "00000000",
+    "descricao": "Licenciamento de software e suporte técnico - competência 09/2026",
+    "pedido": "PC-2026-4468",
+    "valorPedido": 14300.00,
+    "retencoes": { "iss": 715.95, "irrf": 214.78, "inss": 0 }
+  }
+}

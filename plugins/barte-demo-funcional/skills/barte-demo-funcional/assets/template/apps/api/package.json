@@ -1,0 +1,29 @@
+{
+  "name": "@demo/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.127.0",
+    "@aws-sdk/client-s3": "^3",
+    "@aws-sdk/client-sqs": "^3",
+    "@nestjs/common": "^12",
+    "@nestjs/core": "^12",
+    "@nestjs/platform-express": "^12",
+    "pg": "^8",
+    "reflect-metadata": "^0.2",
+    "rxjs": "^7",
+    "zod": "^4"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^12",
+    "@types/node": "^24",
+    "@types/pg": "^8",
+    "typescript": "^5.9"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "bol-0003",
+  "tipo": "boleto",
+  "assunto": "Cobranca - Prisma Manutencao Predial",
+  "recebidoEm": "2026-09-15T10:22:00-03:00",
+  "remetente": "cobranca@prismapredial.com.br",
+  "conteudo": {
+    "linhaDigitavel": "34191.79001 01043.510047 91020.150008 8 10450000345000",
+    "beneficiario": { "nome": "Prisma Manutenção Predial Ltda", "cnpj": "29.610.344/0001-77" },
+    "emissao": "2026-09-14",
+    "vencimento": "2026-09-30",
+    "valorTotal": 3450.00,
+    "descricao": "Manutenção preventiva de elevadores - contrato 2026/118",
+    "pedido": null,
+    "valorPedido": null,
+    "retencoes": { "iss": 172.50, "irrf": 0, "inss": 0 }
+  }
+}

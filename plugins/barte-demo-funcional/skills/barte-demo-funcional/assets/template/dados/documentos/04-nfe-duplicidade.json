@@ -1,0 +1,22 @@
+{
+  "id": "nfe-0004",
+  "tipo": "nfe",
+  "assunto": "Re: NF-e 18.823 - Ativa Logistica (reenvio)",
+  "recebidoEm": "2026-09-15T11:03:00-03:00",
+  "remetente": "faturamento@ativalog.com.br",
+  "conteudo": {
+    "chave": "35260904252011000110550010000188231099887766",
+    "numero": "18823",
+    "serie": "1",
+    "emitente": { "nome": "Ativa Logística e Transportes Ltda", "cnpj": "04.252.011/0001-10" },
+    "emissao": "2026-09-13",
+    "vencimento": "2026-10-13",
+    "valorTotal": 5120.00,
+    "cfop": "5353",
+    "ncm": "00000000",
+    "descricao": "Prestação de serviço de transporte rodoviário de carga - complemento",
+    "pedido": "PC-2026-4472",
+    "valorPedido": 5120.00,
+    "retencoes": { "iss": 0, "irrf": 76.80, "inss": 0 }
+  }
+}

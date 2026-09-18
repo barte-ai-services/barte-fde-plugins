@@ -1,0 +1,6 @@
+{
+  "name": "barte-demo-funcional",
+  "description": "Constrói uma demo funcional da Barte — web com o design system, backend NestJS, infraestrutura de nuvem local (AWS, GCP ou Azure) em contêiner e um agente que executa o trabalho e presta contas na tela.",
+  "version": "1.0.0",
+  "author": { "name": "Barte · FDE" }
+}

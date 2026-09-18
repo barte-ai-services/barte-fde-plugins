@@ -1,0 +1,72 @@
+/*
+ * Tailwind v4 convivendo com o barte-design-system.
+ *
+ * O `@import "tailwindcss"` completo NÃO é usado de propósito: ele traz o
+ * Preflight, que atropela o estilo dos componentes do DS. Entram só o tema (as
+ * variáveis que alimentam as utilitárias) e a camada de utilitárias; o DS
+ * continua dono do estilo de componente.
+ *
+ * Mesma montagem do frontend do barte-copilot, e pela mesma razão.
+ */
+@import "barte-design-system/styles";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/*
+ * O que o Preflight faria, se estivesse ligado — e que o browser faz no lugar
+ * dele se ninguém fizer. O DS só aplica Inter pelas classes DOS COMPONENTES
+ * dele, então sem este bloco todo <h1>, <p> e <span> nosso sai em Times New
+ * Roman e os 8px de margem do body empurram a tela para fora da janela.
+ *
+ * Três coisas, e só estas três: família (do MESMO token que o DS lê), margem e
+ * suavização. Alargar este bloco é como se atropela o DS.
+ */
+:root {
+  /* A navbar e o bloco da marca na barra lateral têm de ter exatamente esta
+     altura, senão as duas bordas inferiores não se encontram e não há cruz no
+     canto. Um número só, consumido pelos dois. */
+  --app-header-height: var(--sizes-8xl);
+}
+
+body {
+  margin: 0;
+  font-family: var(--typography-fontFamily), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/*
+ * Sem o Preflight, `<ul>` e `<ol>` chegam com o estilo do BROWSER: marcador e
+ * 40px de recuo. Toda lista desta aplicação é uma lista de layout — trilha de
+ * decisões, peças da stack, chamadas ao vivo — e nenhuma delas quer bolinha nem
+ * número. A regra vale só para as listas com classe utilitária, que são as
+ * nossas; uma lista do design system continua com o estilo dele.
+ */
+ol[class*="list-none"],
+ul[class*="list-none"] {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/*
+ * O Sidebar do DS é desenhado para SER a barra lateral inteira: largura fixa e
+ * borda direita própria. Aqui ele é só a lista de navegação dentro do nosso
+ * contêiner, que já tem a borda — então a dele pintava uma segunda linha
+ * vertical. Casa pelo PREFIXO da classe; o sufixo é hash de build.
+ */
+.app-shell-nav [class*="Sidebar-module__sidebar__"] {
+  border-right: none;
+}
+
+.app-shell-nav
+  [class*="Sidebar-module__sidebar__"]:not([class*="Sidebar-module__sidebarCollapsed__"]) {
+  width: 100%;
+}

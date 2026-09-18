@@ -1,0 +1,11 @@
+{
+  "_comentario": "O que o agente consulta quando pergunta 'esse fornecedor existe?'. Numa demo de verdade isto é o espelho do cadastro do ERP do cliente — troque por fornecedores que ELE reconheça.",
+  "fornecedores": [
+    { "cnpj": "04.252.011/0001-10", "nome": "Ativa Logística e Transportes Ltda", "centroCusto": "LOG-002", "contaContabil": "4.1.2.03", "condicao": "30 dias" },
+    { "cnpj": "12.884.006/0001-02", "nome": "Nexo Tecnologia da Informação Ltda", "centroCusto": "TEC-001", "contaContabil": "4.1.5.01", "condicao": "15 dias" },
+    { "cnpj": "33.041.260/0652-90", "nome": "Comercial Bandeirantes S.A.", "centroCusto": "ADM-001", "contaContabil": "4.1.1.07", "condicao": "28 dias" },
+    { "cnpj": "07.526.557/0001-00", "nome": "Vega Facilities e Serviços Ltda", "centroCusto": "ADM-003", "contaContabil": "4.1.3.02", "condicao": "30 dias" }
+  ],
+  "alcadaAprovacaoAutomatica": 25000,
+  "lancados": ["35260904252011000110550010000188231099887766"]
+}

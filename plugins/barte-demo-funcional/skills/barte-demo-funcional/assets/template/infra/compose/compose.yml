@@ -1,0 +1,191 @@
+# A infraestrutura local da demo.
+#
+# Um serviço por peça, e NENHUM bind mount. Montar arquivo do repositório dentro
+# de contêiner parece inofensivo e é a falha mais chata que existe aqui: se o
+# caminho não estiver na lista de compartilhamento do Docker Desktop, ele monta
+# um DIRETÓRIO VAZIO no lugar do arquivo e o contêiner morre dizendo "is a
+# directory". Quem cria bucket e fila e semeia os documentos é a própria API, ao
+# subir — ver `provisionamento.service.ts`.
+#
+# PERFIS
+#
+# A demo roda contra uma nuvem de cada vez, e `NUVEM` no `.env` escolhe qual.
+# Cada emulador vive num perfil de mesmo nome, então `--profile aws` sobe o
+# Floci e mais nada; `--profile gcp` sobe os emuladores do Google. O Postgres
+# está em TODOS os perfis porque o banco é o mesmo nas três (Aurora, Cloud SQL e
+# Azure Database são todos PostgreSQL).
+#
+#   docker compose --profile ${NUVEM} up -d --wait
+#
+# O `scripts/subir.sh` já faz isso; a linha acima é para quem quiser o comando
+# cru.
+
+# O nome do projeto sai da PASTA da demo (`scripts/subir.sh` o exporta), e não
+# de um literal. Com um nome fixo, duas demos abertas ao mesmo tempo — o que
+# acontece na semana em que se prepara duas propostas — dividem os mesmos
+# contêineres e volumes: subir a segunda RECRIA o Postgres da primeira, e o
+# trabalho que o agente já tinha feito lá vai junto.
+name: ${DEMO_NOME:-demo}
+
+services:
+  # ─── comum às três nuvens ────────────────────────────────────────────────
+  #
+  # POR QUE UM POSTGRES, E NÃO O BANCO GERENCIADO DO EMULADOR
+  #
+  # O Floci tem `rds`, e o que ele faz quando alguém cria uma instância é SUBIR
+  # UM POSTGRES NUM CONTÊINER — para o que precisa do socket do Docker montado
+  # dentro dele, ou seja, controle do daemon da máquina entregue ao emulador. Em
+  # troca, ganha-se uma API de controle (CreateDBCluster, DescribeDBInstances)
+  # que esta demo nunca chama: a aplicação conecta por URL, como conectaria numa
+  # Aurora de verdade.
+  #
+  # Aurora com motor PostgreSQL, Cloud SQL for PostgreSQL e Azure Database for
+  # PostgreSQL SÃO Postgres. Apontar para um Postgres de verdade é a versão mais
+  # fiel do que roda em produção, não a menos.
+  postgres:
+    image: postgres:17-alpine
+    profiles: ["aws", "gcp", "azure"]
+    environment:
+      POSTGRES_USER: demo
+      POSTGRES_PASSWORD: demo
+      POSTGRES_DB: demo
+    ports:
+      - "127.0.0.1:${PG_PORT:-5432}:5432"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      # `pg_isready` sozinho responde antes de o banco aceitar conexão de
+      # verdade durante a primeira inicialização, quando o entrypoint sobe um
+      # servidor temporário só para criar o banco. O `-d` é o que fecha isso.
+      test: ["CMD-SHELL", "pg_isready -U demo -d demo"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # ─── AWS ─────────────────────────────────────────────────────────────────
+  #
+  # POR QUE FLOCI, E NÃO LOCALSTACK
+  #
+  # Os dois falam a mesma API na mesma porta, e a troca é a linha da imagem. O
+  # que decide é o que a edição ABERTA entrega: no LocalStack, persistência de
+  # estado é recurso Pro. Numa demo isso não é detalhe — o cliente fecha o
+  # notebook, você roda `down`, e na reunião seguinte o trabalho já feito tem de
+  # estar lá. Floci é MIT, sem token, e persiste.
+  floci:
+    image: floci/floci:latest
+    profiles: ["aws"]
+    environment:
+      # Ele precisa saber por qual nome é alcançado quando devolve endereço de
+      # recurso — numa rede de compose isso não é `localhost`.
+      FLOCI_HOSTNAME: floci
+      # `persistent` grava a cada escrita. `hybrid` enfileira e descarrega a cada
+      # cinco segundos — perder os últimos cinco segundos num `down` é perder
+      # exatamente a última coisa que você mostrou.
+      FLOCI_STORAGE_MODE: persistent
+    ports:
+      # Publicado só no loopback, para olhar de fora com a AWS CLI:
+      #   aws --endpoint-url http://127.0.0.1:4566 s3 ls
+      - "127.0.0.1:${AWS_LOCAL_PORT:-4566}:4566"
+    volumes:
+      # `/app/data`, e não um caminho nosso: é o que a imagem declara em VOLUME e
+      # cuja permissão ela prepara antes de largar o privilégio. Apontar para
+      # outro lugar derruba a subida na sonda de escrita.
+      - floci:/app/data
+    healthcheck:
+      # Rota compatível com a do LocalStack.
+      test:
+        - CMD-SHELL
+        - >-
+          curl -sf http://localhost:4566/_localstack/health | grep -q s3
+          && curl -sf http://localhost:4566/_localstack/health | grep -q sqs
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 15s
+
+  # ─── Google Cloud ────────────────────────────────────────────────────────
+  #
+  # Dois emuladores, e não um: o Google não publica um equivalente ao Floci que
+  # atenda a nuvem inteira numa porta só. `fake-gcs-server` faz o Cloud Storage
+  # e o emulador oficial do Pub/Sub (que vem dentro do SDK do gcloud) faz a fila.
+  # As bibliotecas do Google leem `STORAGE_EMULATOR_HOST` e `PUBSUB_EMULATOR_HOST`
+  # sozinhas — o código da aplicação não sabe que está falando com emulador.
+  gcs:
+    image: fsouza/fake-gcs-server:latest
+    profiles: ["gcp"]
+    command: ["-scheme", "http", "-port", "4443", "-public-host", "127.0.0.1:${GCS_PORT:-4443}"]
+    ports:
+      - "127.0.0.1:${GCS_PORT:-4443}:4443"
+    volumes:
+      - gcs:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:4443/storage/v1/b >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  pubsub:
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
+    profiles: ["gcp"]
+    command:
+      - /bin/sh
+      - -c
+      - >-
+        gcloud beta emulators pubsub start
+        --project=${GCP_PROJETO:-demo-local}
+        --host-port=0.0.0.0:8085
+    ports:
+      - "127.0.0.1:${PUBSUB_PORT:-8085}:8085"
+    healthcheck:
+      # O emulador responde 200 na raiz quando está pronto; `curl -f` sozinho
+      # falharia num 404 de rota inexistente, que também significa "de pé".
+      test: ["CMD-SHELL", "curl -s -o /dev/null http://localhost:8085 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  # ─── Azure ───────────────────────────────────────────────────────────────
+  #
+  # O Azurite é o emulador OFICIAL da Microsoft e cobre Blob e Queue no mesmo
+  # contêiner — a única das três nuvens em que uma peça só resolve as duas
+  # portas. A conta `devstoreaccount1` e a chave dela são públicas e
+  # documentadas: é a conta de desenvolvimento, não um segredo vazado.
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite:latest
+    profiles: ["azure"]
+    command:
+      - azurite
+      - --blobHost
+      - 0.0.0.0
+      - --queueHost
+      - 0.0.0.0
+      - --location
+      - /data
+    ports:
+      - "127.0.0.1:${AZURITE_BLOB_PORT:-10000}:10000"
+      - "127.0.0.1:${AZURITE_QUEUE_PORT:-10001}:10001"
+    volumes:
+      - azurite:/data
+    healthcheck:
+      # 400 é a resposta do Azurite a um GET sem parâmetros na raiz do serviço —
+      # e 400 já prova que há alguém atendendo.
+      # Sonda pelo Node, que a imagem do Azurite tem por construção. `nc` não
+      # está nela, e um healthcheck que chama um binário inexistente reprova um
+      # serviço perfeitamente saudável — com a mensagem "is unhealthy", que não
+      # diz nada sobre o que faltou.
+      test:
+        - CMD-SHELL
+        - >-
+          node -e "const n=require('net');let f=0,d=0;for(const p of [10000,10001]){
+          const s=n.connect(p,'127.0.0.1');s.on('connect',()=>{s.end();if(++d===2)process.exit(f?1:0)});
+          s.on('error',()=>{f=1;if(++d===2)process.exit(1)})}"
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  floci:
+  postgres:
+  gcs:
+  azurite:
