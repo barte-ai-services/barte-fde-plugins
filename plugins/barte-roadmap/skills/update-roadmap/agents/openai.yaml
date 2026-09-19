@@ -1,0 +1,4 @@
+interface:
+  display_name: "Atualizar roadmap Barte"
+  short_description: "Atualiza e publica o roadmap com evidências do GitHub"
+  default_prompt: "Use $update-roadmap para atualizar o roadmap Barte a partir do GitHub e publicar a versão privada validada."

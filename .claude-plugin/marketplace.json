@@ -1,6 +1,6 @@
 {
   "name": "barte-fde",
-  "description": "Ferramentas do time de FDE da Barte para construir e apresentar demos a clientes.",
+  "description": "Ferramentas do time de FDE da Barte para demos, acompanhamento de entregas e roadmaps.",
   "owner": {
     "name": "Barte AI Services",
     "url": "https://github.com/barte-ai-services"
@@ -27,6 +27,26 @@
         "nestjs",
         "floci",
         "proposta"
+      ]
+    },
+    {
+      "name": "barte-roadmap",
+      "source": "./plugins/barte-roadmap",
+      "displayName": "Roadmap Barte",
+      "description": "Atualiza o roadmap estratégico e tático da Barte com evidências do GitHub e publicação privada.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Barte AI Services"
+      },
+      "repository": "https://github.com/barte-ai-services/barte-fde-plugins",
+      "license": "SEE LICENSE IN LICENSE",
+      "category": "productivity",
+      "keywords": [
+        "roadmap",
+        "github",
+        "projects",
+        "fde",
+        "backfill"
       ]
     }
   ]
