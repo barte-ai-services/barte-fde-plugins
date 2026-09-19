@@ -1,165 +1,176 @@
-/** A API roda ao lado, em outra porta. Em produção seriam o mesmo domínio. */
+/** The API runs alongside, on another port. In production both would share a domain. */
 export const API = process.env.NEXT_PUBLIC_API ?? "http://127.0.0.1:8080/api";
 
-export interface Decisao {
-  agente: string;
-  acao: string;
-  razao: string;
-  confianca: number;
-  em: string;
+export interface Decision {
+  agent: string;
+  action: string;
+  reason: string;
+  confidence: number;
+  at: string;
 }
 
 export interface Item {
   id: string;
-  documento: {
+  document: {
     id: string;
-    tipo: string;
-    assunto: string;
-    recebidoEm: string;
-    remetente: string;
-    conteudo: Record<string, unknown>;
+    type: string;
+    subject: string;
+    receivedAt: string;
+    sender: string;
+    content: Record<string, unknown>;
   };
-  estado: "pendente" | "processando" | "pronto" | "revisao";
-  proposta: {
-    fornecedor: string | null;
-    centroCusto: string | null;
-    contaContabil: string | null;
-    valor: number;
-    vencimento: string | null;
+  state: "pending" | "processing" | "ready" | "review";
+  proposal: {
+    counterparty: string | null;
+    costCenter: string | null;
+    account: string | null;
+    amount: number;
+    dueDate: string | null;
   } | null;
-  motivoRevisao: string | null;
-  decisoes: Decisao[];
-  atualizadoEm: string;
+  reviewReason: string | null;
+  decisions: Decision[];
+  updatedAt: string;
 }
 
-export interface Peca {
-  nome: string;
-  tecnologia: string;
-  papel: string;
+export interface Component {
+  name: string;
+  technology: string;
+  role: string;
   ok: boolean;
   ms: number;
-  detalhe: string | null;
+  detail: string | null;
 }
 
-export interface Chamada {
-  peca: string;
-  operacao: string;
+export interface Call {
+  component: string;
+  operation: string;
   ms: number;
   ok: boolean;
-  em: string;
+  at: string;
 }
 
 export interface Stack {
-  motor: string;
-  endpointAws: string;
-  pecas: Peca[];
-  telemetria: { peca: string; chamadas: number; medianaMs: number; piorMs: number }[];
+  engine: string;
+  cloud: string;
+  components: Component[];
+  telemetry: { component: string; calls: number; medianMs: number; worstMs: number }[];
 }
 
-export interface Etapa {
+export interface Step {
   id: string;
-  rotulo: string;
-  legenda: string;
-  acao: string;
-  escalaSe: string[];
-  motivo?: string;
+  label: string;
+  hint: string;
+  action: string;
+  escalateIf: string[];
+  reason?: string;
 }
 
-export interface Fluxo {
-  nome: string;
-  etapas: Etapa[];
+/** The screen's words. Values are Portuguese — the client reads them. */
+export interface Vocabulary {
+  client: string;
+  module: string;
+  counterparty: string;
+  incoming: string;
+  labels: { costCenter: string; account: string; amount: string; dueDate: string };
+  stats: { queued: string; ready: string; review: string; amount: string };
 }
 
-export interface Catalogo {
-  acoes: { id: string; rotulo: string; descricao: string }[];
-  condicoes: { id: string; rotulo: string; descricao: string; motivoPadrao: string }[];
+export interface Flow {
+  name: string;
+  vocabulary: Vocabulary;
+  steps: Step[];
 }
 
-export type Evento =
-  | { tipo: "no"; itemId: string; no: string; estado: "executando" | "concluido" | "excecao"; em: string }
-  | { tipo: "decisao"; itemId: string; agente: string; acao: string; razao: string; confianca: number; em: string }
-  | { tipo: "excecao"; itemId: string; motivo: string; em: string }
-  | { tipo: "item"; itemId: string; em: string }
-  | { tipo: "telemetria"; chamada: Chamada; em: string }
-  | { tipo: "fluxo"; em: string };
+export interface Catalog {
+  actions: { id: string; label: string; description: string }[];
+  conditions: { id: string; label: string; description: string; defaultReason: string }[];
+}
 
-export async function listarItens(): Promise<Item[]> {
-  const r = await fetch(`${API}/itens`, { cache: "no-store" });
-  if (!r.ok) throw new Error(`itens: ${r.status}`);
+export type Event =
+  | { type: "step"; itemId: string; step: string; state: "running" | "done" | "exception"; at: string }
+  | { type: "decision"; itemId: string; agent: string; action: string; reason: string; confidence: number; at: string }
+  | { type: "exception"; itemId: string; reason: string; at: string }
+  | { type: "item"; itemId: string; at: string }
+  | { type: "telemetry"; call: Call; at: string }
+  | { type: "flow"; at: string };
+
+export async function listItems(): Promise<Item[]> {
+  const r = await fetch(`${API}/items`, { cache: "no-store" });
+  if (!r.ok) throw new Error(`items: ${r.status}`);
   return r.json();
 }
 
-export async function executarEsteira(): Promise<{ enfileirados: number }> {
-  const r = await fetch(`${API}/esteira/executar`, { method: "POST" });
-  if (!r.ok) throw new Error(`executar: ${r.status}`);
+export async function runPipeline(): Promise<{ queued: number }> {
+  const r = await fetch(`${API}/pipeline/run`, { method: "POST" });
+  if (!r.ok) throw new Error(`run: ${r.status}`);
+  return r.json();
+}
+
+export async function health(): Promise<Stack> {
+  const r = await fetch(`${API}/health`, { cache: "no-store" });
+  if (!r.ok) throw new Error(`health: ${r.status}`);
   return r.json();
 }
 
 /**
- * O erro de validação vem do servidor como uma LISTA de problemas, e é assim que
- * ele chega à tela: quem está editando na frente do cliente precisa ver tudo o
- * que está errado de uma vez, em vez de corrigir um, tentar, e descobrir o
- * seguinte.
+ * The validation error arrives from the server as a LIST of problems, and that is
+ * how it reaches the screen: whoever is editing in front of the client needs to
+ * see everything that is wrong at once, instead of fixing one, retrying, and
+ * discovering the next.
  */
-export class ErroDeFluxo extends Error {
-  constructor(readonly problemas: string[]) {
-    super(problemas.join("; "));
+export class FlowError extends Error {
+  constructor(readonly problems: string[]) {
+    super(problems.join("; "));
   }
 }
 
-async function comProblemas<T>(r: Response): Promise<T> {
+async function withProblems<T>(r: Response): Promise<T> {
   if (r.ok) return r.json();
-  const corpo = await r.json().catch(() => null);
-  const problemas = corpo?.message?.problemas ?? corpo?.problemas;
-  throw new ErroDeFluxo(
-    Array.isArray(problemas) && problemas.length ? problemas : [`o servidor recusou (${r.status})`],
+  const body = await r.json().catch(() => null);
+  const problems = body?.message?.problems ?? body?.problems;
+  throw new FlowError(
+    Array.isArray(problems) && problems.length ? problems : [`o servidor recusou (${r.status})`],
   );
 }
 
-export async function lerFluxo(): Promise<Fluxo> {
-  const r = await fetch(`${API}/fluxo`, { cache: "no-store" });
-  if (!r.ok) throw new Error(`fluxo: ${r.status}`);
+export async function readFlow(): Promise<Flow> {
+  const r = await fetch(`${API}/flow`, { cache: "no-store" });
+  if (!r.ok) throw new Error(`flow: ${r.status}`);
   return r.json();
 }
 
-export async function lerCatalogo(): Promise<Catalogo> {
-  const r = await fetch(`${API}/fluxo/catalogo`, { cache: "no-store" });
-  if (!r.ok) throw new Error(`catalogo: ${r.status}`);
+export async function readCatalog(): Promise<Catalog> {
+  const r = await fetch(`${API}/flow/catalog`, { cache: "no-store" });
+  if (!r.ok) throw new Error(`catalog: ${r.status}`);
   return r.json();
 }
 
-export async function lerArquivoDoFluxo(): Promise<string> {
-  const r = await fetch(`${API}/fluxo/arquivo`, { cache: "no-store" });
-  if (!r.ok) throw new Error(`arquivo: ${r.status}`);
-  return (await r.json()).texto;
+export async function readFlowFile(): Promise<string> {
+  const r = await fetch(`${API}/flow/file`, { cache: "no-store" });
+  if (!r.ok) throw new Error(`file: ${r.status}`);
+  return (await r.json()).text;
 }
 
-export async function salvarFluxo(fluxo: Fluxo): Promise<Fluxo> {
-  return comProblemas(
-    await fetch(`${API}/fluxo`, {
+export async function saveFlow(flow: Flow): Promise<Flow> {
+  return withProblems(
+    await fetch(`${API}/flow`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(fluxo),
+      body: JSON.stringify(flow),
     }),
   );
 }
 
-export async function salvarArquivoDoFluxo(texto: string): Promise<Fluxo> {
-  return comProblemas(
-    await fetch(`${API}/fluxo/arquivo`, {
+export async function saveFlowFile(text: string): Promise<Flow> {
+  return withProblems(
+    await fetch(`${API}/flow/file`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ texto }),
+      body: JSON.stringify({ text }),
     }),
   );
 }
 
-export async function restaurarFluxo(): Promise<Fluxo> {
-  return comProblemas(await fetch(`${API}/fluxo/restaurar`, { method: "POST" }));
-}
-
-export async function saude(): Promise<Stack> {
-  const r = await fetch(`${API}/saude`, { cache: "no-store" });
-  if (!r.ok) throw new Error(`saude: ${r.status}`);
-  return r.json();
+export async function restoreFlow(): Promise<Flow> {
+  return withProblems(await fetch(`${API}/flow/restore`, { method: "POST" }));
 }

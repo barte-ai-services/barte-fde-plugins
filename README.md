@@ -1,51 +1,62 @@
 # barte-fde-plugins
 
-Marketplace de plugins do time de FDE da Barte para o Claude Code.
+Claude Code plugins for Barte's FDE team.
 
-Mantido por **Barte AI Services**. A skill `barte-demo-funcional` foi escrita por
-**Fernando Seguim**.
+Maintained by **Barte AI Services**. The `barte-demo-funcional` skill was written
+by **Fernando Seguim**.
 
-## Instalar
+## Install
 
 ```
 /plugin marketplace add barte-ai-services/barte-fde-plugins
 /plugin install barte-demo-funcional@barte-fde
 ```
 
-Enquanto o repositório não estiver no GitHub, aponte para o caminho local:
+Until the repository is on GitHub, point at the local path:
 
 ```
 /plugin marketplace add ~/Workspace/barte/_platform/barte-fde-plugins
 ```
 
-## O que tem aqui
+## What is here
 
-| Plugin | O que faz |
+| Plugin | What it does |
 |---|---|
-| [`barte-demo-funcional`](plugins/barte-demo-funcional) | constrói uma demo **funcional** para cliente: web com o `barte-design-system`, backend NestJS, armazenamento/fila/banco em contêiner (AWS, GCP ou Azure) e um agente que executa o trabalho e presta contas na tela |
+| [`barte-demo-funcional`](plugins/barte-demo-funcional) | builds a **functional** client demo: web on the `barte-design-system`, a NestJS backend, storage/queue/database in containers (AWS, GCP or Azure), and an agent that does the work and accounts for itself on screen |
 
 ## Layout
 
 ```
-.claude-plugin/marketplace.json          o catálogo
+.claude-plugin/marketplace.json          the catalog
 plugins/<plugin>/
-  .claude-plugin/plugin.json             o manifesto
-  skills/<skill>/SKILL.md                a skill
-  skills/<skill>/assets/template/         o projeto que a skill copia
+  .claude-plugin/plugin.json             the manifest
+  skills/<skill>/SKILL.md                the skill
+  skills/<skill>/assets/template/        the project the skill copies
 ```
 
-## Trabalhar nos plugins
+## Language
 
-O diretório de skills do Claude Code aponta para cá por link simbólico, então
-editar aqui é editar a skill instalada:
+**Code, comments and documentation are in English. What the client reads on a
+generated demo's screen is Brazilian Portuguese** — labels, agent decisions, the
+flow panel's interface and the sample data. Keep that split: an identifier in
+Portuguese or a screen label in English are both bugs.
+
+## Working on the plugins
+
+Claude Code's skills directory points here through a symlink, so editing here is
+editing the installed skill:
 
 ```bash
 ls -l ~/.claude/skills/barte-demo-funcional
 ```
 
-Depois de mexer numa skill, suba a `version` no `plugin.json` e no
-`marketplace.json` — é o número que diz a quem já instalou que há coisa nova.
+After changing a skill, bump `version` in `plugin.json` and `marketplace.json` —
+that number is what tells whoever already installed it that something is new.
 
-O `owner` do marketplace é de quem **mantém** o repositório; o `author` de cada
-plugin é de quem **escreveu** aquele plugin. Os dois são campos distintos de
-propósito: um plugin novo aqui dentro leva o nome de quem o fez.
+The marketplace `owner` is whoever **maintains** the repository; each plugin's
+`author` is whoever **wrote** that plugin. The two are separate fields on purpose:
+a new plugin here carries the name of whoever made it.
+
+## License
+
+Proprietary — see [LICENSE](LICENSE).

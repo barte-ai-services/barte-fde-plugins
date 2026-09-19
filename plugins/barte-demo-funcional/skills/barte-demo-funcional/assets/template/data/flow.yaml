@@ -1,0 +1,65 @@
+# This demo's flow.
+#
+# The pipeline draws this file and the agent runs it. It is the SEED: on first
+# boot it goes into the database, and from then on what rules is whatever was
+# applied in the demo's own "Editar fluxo" panel. "Back to original" brings this
+# file back.
+#
+# `action` and `escalateIf` come from a closed catalog — the panel lists what
+# exists. Editing here, adding a step, reordering: none of it needs code.
+#
+# Keys are English (they are code); values are Portuguese (the client reads them).
+
+name: Contas a pagar
+
+# What this demo calls things. Switching modules — to accounts receivable, say —
+# is swapping these lines: the counterparty becomes "Cliente", what arrives
+# becomes "Título", and the whole screen speaks the client's language.
+vocabulary:
+  client: Cliente Demo
+  module: Contas a Pagar
+  counterparty: Fornecedor
+  incoming: Documento
+  labels:
+    costCenter: Centro de custo
+    account: Conta contábil
+    amount: Valor
+    dueDate: Vencimento
+  stats:
+    queued: na fila
+    ready: prontos para aprovação
+    review: em revisão humana
+    amount: valor na esteira
+
+steps:
+  - id: leitura
+    label: Leitura
+    hint: extrai o documento
+    action: read_document
+
+  - id: cadastro
+    label: Cadastro
+    hint: identifica o fornecedor
+    action: find_counterparty
+    escalateIf:
+      - duplicate_document
+      - not_in_registry
+
+  - id: classificacao
+    label: Classificação
+    hint: centro de custo e conta
+    action: classify
+
+  - id: conformidade
+    label: Conformidade
+    hint: pedido, retenção, alçada
+    action: check
+    escalateIf:
+      - amount_mismatch
+      - missing_inss_withholding
+      - above_approval_limit
+
+  - id: proposta
+    label: Proposta
+    hint: pronta para aprovação
+    action: propose

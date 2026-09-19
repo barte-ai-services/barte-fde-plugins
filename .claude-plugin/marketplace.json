@@ -17,9 +17,17 @@
         "url": "https://github.com/fernandoseguim"
       },
       "repository": "https://github.com/barte-ai-services/barte-fde-plugins",
-      "license": "UNLICENSED",
+      "license": "SEE LICENSE IN LICENSE",
       "category": "productivity",
-      "keywords": ["demo", "cliente", "agente", "nextjs", "nestjs", "floci", "proposta"]
+      "keywords": [
+        "demo",
+        "cliente",
+        "agente",
+        "nextjs",
+        "nestjs",
+        "floci",
+        "proposta"
+      ]
     }
   ]
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Dois cliques no Finder: o macOS abre este arquivo no Terminal e roda.
-# `.command` existe só para isso — o conteúdo é uma linha, e a verdade sobre
-# como a demo sobe continua em scripts/subir.sh.
-cd "$(dirname "$0")" && exec ./scripts/subir.sh
+# Double-click in Finder: macOS opens this file in Terminal and runs it.
+# `.command` exists only for that — the content is one line, and the truth about
+# how the demo comes up stays in scripts/start.sh.
+cd "$(dirname "$0")" && exec ./scripts/start.sh

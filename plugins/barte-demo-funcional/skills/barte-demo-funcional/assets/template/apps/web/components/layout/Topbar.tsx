@@ -1,25 +1,25 @@
 "use client";
 
 import { Breadcrumb } from "barte-design-system";
-import { usePathname } from "next/navigation";
-import { rotuloDaTela } from "@/lib/nav";
-import { Relogio } from "./Relogio";
+import { useVocabulary } from "@/lib/vocabulary";
+import { Clock } from "./Clock";
 
 /**
- * Topbar fina com o breadcrumb do DS e o relógio ao vivo.
+ * Thin topbar with the DS breadcrumb and the live clock.
  *
- * A saúde da infraestrutura saiu daqui: ela vive no rodapé da barra lateral, no
- * painel da stack. O topo da tela é do cliente, não da arquitetura.
+ * Infrastructure health moved out of here: it lives at the bottom of the sidebar,
+ * in the stack panel. The top of the screen belongs to the client, not to the
+ * architecture.
  *
- * `flex-none` não é enfeite: sem ele a altura é só a base do flex e o browser
- * ENCOLHE a barra quando o conteúdo é alto.
+ * `flex-none` is not decoration: without it the height is only the flex basis and
+ * the browser SHRINKS the bar when the content is tall.
  */
 export function Topbar() {
-  const pathname = usePathname();
+  const vocabulary = useVocabulary();
   return (
     <header className="flex h-[var(--app-header-height)] flex-none items-center justify-between gap-4 border-b border-[var(--stroke-primary)] bg-[var(--bg-primary)] px-8">
-      <Breadcrumb items={[{ label: "Cliente Demo" }, { label: rotuloDaTela(pathname) }]} />
-      <Relogio />
+      <Breadcrumb items={[{ label: vocabulary.client }, { label: vocabulary.module }]} />
+      <Clock />
     </header>
   );
 }

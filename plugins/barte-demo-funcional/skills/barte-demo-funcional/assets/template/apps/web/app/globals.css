@@ -1,30 +1,30 @@
 /*
- * Tailwind v4 convivendo com o barte-design-system.
+ * Tailwind v4 living alongside barte-design-system.
  *
- * O `@import "tailwindcss"` completo NÃO é usado de propósito: ele traz o
- * Preflight, que atropela o estilo dos componentes do DS. Entram só o tema (as
- * variáveis que alimentam as utilitárias) e a camada de utilitárias; o DS
- * continua dono do estilo de componente.
+ * The all-in-one `@import "tailwindcss"` is deliberately NOT used: it brings
+ * Preflight, which clobbers the DS components' styling. Only the theme (the
+ * variables that drive the utilities) and the utilities layer go in; the DS stays
+ * in charge of component styling.
  *
- * Mesma montagem do frontend do barte-copilot, e pela mesma razão.
+ * Same wiring as barte-copilot's frontend, for the same reason.
  */
 @import "barte-design-system/styles";
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
 /*
- * O que o Preflight faria, se estivesse ligado — e que o browser faz no lugar
- * dele se ninguém fizer. O DS só aplica Inter pelas classes DOS COMPONENTES
- * dele, então sem este bloco todo <h1>, <p> e <span> nosso sai em Times New
- * Roman e os 8px de margem do body empurram a tela para fora da janela.
+ * What Preflight would do if it were on — and what the browser does instead when
+ * nobody does. The DS applies Inter only through ITS OWN component classes, so
+ * without this block every <h1>, <p> and <span> we write comes out in Times New
+ * Roman and the body's 8px margin pushes the screen past the window.
  *
- * Três coisas, e só estas três: família (do MESMO token que o DS lê), margem e
- * suavização. Alargar este bloco é como se atropela o DS.
+ * Three things, and only these three: family (from the SAME token the DS reads),
+ * margin and smoothing. Widening this block is how you clobber the DS.
  */
 :root {
-  /* A navbar e o bloco da marca na barra lateral têm de ter exatamente esta
-     altura, senão as duas bordas inferiores não se encontram e não há cruz no
-     canto. Um número só, consumido pelos dois. */
+  /* The navbar and the sidebar's brand block must be exactly this tall, or the
+     two bottom borders never meet and there is no cross in the corner. One
+     number, consumed by both. */
   --app-header-height: var(--sizes-8xl);
 }
 
@@ -43,11 +43,11 @@ textarea {
 }
 
 /*
- * Sem o Preflight, `<ul>` e `<ol>` chegam com o estilo do BROWSER: marcador e
- * 40px de recuo. Toda lista desta aplicação é uma lista de layout — trilha de
- * decisões, peças da stack, chamadas ao vivo — e nenhuma delas quer bolinha nem
- * número. A regra vale só para as listas com classe utilitária, que são as
- * nossas; uma lista do design system continua com o estilo dele.
+ * Without Preflight, `<ul>` and `<ol>` arrive with the BROWSER's styling: markers
+ * and 40px of indent. Every list in this application is a layout list — decision
+ * trail, stack components, live calls — and none of them wants a bullet or a
+ * number. The rule applies only to lists carrying the utility class, which are
+ * ours; a design system list keeps its own styling.
  */
 ol[class*="list-none"],
 ul[class*="list-none"] {
@@ -57,10 +57,10 @@ ul[class*="list-none"] {
 }
 
 /*
- * O Sidebar do DS é desenhado para SER a barra lateral inteira: largura fixa e
- * borda direita própria. Aqui ele é só a lista de navegação dentro do nosso
- * contêiner, que já tem a borda — então a dele pintava uma segunda linha
- * vertical. Casa pelo PREFIXO da classe; o sufixo é hash de build.
+ * The DS Sidebar is designed to BE the whole sidebar: fixed width and its own
+ * right border. Here it is only the navigation list inside our container, which
+ * already has the border — so its own painted a second vertical line. Matched by
+ * class PREFIX; the suffix is a build hash.
  */
 .app-shell-nav [class*="Sidebar-module__sidebar__"] {
   border-right: none;

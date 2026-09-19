@@ -1,47 +1,45 @@
-# A infraestrutura local da demo.
+# The demo's local infrastructure.
 #
-# Um serviço por peça, e NENHUM bind mount. Montar arquivo do repositório dentro
-# de contêiner parece inofensivo e é a falha mais chata que existe aqui: se o
-# caminho não estiver na lista de compartilhamento do Docker Desktop, ele monta
-# um DIRETÓRIO VAZIO no lugar do arquivo e o contêiner morre dizendo "is a
-# directory". Quem cria bucket e fila e semeia os documentos é a própria API, ao
-# subir — ver `provisionamento.service.ts`.
+# One service per component, and NO bind mounts. Mounting a repository file inside
+# a container looks harmless and is the most annoying failure here: if the path is
+# not in Docker Desktop's sharing list, it mounts an EMPTY DIRECTORY in place of
+# the file and the container dies saying "is a directory". Bucket, queue and the
+# seeded documents are created by the API itself at startup — see
+# `provisioning.service.ts`.
 #
-# PERFIS
+# PROFILES
 #
-# A demo roda contra uma nuvem de cada vez, e `NUVEM` no `.env` escolhe qual.
-# Cada emulador vive num perfil de mesmo nome, então `--profile aws` sobe o
-# Floci e mais nada; `--profile gcp` sobe os emuladores do Google. O Postgres
-# está em TODOS os perfis porque o banco é o mesmo nas três (Aurora, Cloud SQL e
-# Azure Database são todos PostgreSQL).
+# The demo runs against one cloud at a time, and `CLOUD` in `.env` picks which.
+# Each emulator lives in a profile of the same name, so `--profile aws` brings up
+# Floci and nothing else. Postgres is in EVERY profile because the database is the
+# same in all three (Aurora, Cloud SQL and Azure Database are all PostgreSQL).
 #
-#   docker compose --profile ${NUVEM} up -d --wait
+#   docker compose --profile ${CLOUD} up -d --wait
 #
-# O `scripts/subir.sh` já faz isso; a linha acima é para quem quiser o comando
-# cru.
+# `scripts/start.sh` already does this; the line above is for whoever wants the
+# raw command.
 
-# O nome do projeto sai da PASTA da demo (`scripts/subir.sh` o exporta), e não
-# de um literal. Com um nome fixo, duas demos abertas ao mesmo tempo — o que
-# acontece na semana em que se prepara duas propostas — dividem os mesmos
-# contêineres e volumes: subir a segunda RECRIA o Postgres da primeira, e o
-# trabalho que o agente já tinha feito lá vai junto.
-name: ${DEMO_NOME:-demo}
+# The project name comes from the demo's FOLDER (`scripts/start.sh` exports it),
+# not from a literal. With a fixed name, two demos open at once — which happens in
+# any week with two proposals in flight — share containers and volumes: bringing
+# the second one up RECREATES the first one's Postgres, taking the work the agent
+# had already done with it.
+name: ${DEMO_NAME:-demo}
 
 services:
-  # ─── comum às três nuvens ────────────────────────────────────────────────
+  # ─── common to all three clouds ──────────────────────────────────────────
   #
-  # POR QUE UM POSTGRES, E NÃO O BANCO GERENCIADO DO EMULADOR
+  # WHY A PLAIN POSTGRES AND NOT THE EMULATOR'S MANAGED DATABASE
   #
-  # O Floci tem `rds`, e o que ele faz quando alguém cria uma instância é SUBIR
-  # UM POSTGRES NUM CONTÊINER — para o que precisa do socket do Docker montado
-  # dentro dele, ou seja, controle do daemon da máquina entregue ao emulador. Em
-  # troca, ganha-se uma API de controle (CreateDBCluster, DescribeDBInstances)
-  # que esta demo nunca chama: a aplicação conecta por URL, como conectaria numa
-  # Aurora de verdade.
+  # Floci has `rds`, and what it does when you create an instance is BRING UP A
+  # POSTGRES IN A CONTAINER — for which it needs the Docker socket mounted inside
+  # it, i.e. control of the machine's daemon handed to the emulator. In exchange
+  # you get a control API (CreateDBCluster, DescribeDBInstances) this demo never
+  # calls: the application connects by URL, exactly as it would to a real Aurora.
   #
-  # Aurora com motor PostgreSQL, Cloud SQL for PostgreSQL e Azure Database for
-  # PostgreSQL SÃO Postgres. Apontar para um Postgres de verdade é a versão mais
-  # fiel do que roda em produção, não a menos.
+  # Aurora with the PostgreSQL engine, Cloud SQL for PostgreSQL and Azure Database
+  # for PostgreSQL ARE Postgres. Pointing at a real Postgres is the more faithful
+  # version of production, not the less.
   postgres:
     image: postgres:17-alpine
     profiles: ["aws", "gcp", "azure"]
@@ -54,9 +52,9 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
     healthcheck:
-      # `pg_isready` sozinho responde antes de o banco aceitar conexão de
-      # verdade durante a primeira inicialização, quando o entrypoint sobe um
-      # servidor temporário só para criar o banco. O `-d` é o que fecha isso.
+      # `pg_isready` alone answers before the database accepts real connections
+      # during first initialisation, when the entrypoint runs a temporary server
+      # just to create the database. `-d` is what closes that gap.
       test: ["CMD-SHELL", "pg_isready -U demo -d demo"]
       interval: 5s
       timeout: 5s
@@ -64,35 +62,35 @@ services:
 
   # ─── AWS ─────────────────────────────────────────────────────────────────
   #
-  # POR QUE FLOCI, E NÃO LOCALSTACK
+  # WHY FLOCI AND NOT LOCALSTACK
   #
-  # Os dois falam a mesma API na mesma porta, e a troca é a linha da imagem. O
-  # que decide é o que a edição ABERTA entrega: no LocalStack, persistência de
-  # estado é recurso Pro. Numa demo isso não é detalhe — o cliente fecha o
-  # notebook, você roda `down`, e na reunião seguinte o trabalho já feito tem de
-  # estar lá. Floci é MIT, sem token, e persiste.
+  # Both speak the same API on the same port, and swapping them is one image line.
+  # What decides is what the OPEN edition ships: in LocalStack, state persistence
+  # is a Pro feature. In a demo that is no detail — the client closes the laptop,
+  # you run `down`, and at the next meeting the work already done has to still be
+  # there. Floci is MIT, needs no token, and persists.
   floci:
     image: floci/floci:latest
     profiles: ["aws"]
     environment:
-      # Ele precisa saber por qual nome é alcançado quando devolve endereço de
-      # recurso — numa rede de compose isso não é `localhost`.
+      # It needs to know the name it is reached by when it returns a resource
+      # address — on a compose network that is not `localhost`.
       FLOCI_HOSTNAME: floci
-      # `persistent` grava a cada escrita. `hybrid` enfileira e descarrega a cada
-      # cinco segundos — perder os últimos cinco segundos num `down` é perder
-      # exatamente a última coisa que você mostrou.
+      # `persistent` writes on every change. `hybrid` batches and flushes every
+      # five seconds — losing the last five seconds on a `down` means losing
+      # exactly the last thing you showed.
       FLOCI_STORAGE_MODE: persistent
     ports:
-      # Publicado só no loopback, para olhar de fora com a AWS CLI:
+      # Published on loopback only, to inspect from outside with the AWS CLI:
       #   aws --endpoint-url http://127.0.0.1:4566 s3 ls
       - "127.0.0.1:${AWS_LOCAL_PORT:-4566}:4566"
     volumes:
-      # `/app/data`, e não um caminho nosso: é o que a imagem declara em VOLUME e
-      # cuja permissão ela prepara antes de largar o privilégio. Apontar para
-      # outro lugar derruba a subida na sonda de escrita.
+      # `/app/data`, not a path of ours: it is what the image declares in VOLUME
+      # and whose permissions it prepares before dropping privileges. Pointing
+      # elsewhere kills startup on the write probe.
       - floci:/app/data
     healthcheck:
-      # Rota compatível com a do LocalStack.
+      # Route compatible with LocalStack's.
       test:
         - CMD-SHELL
         - >-
@@ -105,11 +103,9 @@ services:
 
   # ─── Google Cloud ────────────────────────────────────────────────────────
   #
-  # Dois emuladores, e não um: o Google não publica um equivalente ao Floci que
-  # atenda a nuvem inteira numa porta só. `fake-gcs-server` faz o Cloud Storage
-  # e o emulador oficial do Pub/Sub (que vem dentro do SDK do gcloud) faz a fila.
-  # As bibliotecas do Google leem `STORAGE_EMULATOR_HOST` e `PUBSUB_EMULATOR_HOST`
-  # sozinhas — o código da aplicação não sabe que está falando com emulador.
+  # Two emulators, not one: Google publishes no Floci equivalent serving the whole
+  # cloud on a single port. `fake-gcs-server` covers Cloud Storage and the official
+  # Pub/Sub emulator (shipped inside the gcloud SDK) covers the queue.
   gcs:
     image: fsouza/fake-gcs-server:latest
     profiles: ["gcp"]
@@ -137,8 +133,8 @@ services:
     ports:
       - "127.0.0.1:${PUBSUB_PORT:-8085}:8085"
     healthcheck:
-      # O emulador responde 200 na raiz quando está pronto; `curl -f` sozinho
-      # falharia num 404 de rota inexistente, que também significa "de pé".
+      # The emulator answers 200 at the root when ready; `curl -f` alone would
+      # fail on a 404 from a missing route, which also means "up".
       test: ["CMD-SHELL", "curl -s -o /dev/null http://localhost:8085 || exit 1"]
       interval: 5s
       timeout: 5s
@@ -147,10 +143,10 @@ services:
 
   # ─── Azure ───────────────────────────────────────────────────────────────
   #
-  # O Azurite é o emulador OFICIAL da Microsoft e cobre Blob e Queue no mesmo
-  # contêiner — a única das três nuvens em que uma peça só resolve as duas
-  # portas. A conta `devstoreaccount1` e a chave dela são públicas e
-  # documentadas: é a conta de desenvolvimento, não um segredo vazado.
+  # Azurite is Microsoft's OFFICIAL emulator and covers Blob and Queue in the same
+  # container — the only one of the three clouds where a single component serves
+  # both ports. The `devstoreaccount1` account and its key are public and
+  # documented: it is the development account, not a leaked secret.
   azurite:
     image: mcr.microsoft.com/azure-storage/azurite:latest
     profiles: ["azure"]
@@ -168,12 +164,11 @@ services:
     volumes:
       - azurite:/data
     healthcheck:
-      # 400 é a resposta do Azurite a um GET sem parâmetros na raiz do serviço —
-      # e 400 já prova que há alguém atendendo.
-      # Sonda pelo Node, que a imagem do Azurite tem por construção. `nc` não
-      # está nela, e um healthcheck que chama um binário inexistente reprova um
-      # serviço perfeitamente saudável — com a mensagem "is unhealthy", que não
-      # diz nada sobre o que faltou.
+
+      # Probe through Node, which the Azurite image has by construction. `nc` is
+      # not in it, and a healthcheck calling a missing binary fails a perfectly
+      # healthy service — with "is unhealthy", which says nothing about what was
+      # missing.
       test:
         - CMD-SHELL
         - >-

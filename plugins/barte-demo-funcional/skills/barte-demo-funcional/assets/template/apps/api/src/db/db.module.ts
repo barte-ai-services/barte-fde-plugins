@@ -2,11 +2,12 @@ import { Global, Module } from "@nestjs/common";
 import { Pool } from "pg";
 
 /**
- * O pool do Postgres.
+ * The Postgres pool.
  *
- * A URL vem inteira do ambiente, e não montada a partir de cinco variáveis: é
- * assim que a aplicação receberia o endereço de uma Aurora, e é o que permite
- * apontar a demo para um banco de verdade trocando UMA linha do `.env`.
+ * The URL comes whole from the environment rather than assembled from five
+ * variables: that is how the application would receive an Aurora endpoint, and
+ * it is what lets you point the demo at a real database by changing ONE line of
+ * `.env`.
  */
 export const PG = "PG";
 
@@ -17,10 +18,9 @@ export const PG = "PG";
       provide: PG,
       useFactory: () =>
         new Pool({
-          connectionString:
-            process.env.DATABASE_URL ?? "postgres://demo:demo@127.0.0.1:5432/demo",
-          // Uma demo não tem carga: um pool grande só ocupa conexão do banco e
-          // esconde vazamento de conexão atrás de folga.
+          connectionString: process.env.DATABASE_URL ?? "postgres://demo:demo@127.0.0.1:5432/demo",
+          // A demo carries no load: a large pool only ties up database
+          // connections and hides connection leaks behind slack.
           max: 8,
         }),
     },

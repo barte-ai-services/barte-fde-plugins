@@ -1,213 +1,217 @@
 ---
 name: barte-demo-funcional
-description: Constrói uma demo FUNCIONAL da Barte — web em Next.js com o barte-design-system, backend em NestJS, armazenamento, fila e banco em contêiner na nuvem que o cliente usa (AWS, Google Cloud ou Azure) e um agente que executa o trabalho de verdade e presta contas na tela. Use SEMPRE que alguém pedir uma demo para cliente, prova de conceito, protótipo navegável, piloto, MVP de proposta, "uma demo que o cliente possa usar", "algo funcionando para mostrar na reunião", uma demo com agente/IA que processe documentos ou execute um fluxo, ou quiser rodar, ajustar, re-skinar ou entregar ao cliente uma demo já construída. Acione também quando a pessoa trouxer a transcrição ou o áudio de uma reunião de diagnóstico e quiser transformá-la em demo, quando mencionar LocalStack, Floci, Azurite, Pub/Sub ou Bedrock no contexto de demo, ou quando pedir para trocar os dados da demo pelos do cliente (planilha, relatório, NF-e). NÃO use para a demo em HTML single-file do repositório fde-demos (aquela é deck ou console mockado, sem back-end) nem para trabalho no produto de verdade.
+description: Builds a FUNCTIONAL Barte demo — Next.js web on the barte-design-system, a NestJS backend, storage, queue and database in containers on the client's cloud (AWS, Google Cloud or Azure), and an agent that does real work and accounts for itself on screen. Use it WHENEVER someone asks for a client demo, proof of concept, clickable prototype, pilot, proposal MVP, "a demo the client can actually use", "something working to show in the meeting", a demo with an agent/AI that processes documents or runs a flow, or wants to run, adjust, re-skin or hand over a demo already built. Trigger it too when someone brings the transcript or audio of a discovery meeting and wants it turned into a demo, when they mention LocalStack, Floci, Azurite, Pub/Sub or Bedrock in a demo context, or when they ask to swap the demo's data for the client's own (spreadsheet, report, invoice). Do NOT use it for the single-file HTML demos in the fde-demos repository (those are decks or mocked consoles with no backend), nor for work on the real product.
 ---
 
-# Construir uma demo funcional
+# Building a functional demo
 
-O que esta skill entrega não é uma tela que parece um produto: é um produto
-pequeno. Web com a marca da Barte, backend em NestJS, armazenamento, fila e
-banco de verdade em contêiner, e um agente que lê documento, consulta cadastro,
-confere regra e **para quando não sabe**, explicando por quê. Roda na máquina de
-quem apresenta, com um comando, sem internet e sem chave de API.
+What this skill delivers is not a screen that looks like a product: it is a small
+product. Web carrying Barte's brand, a NestJS backend, real storage, queue and
+database in containers, and an agent that reads a document, checks a registry,
+applies rules and **stops when it does not know**, explaining why. It runs on the
+presenter's machine, with one command, no internet and no API key.
 
-Na nuvem do cliente: **AWS**, **Google Cloud** ou **Azure** — uma variável de
-ambiente escolhe, e o código é o mesmo nas três.
+On the client's cloud: **AWS**, **Google Cloud** or **Azure** — one environment
+variable picks, and the code is identical across the three.
 
-O objetivo comercial é este: deixar o cliente **usando** enquanto o projeto
-maior é negociado.
+> **This does not replace `fde-demos`.** That is where the single-file HTML demos
+> live — narrative decks and mocked consoles — and they remain the right call when
+> the meeting is short and the story is what matters. This skill is for when the
+> client will **operate** the thing: they click, work happens, data is stored, and
+> next week it is still there.
 
-> **Isto não substitui o `fde-demos`.** Lá vivem as demos em HTML single-file —
-> deck narrativo e console mockado —, que continuam certas quando a reunião é
-> curta e o que importa é a narrativa. Esta skill é para quando o cliente vai
-> **operar** a coisa: ele clica, o trabalho acontece, o dado fica gravado, e na
-> semana seguinte ainda está lá.
+## Language
 
-## Como conduzir
+**Code, comments and these docs are in English. Everything the client reads on
+screen is Brazilian Portuguese** — screen labels, agent decisions, the flow
+panel's interface and the sample data. When you edit this template, keep that
+split: an identifier in Portuguese or a screen label in English are both bugs.
 
-**Quem está do outro lado é do comercial.** Ele conhece a dor do cliente e não
-tem obrigação nenhuma de saber o que é fila, contêiner ou agente. Então:
+## How to run the conversation
 
-- **Uma pergunta por vez.** Nunca despeje um questionário. Pergunte, espere,
-  confirme o que entendeu, siga.
-- **Ofereça opções, não campos em branco.** "É contas a pagar, conciliação, ou
-  outra coisa?" funciona; "qual o domínio?" não.
-- **Traduza tudo.** Nada de SQS, Postgres ou Tool Runner na conversa. Diga "a
-  fila que distribui o trabalho", "onde os dados ficam guardados", "o agente".
-- **Proponha o padrão e siga.** Quando faltar um detalhe que o cliente teria de
-  responder, assuma o mais plausível, diga em voz alta o que assumiu, e siga.
-  Travar a construção esperando um dado que ninguém tem é o erro mais caro aqui.
-- **Áudio vale como entrada.** Se vier um áudio ou a transcrição da reunião de
-  diagnóstico, ouça/leia primeiro e volte com o resumo em forma de proposta:
-  "entendi que a dor é X, o fluxo é Y, o momento uau é Z — confirma?". A pessoa
-  corrige o que estiver errado em vez de responder do zero.
-- **Mostre progresso.** Depois de cada etapa, diga o que já existe e o que vem
-  a seguir.
+**The person on the other side works in sales.** They know the client's pain and
+have no obligation to know what a queue, a container or an agent is. So:
 
-## O roteiro, passo a passo
+- **One question at a time.** Never dump a questionnaire. Ask, wait, confirm what
+  you understood, move on.
+- **Offer options, not blank fields.** "Is it accounts payable, reconciliation, or
+  something else?" works; "what is the domain?" does not.
+- **Translate everything.** No SQS, Postgres or Tool Runner in the conversation.
+  Say "the queue that hands out the work", "where the data is stored", "the
+  agent".
+- **Propose the default and move.** When a detail is missing that only the client
+  could answer, assume the most plausible one, say out loud what you assumed, and
+  carry on. Stalling on a fact nobody has is the most expensive mistake here.
+- **Audio counts as input.** If an audio or the transcript of the discovery
+  meeting arrives, listen/read first and come back with the summary as a proposal:
+  "I understood the pain is X, the flow is Y, the wow moment is Z — right?". They
+  correct what is wrong instead of answering from scratch.
+- **Show progress.** After each step, say what exists and what comes next.
 
-Siga nesta ordem. Não pule a 0 e não comece a escrever código antes da 3.
+## The script, step by step
 
-### 0 · Já existe uma demo?
+Follow this order. Do not skip step 0, and do not write code before step 3.
 
-Se a pessoa quer **rodar** uma demo pronta (ou mostrar de novo a de ontem),
-não construa nada:
+### 0 · Does a demo already exist?
 
-```bash
-cd <pasta-da-demo> && ./scripts/subir.sh
-```
-
-Um comando, ou dois cliques no `demo.command` pelo Finder. Ele escolhe portas
-livres, sobe a infraestrutura, espera tudo responder e **abre o navegador**.
-Antes de apresentar, `make verificar`.
-
-### 1 · Entender a dor (uma pergunta por vez)
-
-1. **Quem é o cliente e o que dói?** Peça em uma frase, do jeito que o cliente
-   falou. Se houver transcrição ou áudio, extraia daí e valide.
-2. **Como é hoje?** O caminho que o documento/dado percorre hoje: de onde chega
-   (e-mail? portal? WhatsApp?), quem olha, onde é lançado, o que trava.
-3. **Qual é o momento "uau"?** A única coisa que, vista na tela, faz o cliente
-   virar para o lado e comentar. A demo inteira serve a ela.
-4. **Quem vai usar a demo?** Só você na reunião, ou o cliente vai mexer sozinho
-   depois? Muda o quanto a navegação precisa se explicar.
-
-### 2 · Definir o agente (esta é a pergunta central)
-
-Pergunte, em português comercial: **"que trabalho o agente faz, do começo ao
-fim?"** E depois estas quatro, uma de cada vez:
-
-1. **O que ele lê?** (NF-e, boleto, extrato, planilha, e-mail…)
-2. **O que ele consulta para decidir?** (cadastro de fornecedor, pedido de
-   compra, plano de contas, política de alçada…)
-3. **O que ele entrega?** (um lançamento proposto, uma conciliação, uma
-   classificação, um relatório…)
-4. **Quando ele PARA e chama um humano?** — a mais importante das quatro. Uma
-   demo em que o agente acerta tudo não convence ninguém que já trabalhou na
-   área. Peça três situações reais em que ele deve travar.
-
-Cada resposta da pergunta 4 vira uma exceção plantada nos dados, e cada exceção
-prova uma capacidade específica. O padrão está em `references/dados.md`.
-
-### 3 · Fechar o combinado
-
-Escreva um `BRIEF.md` curto na pasta da demo e **mostre para a pessoa antes de
-codar**: cliente, dor, momento uau, o que o agente faz, onde ele para, quais
-telas, quais dados, e — explicitamente — **o que fica de fora**. Mostrar o que
-não se toca vale tanto quanto mostrar o que se resolve.
-
-### 4 · Criar a demo
-
-Antes, uma pergunta a mais — e ela é comercial, não técnica: **que nuvem o
-cliente usa?** Se ninguém souber, AWS, e diga que assumiu.
+If they want to **run** a finished demo (or show yesterday's again), build
+nothing:
 
 ```bash
-bash ~/.claude/skills/barte-demo-funcional/scripts/nova-demo.sh <pasta> "<Nome do Cliente>" [--nuvem aws|gcp|azure]
+cd <demo-folder> && ./scripts/start.sh
 ```
 
-O script copia o template de `assets/template`, troca o nome do cliente nos três
-lugares onde ele aparece, instala as dependências e os pacotes da nuvem
-escolhida. O resultado já sobe.
+One command, or a double click on `demo.command` in Finder. It picks free ports,
+brings the infrastructure up, waits for everything to answer and **opens the
+browser**. Before presenting, `make check`.
 
-Ver a demo rodando com Cloud Storage e Pub/Sub na reunião com um cliente que é
-casa do Google vale mais do que qualquer slide de arquitetura.
+### 1 · Understand the pain (one question at a time)
 
-### 5 · Trocar os dados
+1. **Who is the client and what hurts?** Ask for one sentence, in the client's own
+   words. If there is a transcript or audio, pull it from there and validate.
+2. **What does today look like?** The path the document/data travels now: where it
+   arrives from (email? a portal? WhatsApp?), who looks at it, where it is posted,
+   what gets stuck.
+3. **What is the "wow" moment?** The single thing that, seen on screen, makes the
+   client turn to the person next to them. The whole demo serves it.
+4. **Who will use the demo?** Just you in the meeting, or will the client poke at
+   it later? It changes how much the navigation has to explain itself.
 
-**Se o cliente mandou material** (planilha, relatório, NF-e, extrato), ele manda
-nos dados — sempre. Converta para `dados/documentos/*.json` (uma nota por
-arquivo) e ajuste `dados/cadastro.json`. Planilha `.xlsx` → use a skill `xlsx`
-para ler antes de converter. **Anonimize o que for identificável** se o material
-não puder circular.
+### 2 · Define the agent (this is the central question)
 
-**Se não mandou**, o template já nasce com dados realistas e a demo abre com
-semanas de trabalho feito: `gerarHistorico()` produz o histórico com semente
-fixa, e os seis documentos curados são o lote do dia. Ajuste os nomes dos
-fornecedores e as faixas de valor para o setor do cliente — é barato e muda a
-percepção.
+Ask, in commercial Portuguese: **"what work does the agent do, start to finish?"**
+Then these four, one at a time:
 
-Regra que não se negocia: **nada de "Fornecedor A / R$ 100,00"**. CNPJ
-formatado, chave de NF-e com a cara de uma chave, valores coerentes entre si,
-nomes plausíveis do setor. É o que faz o cliente ver o sistema dele.
+1. **What does it read?** (invoice, boleto, bank statement, spreadsheet, email…)
+2. **What does it consult to decide?** (supplier registry, purchase order, chart
+   of accounts, approval limits…)
+3. **What does it deliver?** (a proposed posting, a reconciliation, a
+   classification, a report…)
+4. **When does it STOP and call a human?** — the most important of the four. A demo
+   where the agent gets everything right convinces nobody who has worked in the
+   area. Ask for three real situations where it should block.
 
-### 6 · Adaptar o fluxo
+Each answer to question 4 becomes a planted exception in the data, and each
+exception proves one specific capability. The pattern is in `references/data.md`.
 
-O fluxo é **dado**: `dados/fluxo.yaml` diz quais são as etapas, o que cada uma
-faz e quando o agente para. O agente executa isso, a tela desenha isso, e o
-painel **Editar fluxo** — dentro da própria demo — edita isso.
+### 3 · Lock the agreement
 
-Três formas de mexer, da mais leve para a mais pesada:
+Write a short `BRIEF.md` in the demo's folder and **show it before coding**:
+client, pain, wow moment, what the agent does, where it stops, which screens,
+which data, and — explicitly — **what is out of scope**. Showing what you will not
+touch is worth as much as showing what you will solve.
 
-| O que você quer | Onde |
+### 4 · Create the demo
+
+One more question first, and it is commercial, not technical: **which cloud does
+the client use?** If nobody knows, AWS, and say that you assumed it.
+
+```bash
+bash ~/.claude/skills/barte-demo-funcional/scripts/new-demo.sh <folder> "<Client Name>" [--cloud aws|gcp|azure]
+```
+
+The script copies the template, writes the client's name into the flow's
+vocabulary, installs dependencies and the chosen cloud's packages. The result
+comes up as is.
+
+Seeing the demo run on Cloud Storage and Pub/Sub in a meeting with a
+Google-house client is worth more than any architecture slide.
+
+### 5 · Swap in the data
+
+**If the client sent material** (spreadsheet, report, invoice, statement), it
+drives the data — always. Convert it into `data/documents/*.json` (one document
+per file) and adjust `data/registry.json`. For `.xlsx`, use the `xlsx` skill to
+read it before converting. **Anonymise anything identifiable** if the material
+cannot circulate.
+
+**If they sent nothing**, the template is already born with realistic data and
+opens with weeks of work behind it: `generateHistory()` produces the history from
+a fixed seed, and the six curated documents are today's batch. Adjust supplier
+names and amount ranges to the client's sector — it is cheap and it changes the
+perception.
+
+A rule that does not bend: **no "Supplier A / R$ 100.00"**. Formatted CNPJs, an
+NF-e key that looks like a key, amounts consistent with each other, plausible
+names from the sector. That is what makes the client see their own system.
+
+### 6 · Adapt the flow and the words
+
+Both are **data**, and both are editable inside the demo, in the **Editar fluxo**
+panel:
+
+| What you want | Where |
 |---|---|
-| acrescentar/remover/reordenar etapa, trocar texto, ligar uma regra que já existe | **painel Editar fluxo**, na própria demo, ao vivo — ou `dados/fluxo.yaml` |
-| uma regra ou ação que ainda não existe | `apps/api/src/fluxo/catalogo.ts` — uma entrada, e ela já aparece no painel |
-| o que as ferramentas consultam | `apps/api/src/agente/ferramentas.ts` |
+| add/remove/reorder a step, change text, switch on an existing rule | the panel's **Etapas** tab, live — or `data/flow.yaml` |
+| turn the demo into accounts receivable, reconciliation, anything else | the panel's **Vocabulário** tab: module, counterparty, what arrives, field labels |
+| a rule or action that does not exist yet | `apps/api/src/flow/catalog.ts` — one entry, and it shows up in the panel |
+| what the tools look up | `apps/api/src/agent/tools.ts` |
 
-**Leve o painel para a reunião.** Quando o cliente descrever uma etapa que
-ninguém tinha previsto, acrescente ali, aplique, e execute a esteira: o próximo
-documento já roda com o fluxo dele. É o momento em que a demo deixa de ser uma
-apresentação.
+**Take the panel into the meeting.** When the client describes a step nobody had
+foreseen, add it there, apply, and run the pipeline: the next document already
+follows their flow. That is the moment the demo stops being a presentation.
 
-Os dois motores — o determinístico e o que chama o Claude — leem o mesmo fluxo e
-emitem os **mesmos eventos**, então a tela não sabe qual está rodando. Detalhes
-em `references/fluxo.md` e `references/agente.md`.
+Both engines — the deterministic one and the Claude one — read the same flow and
+publish the same events, so the screen cannot tell which is running. Details in
+`references/flow.md` and `references/agent.md`.
 
-### 7 · Conferir com os próprios olhos
+### 7 · Check it with your own eyes
 
 ```bash
-make verificar
+make check
 ```
 
-As verificações de tela existem porque o modo mais constrangedor de falhar não é
-ficar fora do ar: é a página abrir sem CSS, ou abrir bonita e **não responder a
-clique**. Depois do verde, faça a passada manual que o script lista — abra,
-execute a esteira inteira, abra um item travado, abra o painel da stack, e
-estreite a janela até a largura da tela que vai projetar.
+The screen checks exist because the most embarrassing way to fail is not being
+down: it is the page opening with no CSS, or opening beautifully and **not
+responding to clicks**. After the green, take the manual pass the script lists —
+open it, run the whole pipeline, open a blocked item, open the stack panel, and
+narrow the window to the width of the screen you will project from.
 
-### 8 · Entregar
+### 8 · Hand it over
 
-- **Na reunião:** `./scripts/subir.sh`, tela cheia, esteira executada uma vez
-  antes de começar.
-- **Para o cliente usar depois:** a demo roda na máquina dele com Docker +
-  Node, ou vai para uma máquina sua com acesso dele. Para uma demo **sem
-  backend**, o portal interno (`demos-portal`, `<slug>.demos.barte.ai`) publica
-  HTML por 7 dias — esta aqui tem backend, então não serve.
-- **Registre o aprendizado** no `fde-demos/aprendizados/` depois da reunião. O
-  processo comercial é o mesmo.
+- **In the meeting:** `./scripts/start.sh`, full screen, pipeline run once before
+  you start.
+- **For the client to use afterwards:** the demo runs on their machine with Docker
+  + Node, or on a machine of yours they can reach. For a demo **without a
+  backend**, the internal portal (`demos-portal`, `<slug>.demos.barte.ai`)
+  publishes HTML for 7 days — this one has a backend, so it does not apply.
+- **Record what you learned** in `fde-demos/aprendizados/` after the meeting. The
+  commercial process is the same.
 
-## O que a demo já tem quando nasce
+## What the demo has the moment it is born
 
-- Esteira ao vivo, acendendo por SSE enquanto o agente trabalha — com as etapas
-  que o fluxo declarar, não uma lista fixa.
-- Painel **"Editar fluxo"**: acrescentar etapa, escolher o que o agente faz nela
-  e marcar o que o faz parar — por formulário ou editando o YAML — **sem
-  reiniciar a demo**. Validação em português, e "voltar ao original" sempre à
-  mão.
-- Fila com situação por item e gaveta com a **trilha de decisões**: o que o
-  agente decidiu, por quê, com quanta confiança.
-- Painel **"A stack desta demo"** no rodapé da barra lateral: cada peça, o papel
-  dela em português, a saúde, e as chamadas ao banco/S3/fila **ao vivo, em
-  milissegundos**. É a resposta para "isso está mesmo rodando?".
-- Histórico semeado — a tela nunca abre zerada.
-- Marca da Barte pelo design system de verdade, o mesmo do `barte-copilot`.
-- A mesma demo em **AWS, Google Cloud ou Azure**, trocando uma linha do `.env`.
+- A live pipeline lighting up over SSE while the agent works — with whatever steps
+  the flow declares, not a fixed list.
+- A queue with per-item status and a drawer holding the **decision trail**: what
+  the agent decided, why, how confident.
+- The **"Editar fluxo"** panel: add a step, choose what the agent does in it, tick
+  what makes it stop, and rename everything the screen says — by form or by
+  editing the YAML — **without restarting the demo**. Validation in Portuguese, and
+  "back to original" always at hand.
+- The **"A stack desta demo"** panel at the bottom of the sidebar: every component,
+  its role in plain Portuguese, its health, and calls to the database/storage/queue
+  **live, in milliseconds**. It is the answer to "is this actually running?".
+- Seeded history — the screen never opens at zero.
+- Barte's brand through the real design system, the same one `barte-copilot` uses.
+- The same demo on **AWS, Google Cloud or Azure**, by changing one line of `.env`.
 
-## Referências
+## References
 
-| Arquivo | Quando ler |
+| File | When to read it |
 |---|---|
-| `references/branding.md` | ao mexer em qualquer tela — DS, tokens, as armadilhas de CSS |
-| `references/arquitetura.md` | ao mexer no backend, na infraestrutura ou nas portas |
-| `references/fluxo.md` | ao mexer nas etapas, nas regras, ou ao acrescentar um verbo ao catálogo |
-| `references/agente.md` | ao mudar como o agente trabalha, ou ao ligar o motor Claude |
-| `references/dados.md` | ao trocar os dados pelos do cliente ou plantar exceções |
+| `references/branding.md` | before touching any screen — DS, tokens, the CSS traps |
+| `references/architecture.md` | before touching the backend, the infrastructure or the ports |
+| `references/flow.md` | before changing steps, rules, vocabulary, or adding a catalog verb |
+| `references/agent.md` | before changing how the agent works, or switching on the Claude engine |
+| `references/data.md` | before swapping in the client's data or planting exceptions |
 
-## Erros que já custaram caro
+## Mistakes that have already cost time
 
-- **Começar a codar antes da etapa 3.** Demo genérica volta para retrabalho.
-- **Caminho feliz só.** Sem exceção que trave, a demo parece fake.
-- **Dado inventado sem cara de real.** Derruba a credibilidade em dois segundos.
-- **Apresentar sem `make verificar`.** Uma tela sem CSS apaga o resto do mérito.
-- **Prometer o que a demo não faz.** O que está fora de escopo aparece no
-  BRIEF e na conversa, não vira surpresa na reunião seguinte.
+- **Coding before step 3.** A generic demo comes back as rework.
+- **Happy path only.** With no exception that blocks, the demo looks fake.
+- **Invented data that does not look real.** It destroys credibility in two
+  seconds.
+- **Presenting without `make check`.** A screen with no CSS erases every other
+  merit.
+- **Promising what the demo does not do.** What is out of scope belongs in the
+  BRIEF and in the conversation, not as a surprise at the next meeting.

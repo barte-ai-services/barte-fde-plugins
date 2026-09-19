@@ -1,25 +1,25 @@
 import { Module } from "@nestjs/common";
-import { NuvemModule } from "./nuvem/nuvem.module";
+import { CloudModule } from "./cloud/cloud.module";
 import { DbModule } from "./db/db.module";
-import { TelemetriaModule } from "./telemetria/telemetria.module";
-import { EventosModule } from "./eventos/eventos.module";
-import { ItensModule } from "./itens/itens.module";
-import { AgenteModule } from "./agente/agente.module";
-import { SaudeModule } from "./saude/saude.module";
-import { ProvisionamentoModule } from "./provisionamento/provisionamento.module";
-import { FluxoModule } from "./fluxo/fluxo.module";
+import { EventsModule } from "./events/events.module";
+import { TelemetryModule } from "./telemetry/telemetry.module";
+import { FlowModule } from "./flow/flow.module";
+import { ProvisioningModule } from "./provisioning/provisioning.module";
+import { ItemsModule } from "./items/items.module";
+import { AgentModule } from "./agent/agent.module";
+import { HealthModule } from "./health/health.module";
 
 @Module({
   imports: [
-    NuvemModule,
+    CloudModule,
     DbModule,
-    EventosModule,
-    TelemetriaModule,
-    FluxoModule,
-    ProvisionamentoModule,
-    ItensModule,
-    AgenteModule,
-    SaudeModule,
+    EventsModule,
+    TelemetryModule,
+    FlowModule,
+    ProvisioningModule,
+    ItemsModule,
+    AgentModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

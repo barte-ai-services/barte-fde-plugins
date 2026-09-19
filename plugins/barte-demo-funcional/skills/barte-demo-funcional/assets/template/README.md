@@ -1,70 +1,72 @@
-# Demo funcional
+# Functional demo
 
-Uma demo que o cliente **usa**: web com a marca da Barte, backend NestJS,
-armazenamento, fila e banco em contêiner, e um agente que lê documento, confere
-regra e para quando não sabe — explicando por quê.
+A demo the client actually **uses**: web carrying Barte's brand, a NestJS backend,
+storage, queue and database in containers, and an agent that reads a document,
+checks the rules and stops when it does not know — explaining why.
 
-## Rodar
+Code and comments are English; everything on screen is Brazilian Portuguese.
 
-```bash
-./scripts/subir.sh
-```
-
-Ou dois cliques em **`demo.command`** pelo Finder. Ele escolhe portas livres,
-sobe a infraestrutura, espera tudo responder e abre o navegador. `Ctrl-C`
-encerra os processos; os contêineres seguem de pé (`make down` derruba).
-
-Precisa de **Docker** e **Node 20+**. Não precisa de chave de API nem de
-internet: o agente roda no motor determinístico por padrão.
-
-Antes de apresentar:
+## Run it
 
 ```bash
-make verificar
+./scripts/start.sh
 ```
 
-## A nuvem
+Or double-click **`demo.command`** in Finder. It picks free ports, brings the
+infrastructure up, waits for everything to answer and opens the browser. `Ctrl-C`
+stops the processes; the containers stay up (`make down` stops them).
 
-`NUVEM` no `.env` escolhe: `aws` (Floci), `gcp` (fake-gcs-server + emulador do
-Pub/Sub) ou `azure` (Azurite). O código da aplicação é o mesmo nas três — só o
-adaptador muda. Apontar para a nuvem de verdade é apagar o endereço do emulador
-no `.env`.
+Needs **Docker** and **Node 20+**. No API key and no internet: the agent runs the
+deterministic engine by default.
 
-## Como ela está organizada
+Before presenting:
+
+```bash
+make check
+```
+
+## The cloud
+
+`CLOUD` in `.env` picks: `aws` (Floci), `gcp` (fake-gcs-server + the Pub/Sub
+emulator) or `azure` (Azurite). The application code is the same in all three —
+only the adapter changes. Pointing at the real cloud means deleting the emulator's
+address from `.env`.
+
+## The flow and the words
+
+The pipeline steps, the rules that stop the agent and everything the screen calls
+things live in `data/flow.yaml` — and in the **Editar fluxo** panel inside the
+demo, where you can add a step, switch on rules, or turn accounts payable into
+accounts receivable in front of the client, without restarting. What you apply
+takes effect from the next document; "back to original" re-reads the file.
+
+## Layout
 
 ```
 apps/web/        Next.js 16 + barte-design-system
-apps/api/        NestJS: itens, eventos (SSE), agente, telemetria, provisionamento
-  src/nuvem/     as duas portas (armazenamento e fila) e os três adaptadores
-  src/fluxo/     o fluxo como dado: catálogo de ações e regras, validação
-  src/agente/    os dois motores e as ferramentas determinísticas
-dados/           documentos, cadastro e fluxo.yaml — é aqui que entra o cliente
-infra/compose/   os emuladores, um perfil por nuvem
-scripts/         subir.sh (o caminho de um comando) e verificar.sh
+apps/api/        NestJS: items, events (SSE), agent, telemetry, provisioning
+  src/cloud/     the two ports (storage and queue) and the three adapters
+  src/flow/      the flow as data: catalog of actions and rules, validation
+  src/agent/     the two engines and the deterministic tools
+data/            documents, registry and flow.yaml — where the client comes in
+infra/compose/   the emulators, one profile per cloud
+scripts/         start.sh (the one-command path) and check.sh
 ```
 
-## O fluxo
+## Swapping in the client's data
 
-As etapas da esteira e as regras que fazem o agente parar vivem em
-`dados/fluxo.yaml` — e no painel **Editar fluxo**, dentro da demo, dá para
-acrescentar etapa e ligar regras na frente do cliente, sem reiniciar. O que for
-aplicado vale a partir do próximo documento; "voltar ao original" relê o arquivo.
+Convert their material into `data/documents/*.json` (one per document) and adjust
+`data/registry.json`. No code changes: the API reads the folder at startup.
 
-## Trocar pelos dados do cliente
+With no material from the client, the demo is already born with generated history
+(fixed seed) and six curated documents — each proving one agent capability.
 
-Converta o material dele para `dados/documentos/*.json` (um por documento) e
-ajuste `dados/cadastro.json`. Nada de código precisa mudar: a API lê a pasta na
-subida.
-
-Sem material do cliente, a demo já nasce com histórico gerado (semente fixa) e
-seis documentos curados — cada um provando uma capacidade do agente.
-
-## Comandos
+## Commands
 
 | | |
 |---|---|
-| `./scripts/subir.sh` | sobe tudo e abre o navegador |
-| `make verificar` | confere infraestrutura **e** tela antes da reunião |
-| `make down` | derruba os contêineres preservando os dados |
-| `make clean` | apaga os volumes — a esteira volta ao estado inicial |
-| `make build` | compila os dois aplicativos |
+| `./scripts/start.sh` | brings everything up and opens the browser |
+| `make check` | verifies infrastructure **and** screen before the meeting |
+| `make down` | stops the containers, keeping the data |
+| `make clean` | drops the volumes — the pipeline returns to its initial state |
+| `make build` | compiles both apps |
