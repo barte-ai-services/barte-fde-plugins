@@ -66,6 +66,6 @@ GP source deadlines written as DD/MM have no confirmed year. The confirmed proje
 
 ## Presentation checks
 
-Meeting URLs use `client`, `view` (`strategic` or `tactical`) and `meeting=1`. Existing status and platform filters may be included. Keep selected client when switching views. New or unknown-history clients should show an explicit history gap, not fabricated timeline bars. Technical completions stay labeled as technical; future scope and unresolved decisions remain distinguishable.
+Meeting URLs use `client`, `view` (legacy values `strategic` for the visible Tático view and `tactical` for the visible Operacional view) and `meeting=1`. Existing status and platform filters may be included. Keep selected client when switching views. New or unknown-history clients should show an explicit history gap, not fabricated timeline bars. Technical completions stay labeled as technical; future scope and unresolved decisions remain distinguishable.
 
 The present site uses a committed snapshot. Automatic refresh is not installed by invoking this skill. If the user later asks for automation, configure it separately with an authorized credential, explicit cadence/event, private publishing and a failure path that retains the last good snapshot.
