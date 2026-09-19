@@ -1,0 +1,9 @@
+{
+  "name": "barte-roadmap",
+  "description": "Atualiza o roadmap estratégico e tático da Barte com evidências do GitHub e publicação privada.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Barte AI Services"
+  },
+  "homepage": "https://github.com/barte-ai-services/barte-fde-plugins"
+}
