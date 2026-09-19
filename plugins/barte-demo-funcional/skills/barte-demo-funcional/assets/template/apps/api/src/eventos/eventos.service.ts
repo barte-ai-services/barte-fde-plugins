@@ -13,7 +13,9 @@ export type Evento =
   | { tipo: "decisao"; itemId: string; agente: string; acao: string; razao: string; confianca: number; em: string }
   | { tipo: "excecao"; itemId: string; motivo: string; em: string }
   | { tipo: "item"; itemId: string; em: string }
-  | { tipo: "telemetria"; chamada: { peca: string; operacao: string; ms: number; ok: boolean }; em: string };
+  | { tipo: "telemetria"; chamada: { peca: string; operacao: string; ms: number; ok: boolean }; em: string }
+  /** O fluxo mudou: a tela redesenha a esteira sem recarregar a página. */
+  | { tipo: "fluxo"; em: string };
 
 /**
  * O evento como quem publica escreve: sem o carimbo de hora, que o serviço põe.

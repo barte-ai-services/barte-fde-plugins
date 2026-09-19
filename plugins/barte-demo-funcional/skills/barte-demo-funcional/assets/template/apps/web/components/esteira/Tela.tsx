@@ -2,7 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Button, Drawer, Pills, Table } from "barte-design-system";
-import { API, executarEsteira, listarItens, type Evento, type Item } from "@/lib/api";
+import {
+  API,
+  executarEsteira,
+  lerFluxo,
+  listarItens,
+  type Evento,
+  type Fluxo,
+  type Item,
+} from "@/lib/api";
+import { PainelFluxo } from "@/components/fluxo/PainelFluxo";
 import { brl, dia, hora, pct } from "@/lib/format";
 import { useLargura } from "@/lib/useLargura";
 import { Esteira, LogDecisoes } from "./Esteira";
@@ -24,6 +33,8 @@ export function Tela() {
   const [itens, setItens] = useState<Item[]>([]);
   const [eventos, setEventos] = useState<Evento[]>([]);
   const [abertoId, setAbertoId] = useState<string | null>(null);
+  const [fluxo, setFluxo] = useState<Fluxo | null>(null);
+  const [painelFluxo, setPainelFluxo] = useState(false);
   const [executando, setExecutando] = useState(false);
   const largura = useLargura();
   // Abaixo de 1100px as cinco colunas ficam estreitas demais para se ler. Sai o
@@ -34,6 +45,7 @@ export function Tela() {
 
   useEffect(() => {
     void listarItens().then(setItens).catch(() => undefined);
+    void lerFluxo().then(setFluxo).catch(() => undefined);
 
     /**
      * Uma conexão SSE para a tela inteira.
@@ -48,6 +60,9 @@ export function Tela() {
       const evento = JSON.parse(e.data) as Evento;
       setEventos((atuais) => [...atuais.slice(-400), evento]);
       if (evento.tipo === "item") void listarItens().then(setItens).catch(() => undefined);
+      // O fluxo mudou noutra aba (ou no painel): a esteira se redesenha sem
+      // recarregar a página.
+      if (evento.tipo === "fluxo") void lerFluxo().then(setFluxo).catch(() => undefined);
     };
     return () => fonte.close();
   }, []);
@@ -84,13 +99,18 @@ export function Tela() {
             <span className="text-[var(--content-brand)]">quem aprova é você</span>
           </p>
         </div>
-        <Button onClick={executar} loading={executando || emCurso} disabled={executando || emCurso}>
-          Executar esteira
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" onClick={() => setPainelFluxo(true)}>
+            Editar fluxo
+          </Button>
+          <Button onClick={executar} loading={executando || emCurso} disabled={executando || emCurso}>
+            Executar esteira
+          </Button>
+        </div>
       </div>
 
       <Kpis itens={itens} />
-      <Esteira itens={itens} eventos={eventos} />
+      <Esteira etapas={fluxo?.etapas ?? []} itens={itens} eventos={eventos} />
 
       <div className="grid grid-cols-1 items-start gap-3 xl:grid-cols-[1fr_320px]">
       {/* Sem rolagem horizontal, de propósito. Uma tabela que rola para o lado
@@ -165,6 +185,13 @@ export function Tela() {
       </div>
         <LogDecisoes eventos={eventos} />
       </div>
+
+      <PainelFluxo
+        aberto={painelFluxo}
+        fluxo={fluxo}
+        onFechar={() => setPainelFluxo(false)}
+        onAplicado={setFluxo}
+      />
 
       <Drawer
         isOpen={aberto !== null}

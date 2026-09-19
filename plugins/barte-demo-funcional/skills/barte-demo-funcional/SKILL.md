@@ -130,20 +130,28 @@ Regra que não se negocia: **nada de "Fornecedor A / R$ 100,00"**. CNPJ
 formatado, chave de NF-e com a cara de uma chave, valores coerentes entre si,
 nomes plausíveis do setor. É o que faz o cliente ver o sistema dele.
 
-### 6 · Adaptar o fluxo do agente
+### 6 · Adaptar o fluxo
 
-As etapas da esteira e as regras vivem em dois arquivos, e nada além deles:
+O fluxo é **dado**: `dados/fluxo.yaml` diz quais são as etapas, o que cada uma
+faz e quando o agente para. O agente executa isso, a tela desenha isso, e o
+painel **Editar fluxo** — dentro da própria demo — edita isso.
 
-| O quê | Onde |
+Três formas de mexer, da mais leve para a mais pesada:
+
+| O que você quer | Onde |
 |---|---|
-| etapas da esteira | `apps/api/src/agente/tipos.ts` (`NOS`) e `apps/web/components/esteira/Esteira.tsx` |
-| regras e decisões | `apps/api/src/agente/motor-simulado.ts` |
-| ferramentas do agente | `apps/api/src/agente/ferramentas.ts` |
-| instruções do modelo | `apps/api/src/agente/motor-claude.ts` (`SISTEMA`) |
+| acrescentar/remover/reordenar etapa, trocar texto, ligar uma regra que já existe | **painel Editar fluxo**, na própria demo, ao vivo — ou `dados/fluxo.yaml` |
+| uma regra ou ação que ainda não existe | `apps/api/src/fluxo/catalogo.ts` — uma entrada, e ela já aparece no painel |
+| o que as ferramentas consultam | `apps/api/src/agente/ferramentas.ts` |
 
-Os dois motores — o determinístico e o que chama o Claude — emitem os **mesmos
-eventos**, então a tela não sabe qual está rodando. Mexeu em um, mexa no outro.
-Detalhes em `references/agente.md`.
+**Leve o painel para a reunião.** Quando o cliente descrever uma etapa que
+ninguém tinha previsto, acrescente ali, aplique, e execute a esteira: o próximo
+documento já roda com o fluxo dele. É o momento em que a demo deixa de ser uma
+apresentação.
+
+Os dois motores — o determinístico e o que chama o Claude — leem o mesmo fluxo e
+emitem os **mesmos eventos**, então a tela não sabe qual está rodando. Detalhes
+em `references/fluxo.md` e `references/agente.md`.
 
 ### 7 · Conferir com os próprios olhos
 
@@ -170,7 +178,12 @@ estreite a janela até a largura da tela que vai projetar.
 
 ## O que a demo já tem quando nasce
 
-- Esteira ao vivo de cinco etapas, acendendo por SSE enquanto o agente trabalha.
+- Esteira ao vivo, acendendo por SSE enquanto o agente trabalha — com as etapas
+  que o fluxo declarar, não uma lista fixa.
+- Painel **"Editar fluxo"**: acrescentar etapa, escolher o que o agente faz nela
+  e marcar o que o faz parar — por formulário ou editando o YAML — **sem
+  reiniciar a demo**. Validação em português, e "voltar ao original" sempre à
+  mão.
 - Fila com situação por item e gaveta com a **trilha de decisões**: o que o
   agente decidiu, por quê, com quanta confiança.
 - Painel **"A stack desta demo"** no rodapé da barra lateral: cada peça, o papel
@@ -186,7 +199,8 @@ estreite a janela até a largura da tela que vai projetar.
 |---|---|
 | `references/branding.md` | ao mexer em qualquer tela — DS, tokens, as armadilhas de CSS |
 | `references/arquitetura.md` | ao mexer no backend, na infraestrutura ou nas portas |
-| `references/agente.md` | ao mudar o que o agente faz, ou ao ligar o motor Claude |
+| `references/fluxo.md` | ao mexer nas etapas, nas regras, ou ao acrescentar um verbo ao catálogo |
+| `references/agente.md` | ao mudar como o agente trabalha, ou ao ligar o motor Claude |
 | `references/dados.md` | ao trocar os dados pelos do cliente ou plantar exceções |
 
 ## Erros que já custaram caro

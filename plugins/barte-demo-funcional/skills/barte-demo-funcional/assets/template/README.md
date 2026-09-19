@@ -36,11 +36,19 @@ no `.env`.
 apps/web/        Next.js 16 + barte-design-system
 apps/api/        NestJS: itens, eventos (SSE), agente, telemetria, provisionamento
   src/nuvem/     as duas portas (armazenamento e fila) e os três adaptadores
+  src/fluxo/     o fluxo como dado: catálogo de ações e regras, validação
   src/agente/    os dois motores e as ferramentas determinísticas
-dados/           os documentos e o cadastro — é aqui que entram os dados do cliente
+dados/           documentos, cadastro e fluxo.yaml — é aqui que entra o cliente
 infra/compose/   os emuladores, um perfil por nuvem
 scripts/         subir.sh (o caminho de um comando) e verificar.sh
 ```
+
+## O fluxo
+
+As etapas da esteira e as regras que fazem o agente parar vivem em
+`dados/fluxo.yaml` — e no painel **Editar fluxo**, dentro da demo, dá para
+acrescentar etapa e ligar regras na frente do cliente, sem reiniciar. O que for
+aplicado vale a partir do próximo documento; "voltar ao original" relê o arquivo.
 
 ## Trocar pelos dados do cliente
 

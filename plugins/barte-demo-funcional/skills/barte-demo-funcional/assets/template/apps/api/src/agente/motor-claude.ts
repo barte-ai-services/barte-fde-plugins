@@ -2,28 +2,9 @@ import Anthropic from "@anthropic-ai/sdk";
 import { betaZodTool } from "@anthropic-ai/sdk/helpers/beta/zod";
 import * as z from "zod/v4";
 import type { Contexto, Motor, Resultado } from "./tipos";
-import {
-  carregarCadastro,
-  consultarFornecedor,
-  divergencia,
-  exigeRetencaoInss,
-  extrair,
-  verificarDuplicidade,
-} from "./ferramentas";
+import { carregarCadastro, consultarFornecedor, extrair } from "./ferramentas";
+import { ACOES, CONDICOES, type Estado } from "../fluxo/catalogo";
 
-/**
- * O motor de verdade: o modelo conduz o trabalho chamando as ferramentas.
- *
- * As ferramentas são as MESMAS do motor simulado — cadastro, duplicidade,
- * política, divergência. O modelo não calcula valor nem inventa conta contábil;
- * ele decide o que perguntar e o que concluir. Quando o cliente perguntar "e se
- * a IA errar o número?", a resposta está nesta linha: o número não passa por
- * ela.
- *
- * `concluir` e `escalar` existem como ferramentas porque é assim que se arranca
- * uma saída estruturada de um laço de agente sem depender de o modelo devolver
- * JSON no texto — ele chama uma das duas, e o laço acaba.
- */
 /**
  * De onde vem o modelo.
  *
@@ -58,16 +39,70 @@ function criarCliente(): Anthropic {
   }) as Anthropic;
 }
 
+/**
+ * O motor de verdade: o modelo conduz o trabalho chamando as ferramentas.
+ *
+ * As ferramentas são as MESMAS do motor simulado — o catálogo do fluxo. O modelo
+ * não calcula valor nem inventa conta contábil; ele decide o que perguntar e o
+ * que concluir. Quando o cliente perguntar "e se a IA errar o número?", a
+ * resposta está nesta linha: o número não passa por ela.
+ *
+ * O fluxo editado no painel chega aqui de duas formas: vira o roteiro escrito no
+ * prompt, e vira a lista de regras que `conferir` devolve. Acrescentar uma etapa
+ * no painel muda o que o modelo é instruído a fazer, sem tocar neste arquivo.
+ */
 export class MotorClaude implements Motor {
   readonly nome = "claude";
   private readonly cliente = criarCliente();
 
   async processar(ctx: Contexto): Promise<Resultado> {
-    const cadastro = carregarCadastro();
-    const d = extrair(ctx.documento);
-    let saida: Resultado | null = null;
+    const estado: Estado = {
+      documento: ctx.documento,
+      cadastro: carregarCadastro(),
+      extraido: extrair(ctx.documento),
+      chavesConhecidas: ctx.chavesConhecidas,
+      fornecedor: null,
+      classificacao: null,
+      proposta: null,
+    };
 
-    ctx.no("leitura", "executando");
+    /**
+     * Os nós acendem por um CURSOR que anda junto com o trabalho.
+     *
+     * O modelo não é obrigado a anunciar em que etapa está — e pedir isso a ele
+     * seria uma ferramenta a mais só para alimentar a animação. Então cada
+     * ferramenta de trabalho fecha o nó corrente e abre o próximo. Se ele pular
+     * uma consulta, o nó correspondente fecha junto no fim; a esteira nunca fica
+     * com um nó aceso para sempre.
+     */
+    let cursor = 0;
+    const etapas = ctx.fluxo.etapas;
+    if (etapas[0]) ctx.no(etapas[0].id, "executando");
+
+    const avancar = () => {
+      const atual = etapas[cursor];
+      if (atual) ctx.no(atual.id, "concluido");
+      cursor += 1;
+      const proxima = etapas[cursor];
+      if (proxima) ctx.no(proxima.id, "executando");
+    };
+
+    const fecharRestantes = (estadoFinal: "concluido" | "excecao") => {
+      const atual = etapas[cursor];
+      if (atual) ctx.no(atual.id, estadoFinal);
+      for (let i = cursor + 1; i < etapas.length; i += 1) {
+        ctx.no(etapas[i].id, estadoFinal === "excecao" ? "excecao" : "concluido");
+      }
+    };
+
+    // Só as condições que o fluxo realmente usa. Mandar a lista inteira do
+    // catálogo faria o modelo escalar por uma regra que quem montou o fluxo
+    // tinha desligado de propósito.
+    const condicoesDoFluxo = [...new Set(etapas.flatMap((e) => e.escalaSe))].filter(
+      (id) => CONDICOES[id],
+    );
+
+    let saida: Resultado | null = null;
 
     const ferramentas = [
       betaZodTool({
@@ -76,35 +111,30 @@ export class MotorClaude implements Motor {
           "Procura o CNPJ no cadastro de fornecedores. Devolve nome, centro de custo, conta contábil e condição de pagamento, ou informa que não existe.",
         inputSchema: z.object({ cnpj: z.string().describe("CNPJ do emitente, com ou sem máscara") }),
         run: ({ cnpj }) => {
-          ctx.no("leitura", "concluido");
-          ctx.no("cadastro", "executando");
-          const f = consultarFornecedor(cadastro, cnpj);
-          return f ? JSON.stringify(f) : "fornecedor não cadastrado";
+          // A busca é a MESMA função do catálogo, mas chamada direto: passar um
+          // estado clonado para `ACOES.consultar_fornecedor` faria a escrita
+          // dele cair na cópia, e o resto do laço continuaria sem fornecedor.
+          estado.fornecedor = consultarFornecedor(estado.cadastro, cnpj);
+          avancar();
+          return estado.fornecedor
+            ? JSON.stringify(estado.fornecedor)
+            : `fornecedor não cadastrado: o CNPJ ${cnpj} não está no cadastro`;
         },
       }),
       betaZodTool({
-        name: "verificar_duplicidade",
-        description: "Diz se a chave do documento já foi lançada ou já está na esteira.",
-        inputSchema: z.object({ chave: z.string() }),
-        run: ({ chave }) =>
-          verificarDuplicidade(cadastro, chave, ctx.chavesConhecidas)
-            ? "duplicado: esta chave já foi lançada"
-            : "não há lançamento com esta chave",
-      }),
-      betaZodTool({
-        name: "conferir_conformidade",
+        name: "conferir",
         description:
-          "Confere o documento contra o pedido, as regras de retenção e a alçada de aprovação automática. É esta ferramenta que calcula — não estime valores por conta própria.",
+          "Confere o documento contra todas as regras deste fluxo. É esta ferramenta que calcula — não estime valores por conta própria.",
         inputSchema: z.object({}),
         run: () => {
-          ctx.no("cadastro", "concluido");
-          ctx.no("conformidade", "executando");
-          return JSON.stringify({
-            divergenciaComPedido: divergencia(d.valor, d.valorPedido),
-            retencaoInssAusente: exigeRetencaoInss(d.descricao, d.retencoes),
-            alcada: cadastro.alcadaAprovacaoAutomatica,
-            acimaDaAlcada: d.valor > cadastro.alcadaAprovacaoAutomatica,
-          });
+          avancar();
+          const veredito: Record<string, { bate: boolean; razao: string; regra: string }> = {};
+          for (const id of condicoesDoFluxo) {
+            const c = CONDICOES[id];
+            const r = c.avaliar(estado);
+            veredito[id] = { bate: r.bate, razao: r.razao, regra: c.rotulo };
+          }
+          return JSON.stringify(veredito);
         },
       }),
       betaZodTool({
@@ -125,18 +155,14 @@ export class MotorClaude implements Motor {
         name: "propor_lancamento",
         description: "Encerra com uma proposta de lançamento para o humano aprovar.",
         inputSchema: z.object({
-          fornecedor: z.string(),
           centroCusto: z.string(),
           contaContabil: z.string(),
         }),
-        run: ({ fornecedor, centroCusto, contaContabil }) => {
-          ctx.no("conformidade", "concluido");
-          ctx.no("proposta", "concluido");
-          saida = {
-            proposta: { fornecedor, centroCusto, contaContabil, valor: d.valor, vencimento: d.vencimento },
-            revisao: null,
-            decisoes: [],
-          };
+        run: ({ centroCusto, contaContabil }) => {
+          estado.classificacao = { centroCusto, contaContabil };
+          ACOES.propor.executar(estado);
+          fecharRestantes("concluido");
+          saida = { proposta: estado.proposta, revisao: null, decisoes: [] };
           return "proposta registrada";
         },
       }),
@@ -144,9 +170,11 @@ export class MotorClaude implements Motor {
         name: "escalar_para_humano",
         description:
           "Encerra devolvendo o documento para revisão humana. Use sempre que a conferência apontar algo que você não pode resolver sozinho.",
-        inputSchema: z.object({ motivo: z.string().describe("uma linha curta, do jeito que apareceria numa fila") }),
+        inputSchema: z.object({
+          motivo: z.string().describe("uma linha curta, do jeito que apareceria numa fila"),
+        }),
         run: ({ motivo }) => {
-          ctx.no("conformidade", "excecao");
+          fecharRestantes("excecao");
           saida = { proposta: null, revisao: motivo, decisoes: [] };
           return "escalado";
         },
@@ -162,7 +190,7 @@ export class MotorClaude implements Motor {
       // Numa demo isso também é latência na frente do cliente.
       output_config: { effort: "low" },
       max_iterations: 12,
-      system: SISTEMA,
+      system: sistema(ctx),
       tools: ferramentas,
       messages: [
         {
@@ -178,23 +206,45 @@ export class MotorClaude implements Motor {
     // de encerramento — teto de iterações, ou ele simplesmente responde em texto.
     // Nesse caso o item vai para revisão humana: é o único desfecho honesto, e é
     // o mesmo que o produto faria.
+    if (!saida) fecharRestantes("excecao");
     return saida ?? { proposta: null, revisao: "Agente encerrou sem conclusão", decisoes: [] };
   }
 }
 
-const SISTEMA = `Você processa documentos de contas a pagar para o time financeiro.
+/**
+ * O roteiro vem do fluxo, e não de um texto fixo.
+ *
+ * É isto que faz uma etapa acrescentada no painel chegar ao modelo: ela aparece
+ * na lista abaixo, com o nome que quem montou o fluxo deu a ela.
+ */
+function sistema(ctx: Contexto): string {
+  const roteiro = ctx.fluxo.etapas
+    .map((etapa, i) => {
+      const acao = ACOES[etapa.acao];
+      const regras = etapa.escalaSe
+        .map((id) => CONDICOES[id]?.rotulo)
+        .filter(Boolean)
+        .join(", ");
+      return `${i + 1}. ${etapa.rotulo} — ${acao?.descricao ?? etapa.acao}${
+        regras ? `. Pare e escale se: ${regras}.` : ""
+      }`;
+    })
+    .join("\n");
 
-Conduza assim, sempre: verifique duplicidade, consulte o fornecedor pelo CNPJ,
-confira a conformidade, e encerre com propor_lancamento ou escalar_para_humano.
+  return `Você processa documentos para o time financeiro, no fluxo "${ctx.fluxo.nome}".
+
+O roteiro é este, nesta ordem:
+
+${roteiro}
 
 Regras que não se negociam:
-- Nunca calcule nem estime valores. A ferramenta conferir_conformidade é a fonte
-  de qualquer número — se ela não disser, você não sabe.
-- Registre uma decisão com registrar_decisao a cada conclusão parcial, antes de
-  seguir. É essa trilha que o humano lê.
-- Fornecedor fora do cadastro, divergência com o pedido, retenção ausente ou
-  valor acima da alçada são motivos de escalar_para_humano, não de propor.
+- Nunca calcule nem estime valores. A ferramenta \`conferir\` é a fonte de
+  qualquer número — se ela não disser, você não sabe.
+- Registre uma decisão com \`registrar_decisao\` a cada conclusão parcial, antes
+  de seguir. É essa trilha que o humano lê.
+- Encerre sempre com \`propor_lancamento\` ou \`escalar_para_humano\`.
 - Você recomenda; quem aprova é uma pessoa.
 
 Escreva em português do Brasil, uma frase por razão, sempre citando o número que
 a sustenta.`;
+}

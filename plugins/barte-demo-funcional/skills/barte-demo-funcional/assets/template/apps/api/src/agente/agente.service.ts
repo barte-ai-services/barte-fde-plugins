@@ -5,9 +5,10 @@ import { ItensService } from "../itens/itens.service";
 import { EventosService } from "../eventos/eventos.service";
 import { ProvisionamentoService } from "../provisionamento/provisionamento.service";
 import { TelemetriaService } from "../telemetria/telemetria.service";
+import { FluxoService } from "../fluxo/fluxo.service";
 import { MotorSimulado } from "./motor-simulado";
 import { MotorClaude } from "./motor-claude";
-import type { Motor, No } from "./tipos";
+import type { Motor } from "./tipos";
 import { extrair } from "./ferramentas";
 import type { Decisao } from "../itens/tipos";
 
@@ -22,6 +23,7 @@ export class AgenteService implements OnApplicationBootstrap {
     private readonly eventos: EventosService,
     private readonly provisionamento: ProvisionamentoService,
     private readonly telemetria: TelemetriaService,
+    private readonly fluxo: FluxoService,
   ) {
     // A escolha é de ambiente, não de código: a tela não sabe qual motor rodou,
     // e trocar de um para o outro é uma linha no .env.
@@ -88,10 +90,16 @@ export class AgenteService implements OnApplicationBootstrap {
       .filter((i) => i.id !== itemId && i.estado === "pronto")
       .map((i) => extrair(i.documento).chave);
 
+    // O fluxo é lido A CADA documento, e não uma vez na subida: quem editou o
+    // painel na frente do cliente espera que o PRÓXIMO documento já siga o
+    // fluxo novo — e espera isso sem reiniciar nada.
+    const fluxo = await this.fluxo.atual();
+
     const resultado = await this.motor.processar({
       documento: item.documento,
+      fluxo,
       chavesConhecidas,
-      no: (no: No, estado) => this.eventos.publicar({ tipo: "no", itemId, no, estado }),
+      no: (no, estado) => this.eventos.publicar({ tipo: "no", itemId, no, estado }),
       decidir: (acao, razao, confianca) => {
         const decisao: Decisao = { agente: this.motor.nome, acao, razao, confianca, em: new Date().toISOString() };
         decisoes.push(decisao);

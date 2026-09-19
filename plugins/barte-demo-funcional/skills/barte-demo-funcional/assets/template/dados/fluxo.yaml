@@ -1,0 +1,44 @@
+# O fluxo desta demo.
+#
+# É este arquivo que a esteira desenha e o agente executa. Ele é a SEMENTE: na
+# primeira subida entra no banco, e a partir daí quem manda é o que foi editado
+# no painel "Fluxo" da própria demo. "Voltar ao original" traz este arquivo de
+# volta.
+#
+# `acao` e `escalaSe` saem de um catálogo fechado — o painel lista o que existe.
+# Editar aqui, acrescentar etapa, reordenar: nada disso pede código.
+
+nome: Contas a pagar
+
+etapas:
+  - id: leitura
+    rotulo: Leitura
+    legenda: extrai o documento
+    acao: extrair
+
+  - id: cadastro
+    rotulo: Cadastro
+    legenda: identifica o fornecedor
+    acao: consultar_fornecedor
+    escalaSe:
+      - documento_duplicado
+      - fornecedor_ausente
+
+  - id: classificacao
+    rotulo: Classificação
+    legenda: centro de custo e conta
+    acao: classificar
+
+  - id: conformidade
+    rotulo: Conformidade
+    legenda: pedido, retenção, alçada
+    acao: conferir
+    escalaSe:
+      - divergencia_pedido
+      - retencao_inss_ausente
+      - acima_alcada
+
+  - id: proposta
+    rotulo: Proposta
+    legenda: pronta para aprovação
+    acao: propor

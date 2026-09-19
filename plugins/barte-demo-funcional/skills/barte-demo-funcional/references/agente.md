@@ -48,6 +48,9 @@ motores:
 | `exigeRetencaoInss` | esse serviço exigia retenção que não veio destacada? |
 | `carregarCadastro` | a política: fornecedores, alçada, o que já foi lançado |
 
+Elas são embrulhadas pelo **catálogo do fluxo** (`apps/api/src/fluxo/catalogo.ts`),
+que é o que dá a cada uma um nome em português e a torna escolhível no painel.
+
 Trocar o domínio da demo é trocar **estas funções** e os dados que elas leem — a
 esteira, a tela e os eventos continuam iguais.
 
@@ -112,13 +115,13 @@ nota R$ 14.318,90 contra pedido R$ 14.300,00 — diferença de R$ 18,90
 
 ## Mudar as etapas da esteira
 
-Os nós estão em dois lugares e precisam concordar:
+Não se mexe em código para isso: as etapas são o **fluxo**, e o fluxo é dado —
+`dados/fluxo.yaml` ou o painel "Editar fluxo" dentro da demo. Backend e tela leem
+a mesma estrutura, então não há duas listas para manter em acordo.
+Ver `references/fluxo.md`.
 
-- `apps/api/src/agente/tipos.ts` — a constante `NOS`
-- `apps/web/components/esteira/Esteira.tsx` — a lista com rótulo e legenda
-
-Cinco é um bom número: menos parece raso, mais não cabe numa linha e a esteira
-deixa de se ler como esteira.
+Cinco etapas é um bom número: menos parece raso, e acima de seis a esteira começa
+a quebrar em duas linhas na tela de um notebook.
 
 ## Quando o agente deve parar
 

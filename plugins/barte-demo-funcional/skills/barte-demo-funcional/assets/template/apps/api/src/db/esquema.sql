@@ -18,3 +18,12 @@ CREATE TABLE IF NOT EXISTS itens (
 
 CREATE INDEX IF NOT EXISTS itens_recebido_em_idx ON itens (recebido_em DESC);
 CREATE INDEX IF NOT EXISTS itens_estado_idx ON itens (estado);
+
+-- O fluxo que está no ar. Uma linha só (`id = 'atual'`): o histórico de edições
+-- não interessa a ninguém aqui, e "voltar ao original" é reler `dados/fluxo.yaml`
+-- — que é o arquivo versionado no git, o lugar certo para guardar histórico.
+CREATE TABLE IF NOT EXISTS fluxo (
+  id            TEXT PRIMARY KEY,
+  definicao     JSONB       NOT NULL,
+  atualizado_em TIMESTAMPTZ NOT NULL DEFAULT now()
+);
