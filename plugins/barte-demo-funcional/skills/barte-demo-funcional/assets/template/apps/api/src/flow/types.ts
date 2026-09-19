@@ -3,6 +3,9 @@ import { z } from "zod";
 /**
  * The demo's flow as DATA.
  *
+ * Keys are snake_case: this schema defines both the YAML file and the API's
+ * contract, and those are wire formats, not TypeScript identifiers.
+ *
  * The steps used to live in two places — a constant in the backend and a list in
  * the frontend — and the rules sat loose inside the engine. Touching one without
  * the other broke the pipeline silently, and adapting the demo to a new client
@@ -12,7 +15,7 @@ import { z } from "zod";
  * order, the screen draws the nodes from it, and whoever is presenting edits it
  * in front of the client.
  *
- * What it is NOT: a general rules engine. `action` and `escalateIf` point at a
+ * What it is NOT: a general rules engine. `action` and `escalate_if` point at a
  * closed catalog implemented in TypeScript. Adding a step, reordering, changing
  * text and switching on a rule that already exists take no code; a brand-new
  * rule does — and that is the right trade, because the alternative would be
@@ -33,7 +36,7 @@ export const stepSchema = z.object({
    * The conditions that make the agent STOP at this step and hand the item back
    * to a human. Empty means the step never blocks.
    */
-  escalateIf: z.array(z.string()).default([]),
+  escalate_if: z.array(z.string()).default([]),
   /** Overrides the default reason of whichever condition fired. Optional. */
   reason: z.string().optional(),
 });
@@ -78,10 +81,10 @@ export const vocabularySchema = z.object({
    */
   labels: z
     .object({
-      costCenter: z.string().default("Centro de custo"),
+      cost_center: z.string().default("Centro de custo"),
       account: z.string().default("Conta contábil"),
       amount: z.string().default("Valor"),
-      dueDate: z.string().default("Vencimento"),
+      due_date: z.string().default("Vencimento"),
     })
     .prefault({}),
   /** What each number in the stat band means for THIS client. */

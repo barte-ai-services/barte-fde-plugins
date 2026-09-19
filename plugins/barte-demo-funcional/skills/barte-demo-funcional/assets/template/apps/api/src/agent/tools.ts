@@ -25,15 +25,15 @@ import type { Document } from "../items/types";
 export interface Counterparty {
   cnpj: string;
   name: string;
-  costCenter: string;
+  cost_center: string;
   account: string;
   terms: string;
 }
 
 export interface Registry {
   counterparties: Counterparty[];
-  autoApprovalLimit: number;
-  alreadyPosted: string[];
+  auto_approval_limit: number;
+  already_posted: string[];
 }
 
 export function loadRegistry(): Registry {
@@ -48,7 +48,7 @@ export function findCounterparty(registry: Registry, cnpj: string): Counterparty
 }
 
 export function isDuplicate(registry: Registry, key: string, knownKeys: string[]): boolean {
-  return registry.alreadyPosted.includes(key) || knownKeys.includes(key);
+  return registry.already_posted.includes(key) || knownKeys.includes(key);
 }
 
 /** The document fields the rest of the flow uses, flattened into one place. */

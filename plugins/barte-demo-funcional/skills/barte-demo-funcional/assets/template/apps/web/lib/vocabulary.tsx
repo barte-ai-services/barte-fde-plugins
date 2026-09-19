@@ -20,10 +20,10 @@ const DEFAULTS: Vocabulary = {
   counterparty: "Fornecedor",
   incoming: "Documento",
   labels: {
-    costCenter: "Centro de custo",
+    cost_center: "Centro de custo",
     account: "Conta contábil",
     amount: "Valor",
-    dueDate: "Vencimento",
+    due_date: "Vencimento",
   },
   stats: {
     queued: "na fila",

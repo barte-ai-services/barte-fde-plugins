@@ -47,7 +47,7 @@ export class RulesEngine implements Engine {
 
       // Conditions are evaluated AFTER the action: the action is what discovers
       // the counterparty, and the condition is what judges what it found.
-      for (const id of step.escalateIf) {
+      for (const id of step.escalate_if) {
         const condition = CONDITIONS[id];
         if (!condition) continue;
         const verdict = condition.evaluate(state);

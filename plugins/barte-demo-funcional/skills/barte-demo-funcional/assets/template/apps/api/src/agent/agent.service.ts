@@ -83,7 +83,7 @@ export class AgentService implements OnApplicationBootstrap {
     if (!item || item.state !== "pending") return;
 
     await this.items.save({ ...item, state: "processing" });
-    this.events.publish({ type: "item", itemId });
+    this.events.publish({ type: "item", item_id: itemId });
 
     const decisions: Decision[] = [];
     const knownKeys = (await this.items.list())
@@ -99,7 +99,7 @@ export class AgentService implements OnApplicationBootstrap {
       document: item.document,
       flow,
       knownKeys,
-      step: (step, state) => this.events.publish({ type: "step", itemId, step, state }),
+      step: (step, state) => this.events.publish({ type: "step", item_id: itemId, step, state }),
       decide: (action, reason, confidence) => {
         const decision: Decision = {
           agent: this.engine.name,
@@ -109,20 +109,27 @@ export class AgentService implements OnApplicationBootstrap {
           at: new Date().toISOString(),
         };
         decisions.push(decision);
-        this.events.publish({ type: "decision", itemId, agent: decision.agent, action, reason, confidence });
+        this.events.publish({
+          type: "decision",
+          item_id: itemId,
+          agent: decision.agent,
+          action,
+          reason,
+          confidence,
+        });
       },
     });
 
-    if (outcome.review) this.events.publish({ type: "exception", itemId, reason: outcome.review });
+    if (outcome.review) this.events.publish({ type: "exception", item_id: itemId, reason: outcome.review });
 
     await this.items.save({
       ...item,
       state: outcome.review ? "review" : "ready",
       proposal: outcome.proposal,
-      reviewReason: outcome.review,
+      review_reason: outcome.review,
       decisions,
-      updatedAt: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     });
-    this.events.publish({ type: "item", itemId });
+    this.events.publish({ type: "item", item_id: itemId });
   }
 }

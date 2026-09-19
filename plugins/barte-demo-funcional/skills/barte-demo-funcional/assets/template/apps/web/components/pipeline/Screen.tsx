@@ -159,7 +159,7 @@ export function Screen() {
                 : [
                     {
                       key: "dueDate",
-                      title: vocabulary.labels.dueDate,
+                      title: vocabulary.labels.due_date,
                       width: "11%",
                       dataIndex: "document" as const,
                       render: (_v: unknown, item: Item) =>
@@ -174,8 +174,8 @@ export function Screen() {
                 render: (_v, item) => (
                   <div className="flex flex-col gap-1">
                     <Pills size="sm" variant="light" state={STATE[item.state].state} label={STATE[item.state].text} />
-                    {item.reviewReason ? (
-                      <span className="text-[12px] text-[var(--content-tertiary)]">{item.reviewReason}</span>
+                    {item.review_reason ? (
+                      <span className="text-[12px] text-[var(--content-tertiary)]">{item.review_reason}</span>
                     ) : null}
                   </div>
                 ),
@@ -210,14 +210,14 @@ function Detail({ item }: { item: Item }) {
         {item.proposal ? (
           <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
             <Row label={vocabulary.counterparty} value={item.proposal.counterparty} />
-            <Row label={vocabulary.labels.costCenter} value={item.proposal.costCenter} />
+            <Row label={vocabulary.labels.cost_center} value={item.proposal.cost_center} />
             <Row label={vocabulary.labels.account} value={item.proposal.account} />
             <Row label={vocabulary.labels.amount} value={brl(item.proposal.amount)} />
-            <Row label={vocabulary.labels.dueDate} value={day(item.proposal.dueDate)} />
+            <Row label={vocabulary.labels.due_date} value={day(item.proposal.due_date)} />
           </dl>
         ) : (
           <p className="text-[13px] text-[var(--content-secondary)]">
-            {item.reviewReason ?? "Ainda não processado."}
+            {item.review_reason ?? "Ainda não processado."}
           </p>
         )}
       </section>
@@ -248,7 +248,7 @@ function Detail({ item }: { item: Item }) {
           {vocabulary.incoming}
         </h3>
         <dl className="grid grid-cols-2 gap-x-4 gap-y-2 text-[13px]">
-          <Row label="Recebido em" value={new Date(item.document.receivedAt).toLocaleString("pt-BR")} />
+          <Row label="Recebido em" value={new Date(item.document.received_at).toLocaleString("pt-BR")} />
           <Row label="De" value={item.document.sender} />
           <Row label="Chave / linha" value={(c.chave ?? c.linhaDigitavel ?? "—") as string} />
           <Row label="Descrição" value={(c.descricao ?? "—") as string} />

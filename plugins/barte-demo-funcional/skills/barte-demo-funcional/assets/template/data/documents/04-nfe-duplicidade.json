@@ -2,7 +2,7 @@
   "id": "nfe-0004",
   "type": "nfe",
   "subject": "Re: NF-e 18.823 - Ativa Logistica (reenvio)",
-  "receivedAt": "2026-09-15T11:03:00-03:00",
+  "received_at": "2026-09-15T11:03:00-03:00",
   "sender": "faturamento@ativalog.com.br",
   "content": {
     "chave": "35260904252011000110550010000188231099887766",

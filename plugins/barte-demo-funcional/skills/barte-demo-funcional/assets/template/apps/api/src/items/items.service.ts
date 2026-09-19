@@ -40,7 +40,7 @@ export class ItemsService {
       documents.push(JSON.parse(body) as Document);
     }
     const mostRecent = documents
-      .map((d) => d.receivedAt)
+      .map((d) => d.received_at)
       .sort()
       .at(-1);
 
@@ -53,9 +53,9 @@ export class ItemsService {
         document,
         state: "pending",
         proposal: null,
-        reviewReason: null,
+        review_reason: null,
         decisions: [],
-        updatedAt: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       });
       added += 1;
     }
@@ -96,9 +96,9 @@ export class ItemsService {
         [
           item.id,
           item.state,
-          item.document.receivedAt,
+          item.document.received_at,
           amount,
-          item.reviewReason,
+          item.review_reason,
           JSON.stringify(item.document),
           item.proposal ? JSON.stringify(item.proposal) : null,
           JSON.stringify(item.decisions),
@@ -121,8 +121,8 @@ function fromRow(row: Record<string, unknown>): Item {
     document: row.document as Item["document"],
     state: row.state as Item["state"],
     proposal: (row.proposal as Item["proposal"]) ?? null,
-    reviewReason: (row.review_reason as string | null) ?? null,
+    review_reason: (row.review_reason as string | null) ?? null,
     decisions: (row.decisions as Item["decisions"]) ?? [],
-    updatedAt: new Date(row.updated_at as string).toISOString(),
+    updated_at: new Date(row.updated_at as string).toISOString(),
   };
 }

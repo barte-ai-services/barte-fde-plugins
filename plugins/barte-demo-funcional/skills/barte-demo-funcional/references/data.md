@@ -5,8 +5,9 @@ in two seconds, that this is a mock-up.
 
 **The sample content is in Portuguese on purpose** — it mimics Brazilian tax
 documents, and the field names (`chave`, `valorTotal`, `emitente`) are the domain's
-own. Only the envelope (`id`, `type`, `subject`, `receivedAt`, `sender`,
-`content`) and `registry.json`'s keys are English, because those are code.
+own. Only the envelope (`id`, `type`, `subject`, `received_at`, `sender`, `content`)
+and `registry.json`'s keys are English and snake_case, because those are the wire
+format.
 
 ## The rule
 
@@ -82,7 +83,7 @@ case on screen — that is the moment the demo stops being a presentation.
   "id": "nfe-0001",
   "type": "nfe",
   "subject": "NF-e 18.822 - Ativa Logistica",
-  "receivedAt": "2026-09-15T08:41:00-03:00",
+  "received_at": "2026-09-15T08:41:00-03:00",
   "sender": "faturamento@ativalog.com.br",
   "content": {
     "chave": "35260904252011000110550010000188221099887755",
@@ -104,7 +105,7 @@ there.
 
 ## The registry
 
-`data/registry.json` is what the agent looks up: counterparties with cost center
-and account, the automatic approval limit, and the keys already posted (feeding the
-duplicate check). In a real demo this mirrors the client's ERP — swap in accounts
+`data/registry.json` is what the agent looks up: `counterparties` (each with
+`cost_center` and `account`), `auto_approval_limit`, and `already_posted` — the
+keys that feed the duplicate check. In a real demo this mirrors the client's ERP — swap in accounts
 **they** recognise.

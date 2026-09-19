@@ -74,8 +74,8 @@ export class TelemetryService {
       return {
         component,
         calls: ms.length,
-        medianMs: sorted[Math.floor(sorted.length / 2)] ?? 0,
-        worstMs: sorted.at(-1) ?? 0,
+        median_ms: sorted[Math.floor(sorted.length / 2)] ?? 0,
+        worst_ms: sorted.at(-1) ?? 0,
       };
     });
   }

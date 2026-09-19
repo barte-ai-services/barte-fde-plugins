@@ -2,7 +2,7 @@
   "id": "nfe-0001",
   "type": "nfe",
   "subject": "NF-e 18.822 - Ativa Logistica",
-  "receivedAt": "2026-09-15T08:41:00-03:00",
+  "received_at": "2026-09-15T08:41:00-03:00",
   "sender": "faturamento@ativalog.com.br",
   "content": {
     "chave": "35260904252011000110550010000188221099887755",

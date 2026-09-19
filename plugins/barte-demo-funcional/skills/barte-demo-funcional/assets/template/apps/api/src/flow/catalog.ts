@@ -100,12 +100,12 @@ export const ACTIONS: Record<string, Action> = {
     run: (s) => {
       if (!s.counterparty) return null;
       s.classification = {
-        costCenter: s.counterparty.costCenter,
+        costCenter: s.counterparty.cost_center,
         account: s.counterparty.account,
       };
       return {
         action: "classificou o lançamento",
-        reason: `centro de custo ${s.counterparty.costCenter} e conta ${s.counterparty.account}, pelo histórico`,
+        reason: `centro de custo ${s.counterparty.cost_center} e conta ${s.counterparty.account}, pelo histórico`,
         confidence: 0.94,
       };
     },
@@ -128,10 +128,10 @@ export const ACTIONS: Record<string, Action> = {
       if (!s.counterparty) return null;
       s.proposal = {
         counterparty: s.counterparty.name,
-        costCenter: s.classification?.costCenter ?? s.counterparty.costCenter,
+        cost_center: s.classification?.costCenter ?? s.counterparty.cost_center,
         account: s.classification?.account ?? s.counterparty.account,
         amount: s.extracted.amount,
-        dueDate: s.extracted.dueDate,
+        due_date: s.extracted.dueDate,
       };
       return {
         action: "propôs o lançamento",
@@ -199,14 +199,19 @@ export const CONDITIONS: Record<string, Condition> = {
     description: "valor maior do que o limite de aprovação automática",
     defaultReason: "Acima da alçada de aprovação automática",
     evaluate: (s) => ({
-      fired: s.extracted.amount > s.registry.autoApprovalLimit,
-      reason: `${brl(s.extracted.amount)} acima do limite de ${brl(s.registry.autoApprovalLimit)} para aprovação automática`,
+      fired: s.extracted.amount > s.registry.auto_approval_limit,
+      reason: `${brl(s.extracted.amount)} acima do limite de ${brl(s.registry.auto_approval_limit)} para aprovação automática`,
       confidence: 1,
     }),
   },
 };
 
-/** What the flow panel offers in its menus. */
+/**
+ * What the flow panel offers in its menus.
+ *
+ * The returned keys are snake_case because this is an API response; the internal
+ * `Condition` fields stay camelCase, like every other TypeScript identifier.
+ */
 export function catalog() {
   return {
     actions: Object.entries(ACTIONS).map(([id, a]) => ({
@@ -218,7 +223,7 @@ export function catalog() {
       id,
       label: c.label,
       description: c.description,
-      defaultReason: c.defaultReason,
+      default_reason: c.defaultReason,
     })),
   };
 }

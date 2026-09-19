@@ -2,7 +2,7 @@
   "id": "nfe-0002",
   "type": "nfe",
   "subject": "NF-e 3.318 - Nexo Tecnologia",
-  "receivedAt": "2026-09-15T09:07:00-03:00",
+  "received_at": "2026-09-15T09:07:00-03:00",
   "sender": "financeiro@nexoti.com.br",
   "content": {
     "chave": "35260912884006000102550010000033181044556677",

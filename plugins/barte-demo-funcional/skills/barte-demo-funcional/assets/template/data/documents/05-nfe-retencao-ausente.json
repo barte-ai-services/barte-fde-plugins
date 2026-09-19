@@ -2,7 +2,7 @@
   "id": "nfe-0005",
   "type": "nfe",
   "subject": "NF-e 902 - Vega Facilities",
-  "receivedAt": "2026-09-15T13:48:00-03:00",
+  "received_at": "2026-09-15T13:48:00-03:00",
   "sender": "nfe@vegafacilities.com.br",
   "content": {
     "chave": "35260907526557000100550010000009021066778899",

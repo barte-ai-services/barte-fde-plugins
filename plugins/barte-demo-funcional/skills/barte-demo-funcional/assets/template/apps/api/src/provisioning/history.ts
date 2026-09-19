@@ -82,7 +82,7 @@ export function generateHistory(count = 38, seed = 20260915, today = new Date())
         id: `hist-${String(i + 1).padStart(4, "0")}`,
         type: "nfe",
         subject: `NF-e ${number} - ${counterparty.name.split(" ")[0]}`,
-        receivedAt: received.toISOString(),
+        received_at: received.toISOString(),
         sender: `faturamento@${counterparty.name.split(" ")[0].toLowerCase()}.com.br`,
         content: {
           chave: `3526${String(number).padStart(8, "0")}${String(Math.floor(random() * 1e12)).padStart(12, "0")}`,
@@ -101,14 +101,14 @@ export function generateHistory(count = 38, seed = 20260915, today = new Date())
         ? null
         : {
             counterparty: counterparty.name,
-            costCenter: counterparty.costCenter,
+            cost_center: counterparty.cost_center,
             account: counterparty.account,
             amount,
-            dueDate: dueDate.toISOString().slice(0, 10),
+            due_date: dueDate.toISOString().slice(0, 10),
           },
-      reviewReason: review ? reason : null,
+      review_reason: review ? reason : null,
       decisions: trail(counterparty, amount, review, reason, received),
-      updatedAt: received.toISOString(),
+      updated_at: received.toISOString(),
     });
   }
 
@@ -141,7 +141,7 @@ function trail(
     {
       agent: "rules",
       action: "classificou o lançamento",
-      reason: `centro de custo ${counterparty.costCenter} e conta ${counterparty.account}, pelo histórico`,
+      reason: `centro de custo ${counterparty.cost_center} e conta ${counterparty.account}, pelo histórico`,
       confidence: 0.94,
       at: at(9),
     },

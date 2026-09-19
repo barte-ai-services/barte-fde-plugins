@@ -91,13 +91,13 @@ export class ProvisioningService {
         [
           item.id,
           item.state,
-          item.document.receivedAt,
+          item.document.received_at,
           amount,
-          item.reviewReason,
+          item.review_reason,
           JSON.stringify(item.document),
           item.proposal ? JSON.stringify(item.proposal) : null,
           JSON.stringify(item.decisions),
-          item.updatedAt,
+          item.updated_at,
         ],
       );
     }

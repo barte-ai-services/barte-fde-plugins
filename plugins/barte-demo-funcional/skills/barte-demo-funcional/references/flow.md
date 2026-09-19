@@ -9,7 +9,8 @@ This exists for a commercial reason: in a meeting, the client describes a step
 nobody had foreseen, and whoever is presenting adds it on the spot. The next
 document already runs the new flow, with no restart.
 
-**Keys are English (they are code); values are Portuguese (the client reads them).**
+**Keys are English and snake_case — this file is a wire format, like the API.
+Values are Portuguese, because the client reads them.**
 
 ## The file
 
@@ -22,10 +23,10 @@ vocabulary:
   counterparty: Fornecedor     # the queue column and the proposal field
   incoming: Documento          # what arrives: documento, nota, título, boleto
   labels:
-    costCenter: Centro de custo
+    cost_center: Centro de custo
     account: Conta contábil
     amount: Valor
-    dueDate: Vencimento
+    due_date: Vencimento
   stats:
     queued: na fila
     ready: prontos para aprovação
@@ -37,7 +38,7 @@ steps:
     label: Cadastro            # what shows on the pipeline
     hint: identifica o fornecedor
     action: find_counterparty
-    escalateIf:                # what makes the agent STOP at this step
+    escalate_if:               # what makes the agent STOP at this step
       - duplicate_document
       - not_in_registry
     reason: Cadastro incompleto   # optional; overrides the condition's reason
@@ -62,7 +63,7 @@ would mean building a screen editor nobody asked for.
 
 ## The catalog
 
-`action` and `escalateIf` point at a closed catalog
+`action` and `escalate_if` point at a closed catalog
 (`apps/api/src/flow/catalog.ts`). The panel builds its menus from it, so a new
 verb shows up on screen with no frontend change.
 

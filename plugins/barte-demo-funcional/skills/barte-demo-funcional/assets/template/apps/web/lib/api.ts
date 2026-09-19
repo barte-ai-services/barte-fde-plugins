@@ -1,4 +1,11 @@
-/** The API runs alongside, on another port. In production both would share a domain. */
+/**
+ * The API runs alongside, on another port. In production both would share a
+ * domain.
+ *
+ * The types below mirror the wire format, so their KEYS are snake_case — the same
+ * split the Anthropic SDK makes (`max_tokens`, `stop_reason`). Variables,
+ * functions and React components keep the language's conventions.
+ */
 export const API = process.env.NEXT_PUBLIC_API ?? "http://127.0.0.1:8080/api";
 
 export interface Decision {
@@ -15,21 +22,21 @@ export interface Item {
     id: string;
     type: string;
     subject: string;
-    receivedAt: string;
+    received_at: string;
     sender: string;
     content: Record<string, unknown>;
   };
   state: "pending" | "processing" | "ready" | "review";
   proposal: {
     counterparty: string | null;
-    costCenter: string | null;
+    cost_center: string | null;
     account: string | null;
     amount: number;
-    dueDate: string | null;
+    due_date: string | null;
   } | null;
-  reviewReason: string | null;
+  review_reason: string | null;
   decisions: Decision[];
-  updatedAt: string;
+  updated_at: string;
 }
 
 export interface Component {
@@ -53,7 +60,7 @@ export interface Stack {
   engine: string;
   cloud: string;
   components: Component[];
-  telemetry: { component: string; calls: number; medianMs: number; worstMs: number }[];
+  telemetry: { component: string; calls: number; median_ms: number; worst_ms: number }[];
 }
 
 export interface Step {
@@ -61,7 +68,7 @@ export interface Step {
   label: string;
   hint: string;
   action: string;
-  escalateIf: string[];
+  escalate_if: string[];
   reason?: string;
 }
 
@@ -71,7 +78,7 @@ export interface Vocabulary {
   module: string;
   counterparty: string;
   incoming: string;
-  labels: { costCenter: string; account: string; amount: string; dueDate: string };
+  labels: { cost_center: string; account: string; amount: string; due_date: string };
   stats: { queued: string; ready: string; review: string; amount: string };
 }
 
@@ -83,14 +90,14 @@ export interface Flow {
 
 export interface Catalog {
   actions: { id: string; label: string; description: string }[];
-  conditions: { id: string; label: string; description: string; defaultReason: string }[];
+  conditions: { id: string; label: string; description: string; default_reason: string }[];
 }
 
 export type Event =
-  | { type: "step"; itemId: string; step: string; state: "running" | "done" | "exception"; at: string }
-  | { type: "decision"; itemId: string; agent: string; action: string; reason: string; confidence: number; at: string }
-  | { type: "exception"; itemId: string; reason: string; at: string }
-  | { type: "item"; itemId: string; at: string }
+  | { type: "step"; item_id: string; step: string; state: "running" | "done" | "exception"; at: string }
+  | { type: "decision"; item_id: string; agent: string; action: string; reason: string; confidence: number; at: string }
+  | { type: "exception"; item_id: string; reason: string; at: string }
+  | { type: "item"; item_id: string; at: string }
   | { type: "telemetry"; call: Call; at: string }
   | { type: "flow"; at: string };
 

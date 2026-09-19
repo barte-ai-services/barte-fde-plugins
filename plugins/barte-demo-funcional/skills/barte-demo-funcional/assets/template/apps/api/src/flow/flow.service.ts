@@ -74,7 +74,7 @@ export class FlowService {
           `a etapa "${step.label}" usa uma ação que não existe: "${step.action}" (as que existem: ${Object.keys(ACTIONS).join(", ")})`,
         );
       }
-      for (const condition of step.escalateIf) {
+      for (const condition of step.escalate_if) {
         if (!CONDITIONS[condition]) {
           problems.push(
             `a etapa "${step.label}" usa uma regra que não existe: "${condition}" (as que existem: ${Object.keys(CONDITIONS).join(", ")})`,

@@ -98,7 +98,7 @@ export class ClaudeEngine implements Engine {
     // Only the conditions this flow actually uses. Sending the whole catalog
     // would have the model escalate on a rule whoever built the flow had
     // deliberately switched off.
-    const flowConditions = [...new Set(steps.flatMap((s) => s.escalateIf))].filter(
+    const flowConditions = [...new Set(steps.flatMap((s) => s.escalate_if))].filter(
       (id) => CONDITIONS[id],
     );
 
@@ -196,7 +196,7 @@ export class ClaudeEngine implements Engine {
       messages: [
         {
           role: "user",
-          content: `Documento recebido de ${ctx.document.sender} em ${ctx.document.receivedAt}:\n\n${JSON.stringify(ctx.document.content, null, 2)}`,
+          content: `Documento recebido de ${ctx.document.sender} em ${ctx.document.received_at}:\n\n${JSON.stringify(ctx.document.content, null, 2)}`,
         },
       ],
     });
@@ -224,7 +224,7 @@ function systemPrompt(ctx: Context): string {
   const script = ctx.flow.steps
     .map((step, i) => {
       const action = ACTIONS[step.action];
-      const rules = step.escalateIf
+      const rules = step.escalate_if
         .map((id) => CONDITIONS[id]?.label)
         .filter(Boolean)
         .join(", ");

@@ -4,34 +4,34 @@
     {
       "cnpj": "04.252.011/0001-10",
       "name": "Ativa Logística e Transportes Ltda",
-      "costCenter": "LOG-002",
+      "cost_center": "LOG-002",
       "account": "4.1.2.03",
       "terms": "30 dias"
     },
     {
       "cnpj": "12.884.006/0001-02",
       "name": "Nexo Tecnologia da Informação Ltda",
-      "costCenter": "TEC-001",
+      "cost_center": "TEC-001",
       "account": "4.1.5.01",
       "terms": "15 dias"
     },
     {
       "cnpj": "33.041.260/0652-90",
       "name": "Comercial Bandeirantes S.A.",
-      "costCenter": "ADM-001",
+      "cost_center": "ADM-001",
       "account": "4.1.1.07",
       "terms": "28 dias"
     },
     {
       "cnpj": "07.526.557/0001-00",
       "name": "Vega Facilities e Serviços Ltda",
-      "costCenter": "ADM-003",
+      "cost_center": "ADM-003",
       "account": "4.1.3.02",
       "terms": "30 dias"
     }
   ],
-  "autoApprovalLimit": 25000,
-  "alreadyPosted": [
+  "auto_approval_limit": 25000,
+  "already_posted": [
     "35260904252011000110550010000188231099887766"
   ]
 }

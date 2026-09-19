@@ -2,7 +2,7 @@
   "id": "nfe-0006",
   "type": "nfe",
   "subject": "NF-e 44.107 - Comercial Bandeirantes",
-  "receivedAt": "2026-09-15T15:12:00-03:00",
+  "received_at": "2026-09-15T15:12:00-03:00",
   "sender": "faturamento@bandeirantes.com.br",
   "content": {
     "chave": "35260933041260065290550010000441071022334455",

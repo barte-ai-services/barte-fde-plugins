@@ -2,7 +2,7 @@
   "id": "bol-0003",
   "type": "boleto",
   "subject": "Cobranca - Prisma Manutencao Predial",
-  "receivedAt": "2026-09-15T10:22:00-03:00",
+  "received_at": "2026-09-15T10:22:00-03:00",
   "sender": "cobranca@prismapredial.com.br",
   "content": {
     "linhaDigitavel": "34191.79001 01043.510047 91020.150008 8 10450000345000",

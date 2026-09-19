@@ -100,7 +100,7 @@ export function FlowPanel({
           label: "Nova etapa",
           hint: "",
           action: catalog?.actions[0]?.id ?? "check",
-          escalateIf: [],
+          escalate_if: [],
         },
       ],
     });
@@ -235,12 +235,12 @@ export function FlowPanel({
                     <label key={c.id} className="flex items-start gap-2 text-[12px]">
                       <input
                         type="checkbox"
-                        checked={step.escalateIf.includes(c.id)}
+                        checked={step.escalate_if.includes(c.id)}
                         onChange={(e) =>
                           changeStep(i, {
-                            escalateIf: e.target.checked
-                              ? [...step.escalateIf, c.id]
-                              : step.escalateIf.filter((x) => x !== c.id),
+                            escalate_if: e.target.checked
+                              ? [...step.escalate_if, c.id]
+                              : step.escalate_if.filter((x) => x !== c.id),
                           })
                         }
                         className="mt-0.5"
@@ -289,10 +289,10 @@ export function FlowPanel({
             <span className="mt-2 text-[11px] uppercase tracking-wide text-[var(--content-tertiary)]">
               Campos da proposta
             </span>
-            <Field label="Centro de custo" value={draft.vocabulary.labels.costCenter} onChange={(v) => changeVocabulary({ labels: { ...draft.vocabulary.labels, costCenter: v } })} />
+            <Field label="Centro de custo" value={draft.vocabulary.labels.cost_center} onChange={(v) => changeVocabulary({ labels: { ...draft.vocabulary.labels, cost_center: v } })} />
             <Field label="Conta contábil" value={draft.vocabulary.labels.account} onChange={(v) => changeVocabulary({ labels: { ...draft.vocabulary.labels, account: v } })} />
             <Field label="Valor" value={draft.vocabulary.labels.amount} onChange={(v) => changeVocabulary({ labels: { ...draft.vocabulary.labels, amount: v } })} />
-            <Field label="Vencimento" value={draft.vocabulary.labels.dueDate} onChange={(v) => changeVocabulary({ labels: { ...draft.vocabulary.labels, dueDate: v } })} />
+            <Field label="Vencimento" value={draft.vocabulary.labels.due_date} onChange={(v) => changeVocabulary({ labels: { ...draft.vocabulary.labels, due_date: v } })} />
 
             <span className="mt-2 text-[11px] uppercase tracking-wide text-[var(--content-tertiary)]">
               Os quatro números do topo

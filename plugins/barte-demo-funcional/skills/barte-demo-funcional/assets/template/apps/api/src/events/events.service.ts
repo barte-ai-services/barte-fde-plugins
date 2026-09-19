@@ -9,10 +9,10 @@ import { ReplaySubject, Observable } from "rxjs";
  * NOT resolve on its own and handed back to a human.
  */
 export type Event =
-  | { type: "step"; itemId: string; step: string; state: "running" | "done" | "exception"; at: string }
-  | { type: "decision"; itemId: string; agent: string; action: string; reason: string; confidence: number; at: string }
-  | { type: "exception"; itemId: string; reason: string; at: string }
-  | { type: "item"; itemId: string; at: string }
+  | { type: "step"; item_id: string; step: string; state: "running" | "done" | "exception"; at: string }
+  | { type: "decision"; item_id: string; agent: string; action: string; reason: string; confidence: number; at: string }
+  | { type: "exception"; item_id: string; reason: string; at: string }
+  | { type: "item"; item_id: string; at: string }
   | { type: "telemetry"; call: { component: string; operation: string; ms: number; ok: boolean }; at: string }
   /** The flow changed: the screen redraws the pipeline without a page reload. */
   | { type: "flow"; at: string };

@@ -125,8 +125,8 @@ export function StackPanel() {
                     <tr key={t.component} className="border-t border-[var(--stroke-primary)]">
                       <td className="py-1 text-[var(--content-primary)]">{t.component}</td>
                       <td>{t.calls}</td>
-                      <td>{t.medianMs} ms</td>
-                      <td>{t.worstMs} ms</td>
+                      <td>{t.median_ms} ms</td>
+                      <td>{t.worst_ms} ms</td>
                     </tr>
                   ))}
                 </tbody>

@@ -27,6 +27,11 @@ screen is Brazilian Portuguese** — screen labels, agent decisions, the flow
 panel's interface and the sample data. When you edit this template, keep that
 split: an identifier in Portuguese or a screen label in English are both bugs.
 
+**Naming:** whatever crosses the wire is snake_case — API JSON, the events, the
+database columns and `data/flow.yaml` (`review_reason`, `escalate_if`,
+`cost_center`). Everything else follows the language: camelCase for variables and
+functions, PascalCase for components. `references/architecture.md` has the why.
+
 ## How to run the conversation
 
 **The person on the other side works in sales.** They know the client's pain and

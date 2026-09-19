@@ -31,5 +31,5 @@ export function rebase(document: Document, mostRecent: string, today = new Date(
     if (typeof value === "string" && value) content[field] = shift(value);
   }
 
-  return { ...document, receivedAt: shift(document.receivedAt), content };
+  return { ...document, received_at: shift(document.received_at), content };
 }

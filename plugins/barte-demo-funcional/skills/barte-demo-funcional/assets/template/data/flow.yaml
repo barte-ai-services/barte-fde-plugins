@@ -8,7 +8,8 @@
 # `action` and `escalateIf` come from a closed catalog — the panel lists what
 # exists. Editing here, adding a step, reordering: none of it needs code.
 #
-# Keys are English (they are code); values are Portuguese (the client reads them).
+# Keys are English and snake_case (this file is a wire format, like the API);
+# values are Portuguese, because the client reads them.
 
 name: Contas a pagar
 
@@ -21,10 +22,10 @@ vocabulary:
   counterparty: Fornecedor
   incoming: Documento
   labels:
-    costCenter: Centro de custo
+    cost_center: Centro de custo
     account: Conta contábil
     amount: Valor
-    dueDate: Vencimento
+    due_date: Vencimento
   stats:
     queued: na fila
     ready: prontos para aprovação
@@ -41,7 +42,7 @@ steps:
     label: Cadastro
     hint: identifica o fornecedor
     action: find_counterparty
-    escalateIf:
+    escalate_if:
       - duplicate_document
       - not_in_registry
 
@@ -54,7 +55,7 @@ steps:
     label: Conformidade
     hint: pedido, retenção, alçada
     action: check
-    escalateIf:
+    escalate_if:
       - amount_mismatch
       - missing_inss_withholding
       - above_approval_limit

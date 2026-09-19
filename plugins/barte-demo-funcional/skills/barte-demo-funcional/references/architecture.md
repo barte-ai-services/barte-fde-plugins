@@ -111,6 +111,22 @@ separate service — and that is exactly the conversation the demo opens: work
 already arrives through a queue, so splitting it is changing where the process
 runs, not rewriting the flow.
 
+## Naming
+
+Two conventions, and the split is deliberate:
+
+- **What crosses the wire is snake_case** — API JSON, the events stream,
+  `data/flow.yaml`, the sample documents and the database columns
+  (`review_reason`, `escalate_if`, `received_at`, `cost_center`). The TypeScript
+  interfaces that mirror those payloads carry the same keys, the way the Anthropic
+  SDK does with `max_tokens` and `stop_reason`.
+- **Everything else follows the language** — camelCase for variables and
+  functions, PascalCase for classes and React components, and NestJS/Next file
+  naming (`flow.service.ts`, `page.tsx`).
+
+Mixing them is how you end up mapping names at every boundary; keeping the border
+at the wire means one conversion point, in `fromRow`, and nowhere else.
+
 ## Environment traps
 
 - **Next 16 blocks dev resources outside `localhost`.** Without
