@@ -2,10 +2,13 @@
 
 Marketplace de plugins do time de FDE da Barte para o Claude Code.
 
+Mantido por **Barte AI Services**. A skill `barte-demo-funcional` foi escrita por
+**Fernando Seguim**.
+
 ## Instalar
 
 ```
-/plugin marketplace add barte-project/barte-fde-plugins
+/plugin marketplace add barte-ai-services/barte-fde-plugins
 /plugin install barte-demo-funcional@barte-fde
 ```
 
@@ -42,3 +45,7 @@ ls -l ~/.claude/skills/barte-demo-funcional
 
 Depois de mexer numa skill, suba a `version` no `plugin.json` e no
 `marketplace.json` — é o número que diz a quem já instalou que há coisa nova.
+
+O `owner` do marketplace é de quem **mantém** o repositório; o `author` de cada
+plugin é de quem **escreveu** aquele plugin. Os dois são campos distintos de
+propósito: um plugin novo aqui dentro leva o nome de quem o fez.

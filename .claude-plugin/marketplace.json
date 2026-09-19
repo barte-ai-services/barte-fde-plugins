@@ -2,8 +2,8 @@
   "name": "barte-fde",
   "description": "Ferramentas do time de FDE da Barte para construir e apresentar demos a clientes.",
   "owner": {
-    "name": "Barte · FDE",
-    "url": "https://github.com/barte-project"
+    "name": "Barte AI Services",
+    "url": "https://github.com/barte-ai-services"
   },
   "plugins": [
     {
@@ -11,8 +11,12 @@
       "source": "./plugins/barte-demo-funcional",
       "displayName": "Demo funcional",
       "description": "Constrói uma demo funcional da Barte — web com o design system, backend NestJS, infraestrutura de nuvem local (AWS, GCP ou Azure) em contêiner e um agente que executa o trabalho e presta contas na tela.",
-      "version": "1.0.0",
-      "author": { "name": "Barte · FDE" },
+      "version": "1.1.0",
+      "author": {
+        "name": "Fernando Seguim",
+        "url": "https://github.com/fernandoseguim"
+      },
+      "repository": "https://github.com/barte-ai-services/barte-fde-plugins",
       "license": "UNLICENSED",
       "category": "productivity",
       "keywords": ["demo", "cliente", "agente", "nextjs", "nestjs", "floci", "proposta"]
