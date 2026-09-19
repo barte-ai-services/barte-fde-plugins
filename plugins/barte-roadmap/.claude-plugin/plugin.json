@@ -1,7 +1,7 @@
 {
   "name": "barte-roadmap",
-  "description": "Atualiza o roadmap estratégico e tático da Barte com evidências do GitHub e publicação privada.",
-  "version": "1.0.0",
+  "description": "Atualiza o roadmap tático e operacional da Barte com evidências do GitHub e publicação privada.",
+  "version": "1.0.1",
   "author": {
     "name": "Barte AI Services"
   },

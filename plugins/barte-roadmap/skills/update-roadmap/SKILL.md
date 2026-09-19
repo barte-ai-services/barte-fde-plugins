@@ -1,6 +1,6 @@
 ---
 name: update-roadmap
-description: Refresh the Barte AI Services roadmap from GitHub issues, pull requests and Projects, reconcile delivery evidence, and publish the private strategic and tactical views. Use for roadmap updates, meeting preparation, or requested historical backfill.
+description: Refresh the Barte AI Services roadmap from GitHub issues, pull requests and Projects, reconcile delivery evidence, and publish the private tactical and operational views. Use for roadmap updates, meeting preparation, or requested historical backfill.
 ---
 
 # Update the Barte roadmap
@@ -25,7 +25,7 @@ Keep the central roadmap consistent with GitHub and explicit client decisions. R
 
 ## Validate and publish
 
-- Build the current docs with strict validation. Check local links and the meaningful changes: affected clients, strategic/tactical switching, status filters, date labels, undated items, meeting mode and browser errors. Broaden responsive testing only when layout or controls changed.
+- Build the current docs with strict validation. Check local links and the meaningful changes: affected clients, tactical/operational switching, status filters, date labels, undated items, meeting mode and browser errors. Broaden responsive testing only when layout or controls changed.
 - Preserve the data contract, Barte branding, stable client identifiers and saved URLs. Meeting mode is a presentation filter, not access control: the browser receives the whole authorized internal dataset.
 - Keep the latest retrieval time accurate and visible. If nothing changed beyond freshness, report that plainly; avoid manufacturing activity or unnecessary issues.
 - Publish through the repository's normal Git/PR workflow within the user's scope. Respect branch protections and signing configuration. Verify Pages is private before publication, and wait for the actual documentation deployment to succeed. Never make it public to resolve an access failure. No product runtime deployments belong to this workflow.
