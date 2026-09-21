@@ -24,7 +24,7 @@ Until the repository is on GitHub, point at the local path:
 | Plugin | What it does |
 |---|---|
 | [`barte-demo-funcional`](plugins/barte-demo-funcional) | builds a **functional** client demo: web on the `barte-design-system`, a NestJS backend, storage/queue/database in containers (AWS, GCP or Azure), and an agent that does the work and accounts for itself on screen |
-
+| [`barte-checkpoint-fde`](plugins/barte-checkpoint-fde) | turns the daily **Sync FDEs** into the team checkpoint and publishes it: a status update on the `Barte AI Services` project board and a post in `#fde-deployment` |
 | [`barte-roadmap`](plugins/barte-roadmap) | refreshes the private tactical/operational roadmap from GitHub, reconciles evidence, supports requested backfill and verifies publication |
 
 The `update-roadmap` skill runs on invocation; it does not install a scheduler or promise live synchronization. It reuses the roadmap repository’s maintained refresh script.
