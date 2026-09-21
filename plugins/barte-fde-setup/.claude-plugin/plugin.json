@@ -1,0 +1,10 @@
+{
+  "name": "barte-fde-setup",
+  "description": "Sets up a new FDE or Client Partner's machine from zero to working — Homebrew, git, GitHub CLI, Node, Python, Claude Code, the Barte plugins, the connectors and Podman for containers — doing the work rather than handing over a list of commands.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Fernando Seguim",
+    "url": "https://github.com/fernandoseguim"
+  },
+  "homepage": "https://github.com/barte-ai-services/barte-fde-plugins"
+}

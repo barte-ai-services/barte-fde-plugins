@@ -70,6 +70,30 @@
         "github-projects",
         "slack"
       ]
+    },
+    {
+      "name": "barte-fde-setup",
+      "source": "./plugins/barte-fde-setup",
+      "displayName": "Setup da máquina",
+      "description": "Prepara a máquina de um FDE ou Client Partner do zero ao funcionando — Homebrew, git, GitHub CLI, Node, Python, Claude Code, os plugins da Barte, os conectores e Podman para contêineres — executando o setup em vez de entregar uma lista de comandos.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fernando Seguim",
+        "url": "https://github.com/fernandoseguim"
+      },
+      "repository": "https://github.com/barte-ai-services/barte-fde-plugins",
+      "license": "SEE LICENSE IN LICENSE",
+      "category": "productivity",
+      "keywords": [
+        "setup",
+        "onboarding",
+        "maquina",
+        "homebrew",
+        "gh",
+        "node",
+        "python",
+        "podman"
+      ]
     }
   ]
 }
