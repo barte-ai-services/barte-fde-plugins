@@ -46,31 +46,23 @@ shows no line from an invitee, ask rather than assume.
 ## 3. Use the canonical client names
 
 Speech-to-text mangles every client name on this call. **Never take a client name
-from a transcript.** The source of truth is the `Frente` field on the project
-board:
+from a transcript.**
+
+The roster is not this skill's to own. It lives in the roadmap data contract —
+[`plugins/barte-roadmap/skills/update-roadmap/references/barte-roadmap.md`](../../../barte-roadmap/skills/update-roadmap/references/barte-roadmap.md)
+— under **Portfolio and stable identifiers**, together with the display spellings
+and the transcript manglings to expect. Read it; do not keep a second copy here.
+
+Confirm against the board when a name is in doubt, since the contract is a
+starting configuration and not live evidence:
 
 ```bash
 gh project field-list 1 --owner barte-ai-services --format json
 ```
 
-Current values: **Grupo Primo · Comp · Barte AI Platform · Buser · Skintec ·
-Monkey · Sallve**. The org's repositories corroborate them
-(`barte-ai-platform-<client>`).
-
-Known manglings, all observed in real transcripts:
-
-| Canonical | Heard as |
-|---|---|
-| Sallve | Salve, Sauve |
-| Monkey | Monki, Mon, Monk, comon |
-| Buser | Boozer, Boomer, Booer, Boas, Buzzer |
-| Comp | Pomp, compa |
-| Riza | Risa |
-| Skintec | Skintech, SkinTech |
-
-**Riza has a repository (`ai-services-riza`) but is not yet a `Frente` option.**
-When a front is missing from the board, flag it in the checkpoint — a front that
-exists in the work but not in the board is exactly what goes quiet.
+**Flag a front that is missing from the board.** Riza has a repository
+(`ai-services-riza`) and an active engagement but no `Frente` option — a front
+that exists in the work and not in the board is exactly what goes quiet.
 
 ## 4. Structure it as CPPP
 
