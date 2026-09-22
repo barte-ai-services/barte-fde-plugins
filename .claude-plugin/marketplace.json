@@ -48,6 +48,27 @@
         "fde",
         "backfill"
       ]
+    },
+    {
+      "name": "brief-diario-fde",
+      "source": "./plugins/brief-diario-fde",
+      "displayName": "Brief diário",
+      "description": "Brief diário do FDE em texto no chat: to-dos atribuídos a você, reuniões de cliente que aconteceram sem você, recap do último dia útil e movimento nos engajamentos ativos. Configura uma tarefa agendada em dias úteis.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Daniel Dias"
+      },
+      "repository": "https://github.com/barte-ai-services/barte-fde-plugins",
+      "license": "SEE LICENSE IN LICENSE",
+      "category": "productivity",
+      "keywords": [
+        "brief",
+        "resumo matinal",
+        "granola",
+        "fireflies",
+        "agenda",
+        "fde"
+      ]
     }
   ]
 }
