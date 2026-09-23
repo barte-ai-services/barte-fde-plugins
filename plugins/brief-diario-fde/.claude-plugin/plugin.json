@@ -1,0 +1,9 @@
+{
+  "name": "brief-diario-fde",
+  "description": "Brief diário do FDE em texto no chat: to-dos atribuídos a você, reuniões de cliente que aconteceram sem você, recap do último dia útil e movimento nos engajamentos ativos. Configura uma tarefa agendada em dias úteis.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Daniel Dias"
+  },
+  "homepage": "https://github.com/barte-ai-services/barte-fde-plugins"
+}

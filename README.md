@@ -11,6 +11,7 @@ by **Fernando Seguim**.
 /plugin marketplace add barte-ai-services/barte-fde-plugins
 /plugin install barte-demo-funcional@barte-fde
 /plugin install barte-roadmap@barte-fde
+/plugin install brief-diario-fde@barte-fde
 ```
 
 Until the repository is on GitHub, point at the local path:
@@ -26,6 +27,7 @@ Until the repository is on GitHub, point at the local path:
 | [`barte-demo-funcional`](plugins/barte-demo-funcional) | builds a **functional** client demo: web on the `barte-design-system`, a NestJS backend, storage/queue/database in containers (AWS, GCP or Azure), and an agent that does the work and accounts for itself on screen |
 
 | [`barte-roadmap`](plugins/barte-roadmap) | refreshes the private tactical/operational roadmap from GitHub, reconciles evidence, supports requested backfill and verifies publication |
+| [`brief-diario-fde`](plugins/brief-diario-fde) | daily brief for an FDE, as plain text in the chat: their to-dos from Fireflies and Granola, client meetings held without them, a recap of the last business day and movement in their engagements; sets itself up as a weekday scheduled task |
 
 The `update-roadmap` skill runs on invocation; it does not install a scheduler or promise live synchronization. It reuses the roadmap repository’s maintained refresh script.
 
