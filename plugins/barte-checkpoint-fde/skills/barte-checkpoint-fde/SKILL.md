@@ -10,6 +10,10 @@ a workday left to be worked). Every run produces one checkpoint that lands in tw
 places: a **status update** on the project board, and a post in
 **#fde-deployment** for whoever missed the call.
 
+**Nothing is published before the owner says so.** Every run ends with the full
+checkpoint drafted for validation. The owner corrects it, and only an explicit OK
+publishes it. See section 8.
+
 This skill exists because the raw material is unreliable and the vocabulary is
 not free-form. Both problems have known answers. Follow them.
 
@@ -28,6 +32,18 @@ returned 44 single-word fragments for a 42-minute call and transcribed Portugues
 audio as English — its auto-summary then invented a "Japanese process" and a
 "Boozer project". A transcript whose sentence count is absurd for the duration is
 broken; say so and switch sources rather than reporting its summary.
+
+Two more traps, both from 24/09/2026:
+
+- **The calendar event can carry several "Anotações do Gemini" docs.** One of
+  them was a 10-second stub ("A transcrição foi encerrada após 00:00:10"). Pick
+  the doc whose transcript length matches the meeting's duration.
+- **Reprocessing Fireflies in pt-BR can come back partial.** The retry covered
+  only the last 16 of 32 minutes. Check the first timestamp before trusting it.
+
+The Drive connector answers "not found" for a doc the connected account cannot
+see. That means the doc needs to be shared with that account, not that the doc
+is missing. Ask for access; do not try to log in through a browser.
 
 If every source failed, the audio still exists. Say the transcript failed, link
 the recording, and do not fill the report with guesses.
@@ -80,10 +96,56 @@ your own:**
 
 > **C**liente · **P**roblema · **P**rogresso · **P**lano
 
-One block per front, with a semaphore. Then decisions, process items, action
-items, and the date agenda. `assets/template.md` is the skeleton.
+`assets/template.md` is the skeleton, and **its section order is fixed**. The
+owner approved this format on 24/09/2026, so do not add, drop or reorder sections:
 
-## 5. Extract every date, and name the ones that are missing
+1. Header: date, time, links, present and absent, plus a source note when the
+   transcript failed.
+2. **TL;DR**: three to five bold points.
+3. **Por frente (CPPP)**: one block per front, with a semaphore, FDE and CP.
+4. **Delta vs. the previous checkpoint** (section 5).
+5. **Itens de ontem que ficaram em silêncio hoje** (section 5).
+6. **Decisões**, with the reservations raised.
+7. **Processo**.
+8. **Action items**, **Sem data definida na call** and **Agenda de datas**.
+
+Every front on the roster gets a block, even when nobody spoke about it. Those
+get ⬜ and "Sem update na call." A front that goes quiet is a finding, not an
+omission.
+
+**Quote, don't paraphrase, when the words are the evidence.** A deadline that
+vanished, a risk that was contested, or a client changing tone all land harder
+with the literal line and its timestamp.
+
+**The owner can take a front out.** When they do, remove it everywhere: its
+block, the delta, the TL;DR, the agenda and the Slack post. Do not leave traces
+elsewhere.
+
+## 5. Compare with the previous checkpoint
+
+The delta is what makes a daily worth reading. Before drafting, read the last
+status updates on the board:
+
+```bash
+gh api graphql -f query='query{node(id:"PVT_kwDOE6aFI84BkCui"){... on ProjectV2{
+  statusUpdates(last:3){nodes{createdAt status body}}}}}'
+```
+
+From the most recent one, build:
+
+- **Delta table.** For each front: what yesterday said, what today said, and the
+  movement (↑ improved · ↓ got worse · ↕ split · → steady · ⬜ silent), with a
+  one-line reading.
+- **Climate and three cross-cutting signals.** What changed in how the team
+  talks, not only in what it delivers.
+- **Silence table.** Every commitment, risk or pending item from yesterday that
+  today's call did not mention, with its owner. Nothing closed, nothing
+  reaffirmed: they just left the conversation.
+- **Inherited dates.** Carry yesterday's milestones that are still in the future
+  into today's agenda, marking their origin, e.g. "(de 21/09)". Strike through a
+  milestone whose date quietly changed, and say it was not mentioned.
+
+## 6. Extract every date, and name the ones that are missing
 
 Do not leave a prazo blank because it was not stated as a date. Sweep the
 transcript for temporal markers and resolve them against the meeting date:
@@ -105,7 +167,7 @@ Then:
   and no new date was ever given. That is not a missing date — it is an owner who
   owes one. Call it out.
 
-## 6. Calibrate the semaphore with the owner
+## 7. Calibrate the semaphore with the owner
 
 🔴 prazo em risco · 🟡 atenção · 🟢 no trilho
 
@@ -121,11 +183,23 @@ Two rules worth keeping:
 - **A deliberate slowdown is not a risk.** Riza was decelerated on purpose to
   build trust with a client in recuperação judicial. Amber, not red, and say why.
 
-## 7. Publish
+## 8. Validate, then publish
 
-Both targets, every day. Draft first, confirm, then publish.
+**Draft → validation → explicit OK → publish.** Always in this order, every day:
+
+1. Write the full checkpoint (`assets/template.md`) to a local file and the Slack
+   text (`assets/slack-template.md`) to another. Show both to the owner.
+2. List what you inferred and need confirmed: ambiguous speakers, the fronts'
+   semaphores, the overall status, dates resolved from relative phrases, fronts
+   left out.
+3. Apply the corrections and show the result again.
+4. **Publish only after an explicit OK.** Approving the content is not approving
+   the publication, and an OK for the board is not an OK for Slack. Each target
+   needs its own yes.
 
 ### Project board status update
+
+The body is the **full checkpoint**, not a summary.
 
 ```bash
 gh api graphql \
@@ -141,9 +215,10 @@ gh api graphql \
   -f td='YYYY-MM-DD'
 ```
 
-`status` is one of `ON_TRACK`, `AT_RISK`, `OFF_TRACK`, `COMPLETE`, `INACTIVE` —
-pick it from the worst semaphore on the board. `targetDate` is the horizon the
-committed dates reach.
+`status` is one of `ON_TRACK`, `AT_RISK`, `OFF_TRACK`, `COMPLETE`, `INACTIVE`.
+Propose it from the worst semaphore on the board, and let the owner decide.
+`startDate` is the meeting date; `targetDate` is the horizon the committed dates
+reach.
 
 The board's own vocabulary already matches this report; prefer its literal values
 so the checkpoint feeds the board instead of running beside it:
@@ -164,8 +239,23 @@ loop.
 > Barte workspace is missing, publish to the board, hand over the formatted text,
 > and say plainly that the Slack step did not happen.
 
-Keep the Slack version shorter than the board version: semaphore table, decisions,
-next milestones, undated items. Link the transcript.
+The Slack post always follows `assets/slack-template.md`, the format the owner
+approved on 24/09/2026:
+
+- Opening line: "Mandando um resumo da Sync de hoje."
+- Header: `Checkpoint FDE — DD/MM (dia) · <emoji> <status>`, followed by one
+  sentence on blockers. The status is the same one chosen for the board:
+  `:large_green_circle: on track` · `:large_yellow_circle: at risk` ·
+  `:red_circle: off track`.
+- The absent, with the reason when it was given.
+- **One line per front**: Slack emoji + canonical name + an em dash + the day's
+  fact in one line, with the date that matters. Emojis: `:red_circle:` 🔴 ·
+  `:large_yellow_circle:` 🟡 · `:large_green_circle:` 🟢 · `:white_large_square:` ⬜.
+- Closing line: `Detalhe completo no board:
+  https://github.com/orgs/barte-ai-services/projects/1`.
+
+No tables, no headings, no decisions or agenda. The detail lives on the board;
+the Slack post is only there to send people to it.
 
 ## Overlap to respect
 
