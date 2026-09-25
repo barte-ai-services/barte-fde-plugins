@@ -57,8 +57,28 @@ The initial snapshot distinguishes technical completion from business acceptance
 | Monkey | `monkey` | History must come from evidence |
 | Sallve | `salve` | Double L in display name; legacy key retained |
 | Barte AI Platform | `shared` | Internal platform: Gatekeeper integrations, Chronicles projections, Loom workflows |
+| Riza | *(none yet)* | Repository `ai-services-riza` exists and the engagement is active since the 21 September 2026 kickoff, but there is no `Frente` option and no client key. Deliberately in diagnosis, with no technical workstream for 10–15 days — which is exactly how a front goes unnoticed. Assign a key before it enters the Project |
 
-All seven were declared active by the user. That statement does not establish issue-level progress, scope or dates.
+The first seven were declared active by the user. That statement does not establish issue-level progress, scope or dates, and it predates Riza — which was added here from its kickoff, not from that declaration.
+
+### Transcript spellings
+
+Meeting transcripts reach these names through speech-to-text and mangle them
+consistently. A checkpoint or roadmap entry must never take a client name from a
+transcript — resolve it here or against the Project. Observed in real recordings:
+
+| Display name | Heard as |
+| --- | --- |
+| Sallve | Salve, Sauve |
+| Monkey | Monki, Mon, Monk, comon |
+| Buser | Boozer, Boomer, Booer, Boas, Buzzer |
+| Comp | Pomp, compa |
+| Skintec | Skintech, SkinTech |
+| Riza | Risa |
+
+Note that two of the manglings collide with the legacy keys: a transcript's
+"Boozer" is the display name Buser, and "Salve" is Sallve. The key and the
+mishearing look alike and mean different things.
 
 The initial refresh script maps only `Grupo Primo`, `Comp` and `Compartilhada`. If new clients enter the Project, expand the mapping using the existing portfolio keys and test the affected paths before refreshing. Preserve `Compartilhada` as a source alias for `Barte AI Platform` when appropriate; do not rename Project options merely to refresh the site.
 
