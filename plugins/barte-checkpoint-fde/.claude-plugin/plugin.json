@@ -1,0 +1,10 @@
+{
+  "name": "barte-checkpoint-fde",
+  "description": "Turns the daily Sync FDEs recording into the team checkpoint and publishes it — a status update on the Barte AI Services project board and a post in #fde-deployment.",
+  "version": "1.1.0",
+  "author": {
+    "name": "Fernando Seguim",
+    "url": "https://github.com/fernandoseguim"
+  },
+  "homepage": "https://github.com/barte-ai-services/barte-fde-plugins"
+}

@@ -25,7 +25,7 @@ Until the repository is on GitHub, point at the local path:
 | Plugin | What it does |
 |---|---|
 | [`barte-demo-funcional`](plugins/barte-demo-funcional) | builds a **functional** client demo: web on the `barte-design-system`, a NestJS backend, storage/queue/database in containers (AWS, GCP or Azure), and an agent that does the work and accounts for itself on screen |
-
+| [`barte-checkpoint-fde`](plugins/barte-checkpoint-fde) | turns the daily **Sync FDEs** into the team checkpoint and publishes it: a status update on the `Barte AI Services` project board and a post in `#fde-deployment` |
 | [`barte-roadmap`](plugins/barte-roadmap) | refreshes the private tactical/operational roadmap from GitHub, reconciles evidence, supports requested backfill and verifies publication |
 | [`brief-diario-fde`](plugins/brief-diario-fde) | daily brief for an FDE, as plain text in the chat: their to-dos from Fireflies and Granola, client meetings held without them, a recap of the last business day and movement in their engagements; sets itself up as a weekday scheduled task |
 
