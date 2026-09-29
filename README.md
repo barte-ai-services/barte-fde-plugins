@@ -14,9 +14,7 @@ marketplace. This repository is no longer a marketplace of its own.
 ```
 /plugin marketplace add barte-ai-services/barte-forge
 /plugin install barte-demo-funcional@ahrena
-/plugin install sync-fde@ahrena
-/plugin install barte-roadmap@ahrena
-/plugin install daily-brief@ahrena
+/plugin install fde-reports@ahrena
 ```
 
 If you installed from here before, remove the old marketplace first with
@@ -24,12 +22,17 @@ If you installed from here before, remove the old marketplace first with
 
 ## What is here
 
-| Plugin | What it does |
-|---|---|
-| [`barte-demo-funcional`](plugins/barte-demo-funcional) | builds a **functional** client demo: web on the `barte-design-system`, a NestJS backend, storage/queue/database in containers (AWS, GCP or Azure), and an agent that does the work and accounts for itself on screen |
-| [`sync-fde`](plugins/sync-fde) | turns the daily **Sync FDEs** into the team checkpoint and publishes it: a status update on the `Barte AI Services` project board and a post in `#fde-deployment` |
-| [`barte-roadmap`](plugins/barte-roadmap) | refreshes the private tactical/operational roadmap from GitHub, reconciles evidence, supports requested backfill and verifies publication |
-| [`daily-brief`](plugins/daily-brief) | daily brief for an FDE, as plain text in the chat: their to-dos from Fireflies and Granola, client meetings held without them, a recap of the last business day and movement in their engagements; sets itself up as a weekday scheduled task |
+| Plugin | Skill | What it does |
+|---|---|---|
+| [`barte-demo-funcional`](plugins/barte-demo-funcional) | `barte-demo-funcional` | builds a **functional** client demo: web on the `barte-design-system`, a NestJS backend, storage/queue/database in containers (AWS, GCP or Azure), and an agent that does the work and accounts for itself on screen |
+| [`fde-reports`](plugins/fde-reports) | `daily-brief` | daily brief for an FDE, as plain text in the chat: their to-dos from Fireflies and Granola, client meetings held without them, a recap of the last business day and movement in their engagements; sets itself up as a weekday scheduled task |
+| | `sync-fde` | turns the daily **Sync FDEs** into the team checkpoint and publishes it: a status update on the `Barte AI Services` project board and a post in `#fde-deployment` |
+| | `update-roadmap` | refreshes the private tactical/operational roadmap from GitHub, reconciles evidence, supports requested backfill and verifies publication |
+
+A plugin is what gets installed; a skill is one activity inside it. The three
+reports ship together because they read the same sources and share one client
+roster, which lives in `update-roadmap`'s data contract
+(`plugins/fde-reports/skills/update-roadmap/references/barte-roadmap.md`).
 
 The `update-roadmap` skill runs on invocation; it does not install a scheduler or promise live synchronization. It reuses the roadmap repository’s maintained refresh script.
 
