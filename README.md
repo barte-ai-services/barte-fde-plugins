@@ -14,6 +14,7 @@ marketplace. This repository is no longer a marketplace of its own.
 ```
 /plugin marketplace add barte-ai-services/barte-forge
 /plugin install barte-demo-funcional@ahrena
+/plugin install barte-checkpoint-fde@ahrena
 /plugin install barte-roadmap@ahrena
 /plugin install daily-brief@ahrena
 ```
