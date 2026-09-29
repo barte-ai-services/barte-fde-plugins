@@ -1,5 +1,5 @@
 ---
-name: barte-checkpoint-fde
+name: sync-fde
 description: Turns the daily Sync FDEs meeting into the FDE team checkpoint and publishes it — a status update on the "Barte AI Services" GitHub project and a post in the #fde-deployment Slack channel. Use it WHENEVER someone asks for the checkpoint, the daily report, the sync summary, "monta o report da sync", "publica o checkpoint", "atualiza o board", "manda no deployment", or brings the transcript/recording of a Sync FDEs and wants it turned into a status. Trigger it too when someone asks what changed on the client fronts today, wants the semaphore per front (Grupo Primo, Comp, Buser, Skintec, Monkey, Sallve, Riza), or asks to re-publish a checkpoint after correcting it. Do NOT use it for client-facing reports, for a single project's deep status, or for meetings other than the Sync FDEs.
 ---
 
