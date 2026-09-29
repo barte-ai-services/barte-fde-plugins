@@ -1,0 +1,10 @@
+{
+  "name": "fde-reports",
+  "description": "Os reports do time de FDE da Barte: o daily brief de cada pessoa, o checkpoint da Sync FDEs publicado no board e no Slack, e o roadmap tático e operacional atualizado com evidências do GitHub.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Barte AI Services",
+    "url": "https://github.com/barte-ai-services"
+  },
+  "homepage": "https://github.com/barte-ai-services/barte-fde-plugins"
+}

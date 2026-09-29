@@ -55,6 +55,8 @@ Always in the parameters' time zone.
 
 The client list, domains and alternative names come from the task's `PARÂMETROS`.
 
+Spell every client the way the roster does, never the way a transcript does: speech-to-text mangles these names consistently ("Boozer" is Buser, "Salve" is Sallve). The roster and the manglings to expect are in [`update-roadmap/references/barte-roadmap.md`](../update-roadmap/references/barte-roadmap.md), under **Transcript spellings**.
+
 **A meeting is a client meeting** if an attendee has a client domain, the title names the client or an alternative name, or the notes identify the client. An internal Barte meeting about a client counts as engagement movement but not as a missed client meeting.
 
 **The person attended** if they appear as a speaker in the transcript, the meeting is in their Granola, or they accepted the invite and the notes confirm presence. An accepted invite with no trace of presence does not prove attendance; treat it as missed.

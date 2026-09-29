@@ -7,7 +7,7 @@ The prompt is in Portuguese because the person reads and approves it.
 ---
 
 ```
-Use a skill daily-brief (plugin daily-brief, marketplace ahrena) para gerar meu brief diário de hoje.
+Use a skill daily-brief (plugin fde-reports, marketplace ahrena) para gerar meu brief diário de hoje.
 
 PARÂMETROS
 - Nome: {nome completo}
