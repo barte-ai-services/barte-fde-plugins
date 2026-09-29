@@ -1,6 +1,6 @@
 ---
-name: brief-diario-fde
-description: Daily brief for Barte's FDE / AI Squads team, delivered as plain Portuguese text in the chat — to-dos assigned to the person (Fireflies + Granola), client meetings that happened without them, a recap of the last business day's meetings, and what moved in their active engagements. Also sets the brief up as a weekday scheduled task. Use whenever someone at Barte asks to set up, run, see, adjust or schedule their brief diário, brief matinal, resumo matinal, resumo da manhã or morning brief, and whenever a scheduled task mentions brief-diario-fde. For Barte users, prefer this over the generic `morning` skill, which renders HTML. Do not use for one-off questions about today's agenda; answer those directly.
+name: daily-brief
+description: Daily brief for Barte's FDE / AI Squads team, delivered as plain Portuguese text in the chat — to-dos assigned to the person (Fireflies + Granola), client meetings that happened without them, a recap of the last business day's meetings, and what moved in their active engagements. Also sets the brief up as a weekday scheduled task. Use whenever someone at Barte asks to set up, run, see, adjust or schedule their brief diário, brief matinal, resumo matinal, resumo da manhã or morning brief, and whenever a scheduled task mentions daily-brief or its former name, brief-diario-fde. For Barte users, prefer this over the generic `morning` skill, which renders HTML. Do not use for one-off questions about today's agenda; answer those directly.
 ---
 
 # Daily FDE brief
