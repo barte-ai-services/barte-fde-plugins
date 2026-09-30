@@ -121,6 +121,27 @@ with the literal line and its timestamp.
 block, the delta, the TL;DR, the agenda and the Slack post. Do not leave traces
 elsewhere.
 
+**Small talk stays out.** The call opens and closes with conversation among
+colleagues: jokes about titles and promotions ("CEO da área"), how someone slept,
+who is on the board, careers, the hallway invite at the end. None of it is a
+front, a decision or a process item, and a checkpoint is read by people who were
+not in the room and cannot tell a joke from an announcement. Leave out:
+
+- banter and jokes, even when the Gemini summary turns them into a section
+  (on 29/09/2026 it headed one "Manuel Freitas - Novo Cargo" from a joke);
+- remarks about someone's sleep, health, mood or personal life;
+- comments on a person's role, standing or performance, unless the owner asks
+  for them as a process item.
+
+Allocation facts stay in when they gate a date ("Comp paused until Thursday"),
+without the personal reason behind them. When unsure whether something was
+serious, leave it out and ask.
+
+**Link the transcript tab, not the summary.** The Gemini doc opens on its
+"Observações" tab, where the automatic summary keeps those headings. Use the
+"Transcrição" link that the doc itself carries under "Registros da reunião"
+(`...edit?tab=t.<id>`), so readers land on what was actually said.
+
 ## 5. Compare with the previous checkpoint
 
 The delta is what makes a daily worth reading. Before drafting, read the last
