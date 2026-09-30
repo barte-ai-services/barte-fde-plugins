@@ -41,6 +41,14 @@ Two more traps, both from 24/09/2026:
 - **Reprocessing Fireflies in pt-BR can come back partial.** The retry covered
   only the last 16 of 32 minutes. Check the first timestamp before trusting it.
 
+And one from 29/09/2026:
+
+- **The Gemini summary assigns topics to the wrong client.** Its "Detalhes"
+  put a Skintec discussion (FP&A, purchase requisitions) under "Monkey e
+  Boozer", because the client names were mangled. Attribute each topic from the
+  verbatim transcript, not from the summary. The CP's closing roll call ("Skintec,
+  já falei, Monkey, já falei...") is the best tiebreaker.
+
 The Drive connector answers "not found" for a doc the connected account cannot
 see. That means the doc needs to be shared with that account, not that the doc
 is missing. Ask for access; do not try to log in through a browser.
@@ -209,6 +217,10 @@ gh api graphql \
 
 `status` is one of `ON_TRACK`, `AT_RISK`, `OFF_TRACK`, `COMPLETE`, `INACTIVE`.
 Propose it from the worst semaphore on the board, and let the owner decide.
+The board shows `ON_TRACK` as green, `AT_RISK` as **yellow** and `OFF_TRACK` as
+red. Owners speak in colors, not in enum names. When they say the overall status
+is "amarelo", that is `AT_RISK`, not a downgrade from it, so say which color each
+value shows when you propose one.
 `startDate` is the meeting date; `targetDate` is the horizon the committed dates
 reach.
 
@@ -225,10 +237,14 @@ Post in **#fde-deployment**. This was agreed on the call: whoever misses the syn
 reports asynchronously in that channel, and the checkpoint is what closes the
 loop.
 
-> **Known blocker (as of 21/09/2026):** the connected Slack workspace is Guardia,
-> not Barte, so the channel is unreachable from a session with only that
-> connector. Check with `slack_search_channels` before promising the post; if the
-> Barte workspace is missing, publish to the board, hand over the formatted text,
+`#fde-deployment` is a **private** channel in the `barte-workspace` Slack
+(created by Manuel on 01/09/2026). Find it with `slack_search_channels`,
+including `private_channel` in `channel_types`; a public-only search misses it.
+
+> **Check the workspace before promising the post.** A Slack connector can be
+> signed into a workspace other than Barte's (until 29/09/2026 it was
+> Guardia's), and then the channel does not show up. If the search does not
+> return `#fde-deployment`, publish to the board, hand over the formatted text,
 > and say plainly that the Slack step did not happen.
 
 The Slack post always follows `assets/slack-template.md`, the format the owner

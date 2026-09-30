@@ -73,7 +73,7 @@ transcript — resolve it here or against the Project. Observed in real recordin
 | Monkey | Monki, Mon, Monk, comon |
 | Buser | Boozer, Boomer, Booer, Boas, Buzzer |
 | Comp | Pomp, compa |
-| Skintec | Skintech, SkinTech |
+| Skintec | Skintech, SkinTech, "isso que é tech" |
 | Riza | Risa |
 
 Note that two of the manglings collide with the legacy keys: a transcript's
