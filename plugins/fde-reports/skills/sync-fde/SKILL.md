@@ -41,6 +41,14 @@ Two more traps, both from 24/09/2026:
 - **Reprocessing Fireflies in pt-BR can come back partial.** The retry covered
   only the last 16 of 32 minutes. Check the first timestamp before trusting it.
 
+And one from 29/09/2026:
+
+- **The Gemini summary assigns topics to the wrong client.** Its "Detalhes"
+  put a Skintec discussion (FP&A, purchase requisitions) under "Monkey e
+  Boozer", because the client names were mangled. Attribute each topic from the
+  verbatim transcript, not from the summary. The CP's closing roll call ("Skintec,
+  já falei, Monkey, já falei...") is the best tiebreaker.
+
 The Drive connector answers "not found" for a doc the connected account cannot
 see. That means the doc needs to be shared with that account, not that the doc
 is missing. Ask for access; do not try to log in through a browser.
@@ -112,6 +120,27 @@ with the literal line and its timestamp.
 **The owner can take a front out.** When they do, remove it everywhere: its
 block, the delta, the TL;DR, the agenda and the Slack post. Do not leave traces
 elsewhere.
+
+**Small talk stays out.** The call opens and closes with conversation among
+colleagues: jokes about titles and promotions ("CEO da área"), how someone slept,
+who is on the board, careers, the hallway invite at the end. None of it is a
+front, a decision or a process item, and a checkpoint is read by people who were
+not in the room and cannot tell a joke from an announcement. Leave out:
+
+- banter and jokes, even when the Gemini summary turns them into a section
+  (on 29/09/2026 it headed one "Manuel Freitas - Novo Cargo" from a joke);
+- remarks about someone's sleep, health, mood or personal life;
+- comments on a person's role, standing or performance, unless the owner asks
+  for them as a process item.
+
+Allocation facts stay in when they gate a date ("Comp paused until Thursday"),
+without the personal reason behind them. When unsure whether something was
+serious, leave it out and ask.
+
+**Link the transcript tab, not the summary.** The Gemini doc opens on its
+"Observações" tab, where the automatic summary keeps those headings. Use the
+"Transcrição" link that the doc itself carries under "Registros da reunião"
+(`...edit?tab=t.<id>`), so readers land on what was actually said.
 
 ## 5. Compare with the previous checkpoint
 
@@ -209,6 +238,10 @@ gh api graphql \
 
 `status` is one of `ON_TRACK`, `AT_RISK`, `OFF_TRACK`, `COMPLETE`, `INACTIVE`.
 Propose it from the worst semaphore on the board, and let the owner decide.
+The board shows `ON_TRACK` as green, `AT_RISK` as **yellow** and `OFF_TRACK` as
+red. Owners speak in colors, not in enum names. When they say the overall status
+is "amarelo", that is `AT_RISK`, not a downgrade from it, so say which color each
+value shows when you propose one.
 `startDate` is the meeting date; `targetDate` is the horizon the committed dates
 reach.
 
@@ -225,10 +258,14 @@ Post in **#fde-deployment**. This was agreed on the call: whoever misses the syn
 reports asynchronously in that channel, and the checkpoint is what closes the
 loop.
 
-> **Known blocker (as of 21/09/2026):** the connected Slack workspace is Guardia,
-> not Barte, so the channel is unreachable from a session with only that
-> connector. Check with `slack_search_channels` before promising the post; if the
-> Barte workspace is missing, publish to the board, hand over the formatted text,
+`#fde-deployment` is a **private** channel in the `barte-workspace` Slack
+(created by Manuel on 01/09/2026). Find it with `slack_search_channels`,
+including `private_channel` in `channel_types`; a public-only search misses it.
+
+> **Check the workspace before promising the post.** A Slack connector can be
+> signed into a workspace other than Barte's (until 29/09/2026 it was
+> Guardia's), and then the channel does not show up. If the search does not
+> return `#fde-deployment`, publish to the board, hand over the formatted text,
 > and say plainly that the Slack step did not happen.
 
 The Slack post always follows `assets/slack-template.md`, the format the owner
