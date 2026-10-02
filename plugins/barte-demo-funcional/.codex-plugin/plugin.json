@@ -17,5 +17,6 @@
     "loom",
     "gatekeeper",
     "guided-demo"
-  ]
+  ],
+  "skills": "./skills/"
 }
