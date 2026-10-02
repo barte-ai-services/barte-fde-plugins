@@ -1,6 +1,6 @@
 ---
 name: building-pocs
-description: Turn the HTML proposal a client has already seen into a working proof of concept on Barte's platform, through an approved plan and reviewed iterations. Use when an FDE or client partner hands over an HTML mock, a proposed screen or a single-file demo and asks to make it functional, interactive or real; when asked to build a POC, a proof of value or a functional demo for a client; or when resuming, extending, packaging or presenting one. Covers the intake, the screen analysis, the architecture, the plan and its approval, the build in iterations with the builder's feedback, the guided demonstration, verification and the hand-over into the client's repository. Do NOT use it to write the HTML proposal itself, to build a production system, or to deploy infrastructure.
+description: Turn the HTML proposal a client has already seen into a working proof of concept on Barte's platform, through an approved plan and reviewed iterations. Use when an FDE or client partner hands over an HTML mock, a proposed screen or a single-file demo and asks to make it functional, interactive or real; when asked to build a POC, a proof of value or a functional demo for a client; or when resuming, extending, packaging or presenting one. Also use it to publish a POC to Barte's POC host (an address under `poc.barte.ai`), to diagnose a published one, or to write the PDF that explains how a POC works. Covers the whole chain: the intake, the screen analysis, the architecture, the plan and its approval, the build in iterations with the builder's feedback, the guided demonstration, verification, the hand-over into the client's repository, the publication and the explainer document. Do NOT use it to write the HTML proposal itself, to build a production system, or to create or change the hosting infrastructure.
 type: skill
 clade: discovery
 ---
@@ -14,6 +14,12 @@ and the agent stops when it does not know.
 
 The client sees a POC. They do not use it yet. That is the difference from a pilot,
 and it is why the external systems are stubs and the data is invented.
+
+A POC is delivered as three things, and it is not done until the three exist:
+
+1. **the POC running**, in the client's repository, started with one click;
+2. **the POC published**, at an address the presenter opens in a browser;
+3. **the document that explains it**, a PDF on Barte's brand.
 
 **The builder** is whoever is driving the session: the FDE, with the client partner
 behind them. Their feedback is an input to every step, not a review at the end.
@@ -47,7 +53,7 @@ repository, and who will present.
 
 The proposal is normally a single HTML file. Read it whole. If there is no proposal
 and no repository yet, this is the stand-alone track: follow
-`references/standalone-template.md` instead of steps 2 to 7.
+`references/standalone-template.md` instead of steps 2 to 9.
 
 The POC is built inside the client's repository, in `projects/poc/`, from the first
 commit. `references/handover.md` has the layout. Building it elsewhere and moving it
@@ -117,9 +123,9 @@ iteration 5.
 ## 6. Verify before you report
 
 A check counts as passing only with the output of the run that shows it.
-`references/verification.md` has the four layers: the end-to-end script, the health
-of every component, the browser at two widths, and the guided demonstration run to
-the end.
+`references/verification.md` has the five layers: the end-to-end script, the health
+of every component, the browser at two widths, the guided demonstration run to the
+end, and all of it again on the published address.
 
 Say what was not verified. "Not run on Windows" is part of the report.
 
@@ -128,6 +134,43 @@ Say what was not verified. "Not run on Windows" is part of the report.
 `references/handover.md` covers the project layout in the client's repository, the
 eight documentation folders, the decision records, the pull request, the one-click
 launchers and the contract a POC meets to be hosted.
+
+## 8. Publish
+
+The POC goes to Barte's POC host, at `<client>.poc.barte.ai`, by a workflow started
+from GitHub. `references/publishing.md` has the contract, the rehearsal, the
+command, the verification and what to do when it fails.
+
+- **Rehearse first.** The host's own tool runs on the builder's machine and
+  reproduces the two conditions that differ from a laptop: a clean environment and
+  a second network. What fails there fails on the host.
+- **Publish from GitHub.** Nothing is applied to the cloud from a laptop.
+- **Verify behind the proxy.** The end-to-end script against the public address,
+  and the guided demonstration to the end. A green workflow only means the
+  containers started.
+
+Do not type the host's password into a browser, and do not write it anywhere. The
+reference says how to verify without it.
+
+## 9. Write the explainer
+
+A PDF of about twelve pages that explains the POC to someone who was not there:
+the problem, the path of the work, how the agent decides and where it stops, the
+parts, what is stored, **what is real and what is simulated**, and how to present.
+`references/explainer.md` has the outline and the rules of writing.
+
+```bash
+node scripts/extract-brand.mjs http://127.0.0.1:3210/ brand
+node scripts/capture-screens.mjs shots.json
+node scripts/build-explainer.mjs explainer.html
+```
+
+The source is `assets/explainer/template.html`, and the three scripts share
+`scripts/lib/browser.mjs`. The build refuses a page whose content overflows; then
+look at every page before sending it.
+
+**Checkpoint D.** The builder opens the published address and reads the PDF. They
+decide who the document is for and how frank it is about what is simulated.
 
 What the POC taught about this process comes back here, as a pull request to this
 skill.
@@ -145,6 +188,13 @@ skill.
 - **The demonstration returns to its opening state** by one call, without tearing
   the stack down.
 - **Out of scope is written down**, in the plan and in `docs/context/`.
+- **Nothing reaches the cloud from a laptop.** Publishing is a workflow, and a
+  change to the host is a pull request to its repository.
+- **Everything lives in the organisation `barte-ai-services`.** No repository,
+  branch or pull request anywhere else without the builder asking for it.
+- **No component the builder did not approve.** Say what it is and why first.
+- **A command handed to the builder has every value filled in.** A placeholder gets
+  run as written.
 - **Every word the client reads follows Barte's voice.** Use the
   `writing-barte-voice` skill for screen text, captions and documents.
 
@@ -160,6 +210,15 @@ skill.
 - Starting to code while the builder was still explaining the idea.
 - Delivering everything at once, with no point where the builder could redirect.
 - Reporting done from `curl` when the page had not been opened in a browser.
+- Calling the publication done because the workflow was green. The page answered
+  502: the web server listened on one network and the proxy came in by another.
+- Letting the compose take a value from the shell. It worked on the laptop and
+  stalled on the host, which runs it with a clean environment.
+- Leaving an image on `latest`. The laptop and the host ran different versions.
+- Opening a pull request in a repository of another organisation because a
+  convention of the cloud account pointed there.
+- Explaining the POC from memory. The document is written from the running POC and
+  the code, and it says what is simulated.
 
 ## References
 
@@ -174,6 +233,8 @@ skill.
 | `references/guided-demo.md` | before building the guided demonstration |
 | `references/verification.md` | before reporting an iteration as done |
 | `references/handover.md` | before creating the project folder, and before the pull request |
+| `references/publishing.md` | before the compose is final, and before publishing or diagnosing a published POC |
+| `references/explainer.md` | before writing the document that explains the POC |
 | `references/standalone-template.md` | when there is no proposal and no client repository |
 
 The stand-alone track keeps its own references: `references/template-architecture.md`,
@@ -187,7 +248,9 @@ The stand-alone track keeps its own references: `references/template-architectur
 - **Building what the client will use.** A pilot or a production system starts
   from an initiative, with real integrations and real data, under the repository's
   full rules. A POC whose stubs were swapped for real systems is not a pilot.
-- **Deploying.** Hosting a POC, or creating cloud resources for one, is its own
-  plan with its own approval. This skill only makes the POC fit to be hosted.
+- **Creating or changing the host.** The machine, the network, the certificate and
+  the access roles belong to `barte-ai-services/poc-host`, with its own plan and
+  approval. This skill publishes a POC onto the host that exists. A client that
+  needs its own cloud account is a different plan.
 - **A short meeting where the story is enough.** A narrative deck or a mocked
   console is faster, and no back-end is needed.

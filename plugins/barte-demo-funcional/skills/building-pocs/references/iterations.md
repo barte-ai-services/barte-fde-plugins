@@ -112,6 +112,8 @@ repository.
 - Launchers for Mac and Windows, and the start script for Linux.
 - The eight documentation folders, the decision records, the licence notice.
 - The pull request. `references/handover.md`.
+- The hosting contract, line by line, and the rehearsal with the host's tool.
+  `references/publishing.md`.
 
 **Builder checks:** starts it from a clean checkout with one click.
 

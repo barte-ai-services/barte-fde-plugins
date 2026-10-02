@@ -1,7 +1,7 @@
 {
   "name": "barte-demo-funcional",
-  "version": "2.0.0",
-  "description": "Constrói a POC de um cliente a partir da proposta em HTML que ele já viu: análise da tela, arquitetura sobre os componentes da Barte (Loom, gatekeeper, conta emulada), plano aprovado, construção em iterações com o feedback de quem constrói, demonstração guiada e entrega no repositório do cliente.",
+  "version": "2.1.0",
+  "description": "Constrói a POC de um cliente a partir da proposta em HTML que ele já viu: análise da tela, arquitetura sobre os componentes da Barte (Loom, gatekeeper, conta emulada), plano aprovado, construção em iterações com o feedback de quem constrói, demonstração guiada e entrega no repositório do cliente. Publica a POC no host de POCs da Barte (<cliente>.poc.barte.ai) e gera o PDF que explica como ela funciona.",
   "author": {
     "name": "Fernando Seguim",
     "url": "https://github.com/fernandoseguim"

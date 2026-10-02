@@ -51,7 +51,7 @@ The repository's check requires all eight, each with a README.
 
 | Folder | In a POC |
 |---|---|
-| `context` | the client and the pain, what the POC proves, where the agent stops, what was delivered, out of scope; the approved plan |
+| `context` | the client and the pain, what the POC proves, where the agent stops, what was delivered, out of scope; the approved plan; `explainer/`, the source of the PDF |
 | `architecture` | the diagram, the components, the departures above, what is open; `decisions/` |
 | `domain` | the vocabulary, the tables, the kinds of exception |
 | `workflows` | each workflow, its steps, signals and tools; how the restart works |
@@ -84,21 +84,24 @@ to do it before the meeting.
 
 ## The contract of a hostable POC
 
-A POC that meets these can be hosted next to others on one machine, asleep when
-unused. Hosting itself is a separate plan; ask the builder whether a host exists
-before promising an address.
+A POC that meets these can be hosted next to others on one machine. Build to this
+contract from iteration 1: `references/publishing.md` has the full list, with how
+to check each line, and the publication itself.
 
 | Rule | Why |
 |---|---|
 | comes up with `docker compose up` and no `.env` | the host keeps no per-client configuration |
 | one service named `web`, on port 3000, is the only entrance | the edge proxy knows that name |
+| `web` listens on every interface (`HOSTNAME=0.0.0.0`) | on the host it sits on two networks, and the proxy comes in by the second |
+| nothing is read from the shell: every variable has a value in `.env.example` or a default | the host runs the compose with a clean environment |
+| every image has a version, never `latest` | the laptop and the host must run the same thing |
 | the API is reached through `web`, on the same origin | one host per client, no CORS |
 | invented data only, and no real credential | the machine is shared |
 | no call to the outside (ERP, e-mail, model) | no variable cost, nothing leaks |
 | `POST /api/restart` returns to the opening state | the demonstration is repeatable |
-| survives `stop` and `start` | that is how it sleeps and wakes |
+| survives `stop` and `start` | the machine goes off every night |
 | at most 2 GB of memory, healthy within 60 seconds of a start | three fit on one machine |
-| images published to the registry, with a tag | the host does not compile |
+| private platform images are listed in the host's mirror | the host has no credential for the registry; it compiles the POC's own images |
 
 The reference POC used 1.8 GB in 14 containers and was healthy 17 seconds after a
 `docker compose start`.

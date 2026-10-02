@@ -71,6 +71,15 @@ Rules that came from failures:
 - **It comes up with no `.env`.** Every `${VAR:-default}` default is the POC's
   value. `.env.example` documents the overrides. The template's defaults say
   `exemplo`; replace every one.
+- **Nothing comes from the shell.** A variable the compose reads from the machine's
+  environment works on the laptop that happens to have it, and takes another value
+  on the host. A region taken from the shell put the emulated account in one region
+  and the gatekeeper looking in another.
+- **Every image has a version.** No `latest`: the emulator was one version on the
+  laptop and another on the host.
+- **The web server listens on every interface.** Next's stand-alone server binds to
+  `HOSTNAME`, which in a container is one network's address. Set `HOSTNAME=0.0.0.0`
+  in the image.
 - **`platform: linux/amd64` per service**, on `temporalio/server`,
   `temporalio/admin-tools`, `loom/console`, `loom/proxy` and `gatekeeper/proxy`.
   They have no runnable arm64 image. Do not set it globally: Floci is multi-arch

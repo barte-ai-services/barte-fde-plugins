@@ -1,6 +1,6 @@
 # Verifying
 
-An iteration is done when it was checked, and the report shows the check. Four
+An iteration is done when it was checked, and the report shows the check. Five
 layers, from the cheapest to the one that matters most.
 
 ## 1. The end-to-end script
@@ -55,6 +55,16 @@ Compare each screen with the proposal side by side. Fidelity is judged by eye.
 
 To the end, twice, at two widths, with the cursor sampled.
 `references/guided-demo.md`.
+
+## 5. The published POC
+
+After publishing, the same checks run again behind the proxy: the end-to-end script
+against the public address, and the guided demonstration to the end.
+`references/publishing.md` says how, without typing the host's password into a
+browser.
+
+A POC that passes locally can still fail there. The host runs it with a clean
+environment and puts the web server on a second network.
 
 ## From a clean start
 
