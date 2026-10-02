@@ -1,10 +1,10 @@
 {
   "name": "barte-demo-funcional",
+  "displayName": "Barte · POC funcional",
   "version": "2.0.0",
   "description": "Constrói a POC de um cliente a partir da proposta em HTML que ele já viu: análise da tela, arquitetura sobre os componentes da Barte (Loom, gatekeeper, conta emulada), plano aprovado, construção em iterações com o feedback de quem constrói, demonstração guiada e entrega no repositório do cliente.",
   "author": {
-    "name": "Fernando Seguim",
-    "url": "https://github.com/fernandoseguim"
+    "name": "Fernando Seguim"
   },
   "homepage": "https://github.com/barte-ai-services/barte-fde-plugins/tree/main/plugins/barte-demo-funcional",
   "repository": "https://github.com/barte-ai-services/barte-fde-plugins",
@@ -17,5 +17,6 @@
     "loom",
     "gatekeeper",
     "guided-demo"
-  ]
+  ],
+  "skills": "./skills/"
 }

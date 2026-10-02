@@ -1,0 +1,41 @@
+/* The guided demonstration: start button, dialog, shield, cursor, caption and panel.
+ * Append to the app's global stylesheet. Every colour is a variable of the host app:
+ *   --jt-2 brand accent · --jt accent darkened for text · --jt-soft accent wash
+ *   --card surface · --ink / --ink-soft / --ink-faint text · --line-soft divider
+ *   --r-sm / --r-md / --r-lg radii · --sidebar-w sidebar width
+ * Map them to design-system tokens; write no hex here. */
+
+/* ---------- demonstracao guiada (o cursor que opera a tela) ---------- */
+.tour-btn { display: flex; width: 100%; align-items: center; gap: 9px; border: 1px solid var(--jt-2); border-radius: var(--r-sm); background: var(--jt-soft); color: var(--jt); padding: 8px 11px; text-align: left; margin-bottom: 8px; }
+.tour-btn:hover { background: var(--jt-2); color: #fff; }
+.tour-btn:hover small { color: #fff; }
+.tour-btn b { display: block; font-size: 12px; }
+.tour-btn small { display: block; font-size: 10.5px; color: var(--ink-soft); }
+.piloto-modal { position: fixed; inset: 0; z-index: 300; background: rgba(20, 24, 31, 0.45); display: flex; align-items: center; justify-content: center; padding: 20px; }
+.piloto-card { background: var(--card); border-radius: var(--r-lg, 14px); box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25); padding: 24px 26px 20px; width: min(520px, 100%); }
+.piloto-card h2 { margin: 0 0 10px; font-size: 18px; }
+.piloto-card p { margin: 0 0 10px; font-size: 13px; line-height: 1.55; color: var(--ink-soft); }
+.piloto-card p b { color: var(--ink); }
+.piloto-acoes { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+.piloto-escudo { position: fixed; inset: 0; z-index: 390; cursor: default; }
+.piloto-cursor { position: fixed; left: 0; top: 0; z-index: 400; pointer-events: none; transition: transform 0ms cubic-bezier(0.45, 0, 0.2, 1); will-change: transform; }
+.piloto-cursor > svg { display: block; margin: -3px 0 0 -5px; filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3)); }
+.piloto-onda { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--jt-2); background: color-mix(in srgb, var(--jt-2) 22%, transparent); animation: piloto-onda 0.55s ease-out forwards; }
+@keyframes piloto-onda { from { transform: scale(0.25); opacity: 1; } to { transform: scale(1.35); opacity: 0; } }
+.piloto-fala { position: absolute; left: 20px; top: 26px; width: 300px; background: var(--ink); color: #fff; border-radius: var(--r-md); padding: 11px 14px 12px; font-size: 12.5px; line-height: 1.5; box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28); }
+.piloto-fala b { display: block; font-size: 13px; margin-bottom: 3px; color: color-mix(in srgb, var(--jt-2) 45%, #fff); }
+.piloto-fala.esq { left: auto; right: 8px; }
+.piloto-fala.acima { top: auto; bottom: 10px; }
+.piloto-foco { outline: 2px solid var(--jt-2) !important; outline-offset: 3px; box-shadow: 0 0 0 7px color-mix(in srgb, var(--jt-2) 18%, transparent) !important; transition: box-shadow 0.2s, outline-color 0.2s; }
+.piloto-painel { position: fixed; left: 12px; bottom: 12px; width: calc(var(--sidebar-w) - 24px); z-index: 410; background: var(--card); border: 1px solid var(--jt-2); border-radius: var(--r-md); padding: 11px 12px; box-shadow: 0 14px 36px rgba(0, 0, 0, 0.16); }
+.pp-top { display: flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: var(--jt); }
+.pp-top small { margin-left: auto; font-weight: 700; color: var(--ink-faint); text-transform: none; letter-spacing: 0; }
+.pp-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--jt-2); animation: piloto-pulso 1.2s ease-in-out infinite; }
+.pp-dot.off { background: var(--ink-faint); animation: none; }
+@keyframes piloto-pulso { 50% { opacity: 0.3; } }
+.pp-nome { font-size: 13px; font-weight: 700; margin: 6px 0 8px; }
+.pp-barra { height: 4px; border-radius: 2px; background: var(--line-soft); overflow: hidden; }
+.pp-barra i { display: block; height: 100%; background: var(--jt-2); transition: width 0.4s ease; }
+.pp-acoes { display: flex; gap: 6px; margin-top: 10px; }
+.pp-acoes .btn { flex: 1; justify-content: center; }
+body.piloto .toast-wrap { z-index: 395; }

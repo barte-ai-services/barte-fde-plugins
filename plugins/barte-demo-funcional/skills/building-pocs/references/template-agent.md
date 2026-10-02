@@ -117,7 +117,7 @@ documento R$ 14.318,90 contra pedido R$ 14.300,00 — diferença de R$ 18,90
 
 No code for that: the steps are the **flow**, and the flow is data — `data/flow.yaml`
 or the "Editar fluxo" panel inside the demo. Backend and screen read the same
-structure, so there are no two lists to keep in agreement. See `references/flow.md`.
+structure, so there are no two lists to keep in agreement. See `references/template-flow.md`.
 
 Five steps is a good number: fewer looks shallow, and above six the pipeline starts
 wrapping to a second line on a laptop screen.
@@ -135,5 +135,5 @@ become the exceptions planted in the data. Patterns that work at almost any clie
 4. **Duplicate** — the same key already posted.
 5. **Approval limit** — above the threshold, the decision belongs to a person.
 
-Each one proves a different capability. `references/data.md` covers how to plant
+Each one proves a different capability. `references/template-data.md` covers how to plant
 them.

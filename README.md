@@ -2,7 +2,7 @@
 
 Claude Code plugins for Barte's FDE team.
 
-Maintained by **Barte AI Services**. The `barte-demo-funcional` skill was written
+Maintained by **Barte AI Services**. The `barte-demo-funcional` plugin was written
 by **Fernando Seguim**.
 
 ## Install
@@ -24,7 +24,7 @@ If you installed from here before, remove the old marketplace first with
 
 | Plugin | Skill | What it does |
 |---|---|---|
-| [`barte-demo-funcional`](plugins/barte-demo-funcional) | `barte-demo-funcional` | builds a **functional** client demo: web on the `barte-design-system`, a NestJS backend, storage/queue/database in containers (AWS, GCP or Azure), and an agent that does the work and accounts for itself on screen |
+| [`barte-demo-funcional`](plugins/barte-demo-funcional) | `building-pocs` | turns the HTML proposal a client has seen into a working **POC** on Barte's platform: screen analysis, architecture on Loom and the gatekeeper, an approved plan, a build in six reviewed iterations, a guided demonstration, and the hand-over into the client's repository. Keeps the stand-alone NestJS template for when there is no proposal yet |
 | [`fde-reports`](plugins/fde-reports) | `daily-brief` | daily brief for an FDE, as plain text in the chat: their to-dos from Fireflies and Granola, client meetings held without them, a recap of the last business day and movement in their engagements; sets itself up as a weekday scheduled task |
 | | `sync-fde` | turns the daily **Sync FDEs** into the team checkpoint and publishes it: a status update on the `Barte AI Services` project board and a post in `#fde-deployment` |
 | | `update-roadmap` | refreshes the private tactical/operational roadmap from GitHub, reconciles evidence, supports requested backfill and verifies publication |
@@ -40,9 +40,12 @@ The `update-roadmap` skill runs on invocation; it does not install a scheduler o
 
 ```
 plugins/<plugin>/
-  .claude-plugin/plugin.json             the manifest
-  skills/<skill>/SKILL.md                the skill
-  skills/<skill>/assets/template/        the project the skill copies
+  .claude-plugin/plugin.json             the manifest (Claude Code)
+  .codex-plugin/ · .cursor-plugin/       the same manifest, for Codex and Cursor
+  skills/<skill>/SKILL.md                the skill: numbered steps, and when it does not apply
+  skills/<skill>/references/             what a step reads; every file is named in SKILL.md
+  skills/<skill>/scripts/                what a step runs
+  skills/<skill>/assets/                 what the skill copies into a project
 ```
 
 ## Language
@@ -54,11 +57,22 @@ Portuguese or a screen label in English are both bugs.
 
 ## Working on the plugins
 
-Claude Code's skills directory points here through a symlink, so editing here is
-editing the installed skill:
+Skills follow barte-forge's artifact rules: the skill's folder and `name` are a
+gerund with no plugin prefix (`building-pocs`), the frontmatter carries `type` and
+`clade`, steps are numbered `##` headings, there is a `## When this skill does not
+apply` section, and a code block in `SKILL.md` holds at most 10 lines. The forge's
+CI does not reach a plugin hosted here, so run its gate by hand on a copy of the
+forge with the plugin inside:
 
 ```bash
-ls -l ~/.claude/skills/barte-demo-funcional
+python3 foundation/hooks/validate-artifacts.py
+```
+
+If Claude Code's skills directory points here through a symlink, it names the
+skill's folder. Renaming a skill breaks that symlink until it is recreated:
+
+```bash
+ls -l ~/.claude/skills/
 ```
 
 After changing a skill, bump `version` in its `plugin.json` here and in its entry

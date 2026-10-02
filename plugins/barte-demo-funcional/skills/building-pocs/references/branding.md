@@ -107,10 +107,30 @@ and red are reserved for **state** — done and exception — never for decorati
 brand pink inside the served CSS) and that the page hydrates. Then look for
 yourself: a screen with no CSS passes every API test.
 
-## A client demo carrying THEIR brand
+## The client's name, never the client's logo
 
-Co-branding works, and the `fde-demos` consoles do it: the shell stays Barte and
-the client appears in the sidebar block, the breadcrumb and the tab title — all of
-which come from the demo's vocabulary, so it is configuration, not code.
-Simulated third-party systems (SAP, Slack, an ERP) use **their own native**
-identity — that is what sells the realism.
+The shell is Barte's. The client appears as **plain text**: in the sidebar block,
+the breadcrumb and the tab title.
+
+**Never redraw the client's logo.** Not as a styled wordmark, not in Barte's
+colour, not as a monogram badge with their initials. A proposal often carries a
+hand-made version of the client's mark; porting it into Barte's shell puts our
+identity on their brand, and that is disrespect, not co-branding. Writing the name
+is not touching the logo. Styling it is.
+
+If the client's mark has to appear, it is their official file, unchanged, in their
+own colours. When in doubt, text.
+
+Simulated third-party systems (an ERP, a bank) are named in text too, and labelled
+as stubs.
+
+## Porting a proposal's screen
+
+When the screen comes from a proposal, port its **layout and structure** and map
+its colours to design-system tokens: one variable per colour of the proposal, each
+pointing at a token, so no brand hex is written in the stylesheet. The proposal's
+accent becomes the brand token; its neutrals become the content, background and
+stroke tokens.
+
+Check the result at the width the presenter will use and at a narrow one. Headers
+with several actions wrap; wide tables scroll inside their own box.
