@@ -14,9 +14,20 @@ if (!file) {
   process.exit(2);
 }
 const html = fs.readFileSync(file, "utf8");
-const scripts = [...html.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1]);
+// Split the file by position into code (script and style blocks) and markup. Nothing
+// here is sanitised or rendered: the two halves are only counted. The end tag is
+// matched loosely (`</script >`, `</SCRIPT foo>`), as a browser would close it.
+const BLOCK = /<(script|style)\b([^>]*)>([\s\S]*?)<\/(?:script|style)\b[^>]*>/gi;
+const scripts = [];
+let markup = "";
+let cursor = 0;
+for (const m of html.matchAll(BLOCK)) {
+  markup += html.slice(cursor, m.index);
+  cursor = m.index + m[0].length;
+  if (m[1].toLowerCase() === "script" && !/\bsrc\s*=/i.test(m[2])) scripts.push(m[3]);
+}
+markup += html.slice(cursor);
 const js = scripts.join("\n");
-const markup = html.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "");
 const uniq = (xs) => [...new Set(xs)];
 const count = (re, s = html) => (s.match(re) || []).length;
 
