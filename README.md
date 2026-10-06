@@ -25,7 +25,7 @@ If you installed from here before, remove the old marketplace first with
 | Plugin | Skill | What it does |
 |---|---|---|
 | [`barte-demo-funcional`](plugins/barte-demo-funcional) | `building-pocs` | turns the HTML proposal a client has seen into a working **POC** on Barte's platform: screen analysis, architecture on Loom and the gatekeeper, an approved plan, a build in six reviewed iterations, a guided demonstration, the hand-over into the client's repository, the publication to Barte's POC host (`<client>.poc.barte.ai`) and the PDF that explains how the POC works. Keeps the stand-alone NestJS template for when there is no proposal yet |
-| [`fde-reports`](plugins/fde-reports) | `daily-brief` | daily brief for an FDE, as plain text in the chat: their to-dos from Fireflies and Granola, client meetings held without them, a recap of the last business day and movement in their engagements; sets itself up as a weekday scheduled task |
+| [`fde-reports`](plugins/fde-reports) | `daily-brief` | daily brief for an FDE, as plain text in the chat: their to-dos from Fireflies, Granola and Gemini notes, cross-checked against each other, client meetings held without them, a recap of the last business day and movement in their engagements; sets itself up as a weekday scheduled task |
 | | `sync-fde` | turns the daily **Sync FDEs** into the team checkpoint and publishes it: a status update on the `Barte AI Services` project board and a post in `#fde-deployment` |
 | | `update-roadmap` | refreshes the private tactical/operational roadmap from GitHub, reconciles evidence, supports requested backfill and verifies publication |
 

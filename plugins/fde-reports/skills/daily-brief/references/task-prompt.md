@@ -24,7 +24,8 @@ Esta é uma execução agendada: não faça perguntas, não sugira conectores, n
 
 SE A SKILL NÃO ESTIVER DISPONÍVEL, siga estas regras:
 - Janela (fuso America/Sao_Paulo): hoje de 00:00 a 24:00; período coberto do início do último dia útil até agora (numa segunda-feira, desde sexta 00:00).
-- Fontes: Google Calendar; notas de reunião no Granola E no Fireflies (use as duas e junte duplicatas); Notion e Google Drive; Gmail e Slack só se conectados, sem avisar se não estiverem.
+- Fontes: Google Calendar; notas de reunião no Fireflies, no Granola e nas Anotações do Gemini no Google Drive (leia todas); Notion e Google Drive; Gmail e Slack só se conectados, sem avisar se não estiverem.
+- Uma reunião com mais de um registro vira um item só. Dono de ação vem do Fireflies ou do Gemini, que identificam quem fala; o resumo do Granola não decide dono. Se os registros discordarem, ou se um nome não existir (erro de transcrição), confira o mesmo trecho nos outros registros; sem resolver, marque "(confirmar)".
 - Reunião de cliente: participante com domínio do cliente, título com o nome do cliente ou notas que identifiquem o cliente.
 - Seções, nesta ordem, removendo inteira a que ficar vazia:
   1. Meus to-dos: ações atribuídas a mim pelo nome completo, em reuniões de que participei. Se houver ambiguidade de nome, marque "(confirmar)".
