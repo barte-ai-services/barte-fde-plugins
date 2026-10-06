@@ -1,6 +1,6 @@
 # FDE / AI Squads team
 
-Used to give context to names in the brief, e.g. "Manuel Freitas (Client Partner)". Which clients each person works on is set per person during setup, not here, because it changes often.
+Used to give context to names in the brief, e.g. "Manuel Freitas (AI Deployment)". Which clients each person works on is set per person during setup, not here, because it changes often.
 
 Update this file by PR when someone joins, leaves or changes role.
 
@@ -8,11 +8,11 @@ Update this file by PR when someone joins, leaves or changes role.
 |---|---|
 | Daniel Dias | Forward Deployed Engineer |
 | Beny Braun | Forward Deployed Engineer |
-| Manuel Freitas | AI Deployment / Client Partner |
-| Daniel Graicer | AI Deployment / Client Partner |
+| Manuel Freitas | AI Deployment |
+| Daniel Graicer | AI Deployment |
 | Paulo Rodrigues | Software Engineer (tech lead) |
 | Fernando Seguim | Software Engineer (tech lead) |
 
 ## Repeated first names
 
-There are two **Daniel**s: Daniel Dias (FDE) and Daniel Graicer (Client Partner). When notes say only "Daniel", decide from context — who was in the meeting, who spoke, the client, whether the task is technical or relationship work. If still unclear, mark the item `(confirmar)`.
+There are two **Daniel**s: Daniel Dias (FDE) and Daniel Graicer (AI Deployment). When notes say only "Daniel", decide from context — who was in the meeting, who spoke, the client, whether the task is technical or relationship work. If still unclear, mark the item `(confirmar)`.
