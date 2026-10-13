@@ -13,11 +13,14 @@ marketplace. This repository is no longer a marketplace of its own.
 
 ```
 /plugin marketplace add barte-ai-services/barte-forge
-/plugin install barte-demo-funcional@ahrena
-/plugin install fde-reports@ahrena
+/plugin install barte-demo-funcional@barte
+/plugin install fde-reports@barte
 ```
 
-If you installed from here before, remove the old marketplace first with
+The forge's marketplace is called `barte`. It was called `ahrena` until
+barte-ai-services/barte-forge#46: a plugin installed as `<name>@ahrena` from the
+forge has to be reinstalled as `<name>@barte`. If you installed from here
+before, remove the old marketplace first with
 `/plugin marketplace remove barte-fde`, then install from the forge.
 
 ## What is here
