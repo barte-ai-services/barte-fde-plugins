@@ -75,6 +75,7 @@ transcript — resolve it here or against the Project. Observed in real recordin
 | Comp | Pomp, compa |
 | Skintec | Skintech, SkinTech, "isso que é tech" |
 | Riza | Risa |
+| Just Travel | Distraio, J Travel, Juster, JustTravel |
 
 Note that two of the manglings collide with the legacy keys: a transcript's
 "Boozer" is the display name Buser, and "Salve" is Sallve. The key and the
